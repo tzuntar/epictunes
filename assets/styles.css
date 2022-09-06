@@ -1,5 +1,84 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap');
 
+:root {
+    --color-accent: #4343EF;
+    --text-color: #24242E;
+    --sidebar-label-color: #4D4D56;
+    --text-lighter-color: rgba(36, 36, 46, 0.5);
+    --lighter-bg-color: #F9F9FB;
+    --sidebar-sel-color: #F0F0F5;
+}
+
 body {
     font-family: 'Montserrat', sans-serif;
+    background-color: var(--lighter-bg-color);
+}
+
+.sidebar {
+    background-color: white;
+    width: 250px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.sidebar nav ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.sidebar nav ul li {
+    padding: 10px 0;
+    color: var(--sidebar-label-color);
+    cursor: pointer;
+    line-height: 24px;
+    font-weight: 300;
+}
+
+.sidebar nav ul li:hover {
+    background-color: var(--sidebar-sel-color);
+}
+
+.sidebar nav ul li.selected {
+    border-right: 6px solid var(--color-accent);
+    background-color: var(--sidebar-sel-color);
+    color: var(--color-accent);
+    font-weight: 500;
+}
+
+.sidebar .logo {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: var(--color-accent);
+}
+
+.sidebar .logo img {
+    padding-right: 8px;
+}
+
+.sidebar nav p {
+    text-transform: uppercase;
+    padding-top: 10px;
+    padding-left: 30px;
+}
+
+.sidebar nav p:first-child {
+    padding-top: 0;
+}
+
+.sidebar nav ul img {
+    padding-right: 25px;
+    padding-left: 30px;
+}
+
+a,
+a:hover,
+a:active,
+a:visited {
+    color: var(--text-color);
+    text-decoration: none;
 }
