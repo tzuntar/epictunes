@@ -7,11 +7,18 @@
     --text-lighter-color: rgba(36, 36, 46, 0.5);
     --lighter-bg-color: #F9F9FB;
     --sidebar-sel-color: #F0F0F5;
+
+    --input-box-bg: #F0F0F5;
+    --input-box-placeholder: #787887;
 }
 
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: var(--lighter-bg-color);
+}
+
+h1 {
+    font-weight: 500;
 }
 
 .sidebar {
@@ -51,13 +58,23 @@ body {
     padding: 30px;
     display: flex;
     justify-content: center;
-    font-weight: bold;
+    font-weight: 700;
     font-size: 20px;
     color: var(--color-accent);
+    vertical-align: middle;
 }
 
-.sidebar .logo img {
+.logo p {
+    display: inline;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--color-accent);
+    vertical-align: middle;
+}
+
+.logo img {
     padding-right: 8px;
+    vertical-align: middle;
 }
 
 .sidebar nav p {
@@ -81,4 +98,100 @@ a:active,
 a:visited {
     color: var(--text-color);
     text-decoration: none;
+}
+
+.action-link {
+    font-weight: 600;
+}
+
+.fine-print {
+    font-size: 12px;
+}
+
+/* Input Fields */
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='tel'],
+textarea {
+    background-color: var(--input-box-bg);
+    border: none;
+    border-radius: 12px;
+    line-height: 40px;
+    padding: 0 20px;
+    width: 250px;
+}
+
+input[type='checkbox'] {
+    height: 20px;
+    width: 20px;
+    vertical-align: middle;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--input-box-placeholder);
+}
+
+input:focus,
+textarea:focus,
+a {
+    outline-color: var(--color-accent);
+}
+
+button,
+input[type='submit'] {
+    background-color: var(--color-accent);
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    line-height: 40px;
+    padding: 0 40px;
+}
+
+/* Aligning Divs */
+.flex-container {
+    display: flex;
+}
+
+.flex-child-half {
+    flex: 1;
+    padding: 0 40px;
+}
+
+.flex-child-half:first-child {
+    margin-right: 3em;
+}
+
+.flex-child-half:nth-child(2) {
+    text-align: center;
+}
+
+.header-center {
+    text-align: center;
+}
+
+.top-padding {
+    padding: 20px;
+}
+
+.div-center {
+    text-align: center;
+}
+
+.padding-top-40 {
+    padding-top: 40px;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+
+/* Responsive Login */
+@media screen and (max-width: 768px) {
+    .flex-container {
+        display: block;
+        text-align: center;
+    }
 }
