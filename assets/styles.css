@@ -70,6 +70,16 @@ h1 {
     vertical-align: middle;
 }
 
+/* Main Content Area */
+.root-container {
+    position: relative;
+    left: 250px;
+}
+
+.root-container .top {
+
+}
+
 /* Logo */
 
 .logo p {
@@ -99,6 +109,8 @@ h1 {
     padding-right: 25px;
     padding-left: 30px;
 }
+
+/* Links */
 
 a,
 a:hover,
@@ -176,6 +188,8 @@ input[type='submit'] {
     text-align: center;
 }
 
+/* Misc Utilities */
+
 .header-center {
     text-align: center;
 }
@@ -201,5 +215,17 @@ input[type='submit'] {
     .flex-container {
         display: block;
         text-align: center;
+    }
+
+    .flex-child-half:nth-child(2) {
+        padding-top: 20px;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .root-container {
+        left: 0;
     }
 }
