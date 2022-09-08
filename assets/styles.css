@@ -21,6 +21,8 @@ h1 {
     font-weight: 500;
 }
 
+/* Sidebar Styles */
+
 .sidebar {
     background-color: white;
     width: 250px;
@@ -43,6 +45,10 @@ h1 {
     font-weight: 300;
 }
 
+.sidebar nav ul li img {
+    vertical-align: middle;
+}
+
 .sidebar nav ul li:hover {
     background-color: var(--sidebar-sel-color);
 }
@@ -63,6 +69,8 @@ h1 {
     color: var(--color-accent);
     vertical-align: middle;
 }
+
+/* Logo */
 
 .logo p {
     display: inline;
