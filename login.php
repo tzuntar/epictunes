@@ -10,17 +10,17 @@ if (isset($_POST['username'])) {
     $password = $_POST['password'];
     if (empty($username) or empty($password))
         $loginMessage = 'Please enter both your username and your password';
-    $user = db_get_user($username);
-    if (!$user) $loginMessage = 'Incorrect username or password';
-
-    if (password_verify($password, $user['password'])) {
-        $_SESSION['id'] = $user['id_user'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['identifier'] = $user['identifier'];
-        $_SESSION['name'] = $user['name'];
-        $_SESSION['is_admin'] = $user['is_admin'];
-        header('Location: index.php');
-    } else $loginMessage = 'Incorrect username or password';
+    else {
+        $user = db_get_user($username);
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['id'] = $user['id_user'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['identifier'] = $user['identifier'];
+            $_SESSION['name'] = $user['name'];
+            $_SESSION['is_admin'] = $user['is_admin'];
+            header('Location: index.php');
+        } else $loginMessage = 'Incorrect username or password';
+    }
 }
 
 
