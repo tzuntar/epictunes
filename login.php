@@ -10,17 +10,17 @@ if (isset($_POST['username'])) {
     $password = $_POST['password'];
     if (empty($username) or empty($password))
         $loginMessage = 'Please enter both your username and your password';
-    $user = db_get_user($username);
-    if (!$user) $loginMessage = 'Incorrect username or password';
-
-    if (password_verify($password, $user['password'])) {
+    else {
+        $user = db_get_user($username);
+        if ($user && password_verify($password, $user['password'])) {
+    ***REMOVED***
+    ***REMOVED***
+    ***REMOVED***
+    ***REMOVED***
+    ***REMOVED***
+    ***REMOVED***
+    ***REMOVED*** else $loginMessage = 'Incorrect username or password';
 ***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED*** else $loginMessage = 'Incorrect username or password';
 }
 
 

@@ -5,22 +5,37 @@ $document_title = 'Create Account';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/queries.php';
 
 if (isset($_POST['username'])) {
-    $username = filter_input(INPUT_POST, 'username',
-        FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $password = $_POST['password'];
-    if (empty($username) or empty($password))
-        $registrationMessage = 'Please enter both your username and your password';
-    $user = db_get_user($username);
-    if (!$user) $registrationMessage = 'Incorrect username or password';
+    if (empty($_POST['name'])
+        or empty($_POST['email']
+            or empty($_POST['password'])
+            or empty($_POST['confirm_password']))) {
+        $registerMessage = 'Please fill in all required fields';
+***REMOVED*** else {
+        $password_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        if (!password_verify($_POST['confirm_password'], $password_hash)) {
+            $registerMessage = "The passwords don't match";
+    ***REMOVED*** else {
+            $name = filter_input(INPUT_POST, 'name',
+                FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $username = filter_input(INPUT_POST, 'username',
+                FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $email = filter_input(INPUT_POST, 'email',
+                FILTER_SANITIZE_EMAIL);
 
-    if (password_verify($password, $user['password'])) {
+            $user = db_create_user($name, $username, $email, $password_hash);
+            if (!$user) {
+                $registerMessage = 'Creating the user failed';
+                return;
+        ***REMOVED*** else {
+        ***REMOVED***
+        ***REMOVED***
+        ***REMOVED***
+        ***REMOVED***
+        ***REMOVED***
+        ***REMOVED***
+        ***REMOVED***
+    ***REMOVED***
 ***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED*** else $registrationMessage = 'Incorrect username or password';
 }
 
 
@@ -69,8 +84,8 @@ include_once './include/header.php' ?>
             </p>
             <p>
                 <label class="fine-print w-40">
-                    <input type="checkbox" name="dont_register">
-                    I agree that I haven't read this text and<br/>therefore do not want to register.
+                    <input type="checkbox" name="privacy_confirm" required>
+                    I have read and agree to the terms and conditions.
                 </label>
             </p>
             <input class="margin-top-20" type="submit" value="Create Account"/>
