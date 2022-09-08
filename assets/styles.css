@@ -21,6 +21,11 @@ h1 {
     font-weight: 500;
 }
 
+h2 {
+    font-weight: 600;
+    font-size: 22px;
+}
+
 /* Links */
 a,
 a:hover,
@@ -115,8 +120,16 @@ input[type='submit'] {
     padding-top: 40px;
 }
 
+.padding-20 {
+    padding: 20px;
+}
+
 .margin-top-20 {
     margin-top: 20px;
+}
+
+.accent {
+    color: var(--color-accent);
 }
 
 
@@ -188,7 +201,7 @@ input[type='submit'] {
 }
 
 .root-container .search-box input {
-      width: 350px;
+    width: 350px;
 }
 
 .root-container nav .profile-photo {
@@ -202,6 +215,15 @@ input[type='submit'] {
     vertical-align: middle;
     display: inline;
     margin-left: 10px;
+    font-weight: 600;
+}
+
+/* Song List Cards */
+.song-list-card {
+    border-radius: 14px;
+    background-color: white;
+    margin: 20px;
+    padding: 5px 20px;
 }
 
 /* Logo */

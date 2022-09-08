@@ -1,28 +1,27 @@
 <?php
 session_start();
+$document_title = 'My Music';
 if (!isset($_SESSION['identifier']))
     header('Location: login.php');
-require_once 'include/database.php';
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EpicTunes</title>
-    <link rel="stylesheet" href="./assets/styles.css"/>
-</head>
-<body>
-<?php include_once 'include/sidebar.php' ?>
-<div class="root-container">
-    <?php include_once 'include/top-nav.php' ?>
+require_once 'utils/queries.php';
+$userSongs = db_get_saved_songs_user($_SESSION['id']);
 
-    <main>
-        <h1>My Music</h1>
-    </main>
+include_once 'include/header.php';
+include_once 'include/sidebar.php' ?>
+    <div class="root-container">
+        <?php include_once 'include/top-nav.php' ?>
 
-    <div class="player"></div>
-</div>
-</body>
-</html>
+        <main>
+            <h2 class="accent padding-20">My Music</h2>
+            <div class="margin-top-20">
+                <?php foreach ($userSongs as $song) { ?>
+                    <div class="song-list-card">
+                        <?= $song['name'] ?>
+                    </div>
+                <?php } ?>
+            </div>
+        </main>
+
+        <div class="player"></div>
+    </div>
+<?php include_once 'include/footer.php' ?>
