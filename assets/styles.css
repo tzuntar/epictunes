@@ -7,6 +7,7 @@
     --text-lighter-color: rgba(36, 36, 46, 0.5);
     --lighter-bg-color: #F9F9FB;
     --sidebar-sel-color: #F0F0F5;
+    --sub-label-color: rgba(36, 36, 46, 0.5);
 
     --input-box-bg: #F0F0F5;
     --input-box-placeholder: #787887;
@@ -193,6 +194,9 @@ input[type='submit'] {
     display: flex;
     justify-content: space-between;
     padding: 0 10px;
+    position: sticky;
+    top: 0;
+    background-color: var(--lighter-bg-color);
 }
 
 .root-container .search-box {
@@ -202,6 +206,7 @@ input[type='submit'] {
 
 .root-container .search-box input {
     width: 350px;
+    margin-top: 7px;
 }
 
 .root-container nav .profile-photo {
@@ -224,6 +229,21 @@ input[type='submit'] {
     background-color: white;
     margin: 20px;
     padding: 5px 20px;
+}
+
+.album-art-list {
+    width: 80px;
+    display: inline;
+    border-radius: 8px;
+    margin: 12px 18px 10px 0;
+}
+
+.song-list-card p:first-child {
+    font-weight: 600;
+}
+
+.song-list-card .sub-label {
+    color: var(--sub-label-color);
 }
 
 /* Logo */

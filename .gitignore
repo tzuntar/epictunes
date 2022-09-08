@@ -2,3 +2,6 @@
 *.iml
 userdata/
 uploads/
+composer.lock
+composer.phar
+vendor/
