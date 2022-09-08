@@ -7,7 +7,7 @@
     <div class="profile-photo">
         <div class="flex-container">
             <img src="./assets/img/icons/avatar.svg" alt=""/>
-            <p>John Doe</p>
+            <p><?= $_SESSION['name'] ?? 'Unknown' ?></p>
         </div>
     </div>
 </nav>
