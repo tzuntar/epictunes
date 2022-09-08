@@ -32,10 +32,10 @@ require_once 'include/database.php';
             <li><img src="./assets/img/icons/album.svg" alt=""/>Albums</li>
             <li><img src="./assets/img/icons/artist.svg" alt=""/>Artists</li>
         </ul>
-        <p>Other</p>
+        <p>Others</p>
         <ul>
             <li><img src="./assets/img/icons/settings.svg" alt=""/>Settings</li>
-            <li><img src="./assets/img/icons/logout.svg" alt=""/>Log Out</li>
+            <li><a href="logout.php"><img src="./assets/img/icons/logout.svg" alt=""/>Log Out</a></li>
         </ul>
     </nav>
 </div>
