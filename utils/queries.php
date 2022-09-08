@@ -44,6 +44,7 @@ function db_get_saved_songs_user(string $userId) {
     global $DB;
     $stmt = $DB->prepare('SELECT s.id_song,
                s.name AS song_name,
+               s.song_url,
                g.id_genre AS id_genre,
                g.name AS genre_name,
                a.id_album AS id_album,
@@ -66,14 +67,15 @@ function db_get_saved_songs_user(string $userId) {
     while ($song = $stmt->fetch()) {
         $songId = $song['id_song'];
         if (!isset($songs[$songId])) {
-            $songs[] = [
+            $songs[$songId] = [
                 'id_song' => $songId,
+                'mp3_url' => $song['song_url'],
                 'name' => $song['song_name'],
                 'id_genre' => $song['id_genre'],
                 'genre' => $song['genre_name'],
                 'id_album' => $song['id_album'],
                 'album' => $song['album_name'],
-                'album_art' => $song['art_url'],
+                'album_art' => $song['art_url']
             ];
     ***REMOVED***
 
