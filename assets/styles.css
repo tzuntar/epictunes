@@ -21,97 +21,7 @@ h1 {
     font-weight: 500;
 }
 
-/* Sidebar Styles */
-
-.sidebar {
-    background-color: white;
-    width: 250px;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
-.sidebar nav ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.sidebar nav ul li {
-    padding: 10px 0;
-    color: var(--sidebar-label-color);
-    cursor: pointer;
-    line-height: 24px;
-    font-weight: 300;
-}
-
-.sidebar nav ul li img {
-    vertical-align: middle;
-}
-
-.sidebar nav ul li:hover {
-    background-color: var(--sidebar-sel-color);
-}
-
-.sidebar nav ul li.selected {
-    border-right: 6px solid var(--color-accent);
-    background-color: var(--sidebar-sel-color);
-    color: var(--color-accent);
-    font-weight: 500;
-}
-
-.sidebar .logo {
-    padding: 30px;
-    display: flex;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 20px;
-    color: var(--color-accent);
-    vertical-align: middle;
-}
-
-/* Main Content Area */
-.root-container {
-    position: relative;
-    left: 250px;
-}
-
-.root-container .top {
-
-}
-
-/* Logo */
-
-.logo p {
-    display: inline;
-    font-weight: 700;
-    font-size: 20px;
-    color: var(--color-accent);
-    vertical-align: middle;
-}
-
-.logo img {
-    padding-right: 8px;
-    vertical-align: middle;
-}
-
-.sidebar nav p {
-    text-transform: uppercase;
-    padding-top: 10px;
-    padding-left: 30px;
-}
-
-.sidebar nav p:first-child {
-    padding-top: 0;
-}
-
-.sidebar nav ul img {
-    padding-right: 25px;
-    padding-left: 30px;
-}
-
 /* Links */
-
 a,
 a:hover,
 a:active,
@@ -189,7 +99,6 @@ input[type='submit'] {
 }
 
 /* Misc Utilities */
-
 .header-center {
     text-align: center;
 }
@@ -210,6 +119,121 @@ input[type='submit'] {
     margin-top: 20px;
 }
 
+
+/* Sidebar Styles */
+.sidebar {
+    background-color: white;
+    width: 250px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.sidebar nav ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.sidebar nav ul li {
+    padding: 10px 0;
+    color: var(--sidebar-label-color);
+    cursor: pointer;
+    line-height: 24px;
+    font-weight: 300;
+}
+
+.sidebar nav ul li img {
+    vertical-align: middle;
+}
+
+.sidebar nav ul li:hover {
+    background-color: var(--sidebar-sel-color);
+}
+
+.sidebar nav ul li.selected {
+    border-right: 6px solid var(--color-accent);
+    background-color: var(--sidebar-sel-color);
+    color: var(--color-accent);
+    font-weight: 500;
+}
+
+.sidebar .logo {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--color-accent);
+    vertical-align: middle;
+}
+
+/* Main Content Area */
+.root-container {
+    position: relative;
+    left: 250px;
+    width: calc(100% - 250px);
+}
+
+/* Main Navbar */
+.root-container nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.root-container .search-box {
+    justify-content: center;
+    margin: auto;
+}
+
+.root-container .search-box input {
+      width: 350px;
+}
+
+.root-container nav .profile-photo {
+    justify-content: flex-end;
+    display: inline;
+    vertical-align: middle;
+    height: 40px;
+}
+
+.root-container nav .profile-photo p {
+    vertical-align: middle;
+    display: inline;
+    margin-left: 10px;
+}
+
+/* Logo */
+
+.logo p {
+    display: inline;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--color-accent);
+    vertical-align: middle;
+}
+
+.logo img {
+    padding-right: 8px;
+    vertical-align: middle;
+}
+
+.sidebar nav p {
+    text-transform: uppercase;
+    padding-top: 10px;
+    padding-left: 30px;
+}
+
+.sidebar nav p:first-child {
+    padding-top: 0;
+}
+
+.sidebar nav ul img {
+    padding-right: 25px;
+    padding-left: 30px;
+}
+
 /* Responsive Login */
 @media screen and (max-width: 768px) {
     .flex-container {
@@ -227,5 +251,6 @@ input[type='submit'] {
 
     .root-container {
         left: 0;
+        width: 100%;
 ***REMOVED***
 }
