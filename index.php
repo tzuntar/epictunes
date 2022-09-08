@@ -1,7 +1,7 @@
 ***REMOVED***
 ***REMOVED***
-//if (!isset($_SESSION['username']))
-//    header('Location: login.php');
+if (!isset($_SESSION['identifier']))
+    header('Location: login.php');
 require_once 'include/database.php';
 ?>
 <!DOCTYPE html>
@@ -22,13 +22,12 @@ require_once 'include/database.php';
     <nav>
         <p>Menu</p>
         <ul>
-            <li><img src="./assets/img/icons/home.svg" alt=""/>Discover</li>
-            <li><img src="./assets/img/icons/explore.svg" alt=""/>Explore</li>
+            <li><a href="index.php"><img src="./assets/img/icons/home.svg" alt=""/>My Music</a></li>
+            <li><img src="./assets/img/icons/explore.svg" alt=""/>Discover</li>
             <li><img src="./assets/img/icons/search.svg" alt=""/>Search</li>
         </ul>
         <p>Library</p>
         <ul>
-            <li class="selected"><img src="./assets/img/icons/music.svg" alt=""/>My Music</li>
             <li><img src="./assets/img/icons/album.svg" alt=""/>Albums</li>
             <li><img src="./assets/img/icons/artist.svg" alt=""/>Artists</li>
         </ul>
@@ -39,7 +38,7 @@ require_once 'include/database.php';
         </ul>
     </nav>
 </div>
-<div class="container">
+<div class="root-container">
     <div class="top">
         <label>
             <input type="text" placeholder="Search..." name="search-box"/>
