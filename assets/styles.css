@@ -240,10 +240,21 @@ input[type='submit'] {
 
 .song-list-card p:first-child {
     font-weight: 600;
+    font-size: 20px;
 }
 
 .song-list-card .sub-label {
     color: var(--sub-label-color);
+}
+
+/* Song Page */
+.song-player-division {
+    color: white;
+}
+
+.album-art-big {
+    width: 200px;
+    padding: 20px 0;
 }
 
 /* Logo */

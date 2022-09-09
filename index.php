@@ -5,7 +5,7 @@ if (!isset($_SESSION['identifier']))
     header('Location: login.php');
 require_once 'utils/queries.php';
 require_once 'utils/mp3.php';
-$userSongs = db_get_saved_songs_user($_SESSION['id']);
+$userSongs = db_get_saved_songs_summary_user($_SESSION['id']);
 
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
@@ -24,11 +24,12 @@ include_once 'include/sidebar.php' ?>
                                 <img class="album-art-list" src="<?= $albumArt ?>" alt="Album Art"/>
                             </div>
                             <div>
-                                <p><?= $song['name'] ?></p>
+                                <p><a href="song.php?id=<?= $song['id_song'] ?>"><?= $song['name'] ?></a></p>
                                 <p class="sub-label">
-                                    <?php foreach ($song['artists'] as $artist) { ?>
-                                        <?= $artist['artist'] ?> /
-                                    <?php } ?></p>
+                                    <?php $artists = '';
+                                    foreach ($song['artists'] as $artist)
+                                        $artists .= $artist['artist'] . ' / ';
+                                    echo rtrim($artists, ' /') ?></p>
                             </div>
                         </div>
                     </div>

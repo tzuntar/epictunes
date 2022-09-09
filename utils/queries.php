@@ -40,7 +40,7 @@ function db_create_user(string $name, string $username, string $email,
  * @param string $userId the user's ID
  * @return array|false the data or false if the query fails
  */
-function db_get_saved_songs_user(string $userId) {
+function db_get_saved_songs_summary_user(string $userId) {
     global $DB;
     $stmt = $DB->prepare('SELECT s.id_song,
                s.name AS song_name,
@@ -85,4 +85,54 @@ function db_get_saved_songs_user(string $userId) {
         ];
     }
     return $songs;
+}
+
+/**
+ * Retrieves detailed data for this song
+ * @param int $songId database ID of the song
+ * @return false|mixed resulting data or false if the query fails
+ */
+function db_get_song_data(int $songId) {
+    global $DB;
+    $stmt = $DB->prepare('SELECT s.id_song,
+               s.name AS song_name,
+               s.song_url,
+               g.id_genre AS id_genre,
+               g.name AS genre_name,
+               a.id_album AS id_album,
+               a.name AS album_name,
+               a.art_url,
+               a2.id_artist AS id_artist,
+               a2.name AS artist_name
+        FROM songs s
+        INNER JOIN albums a ON s.id_album = a.id_album
+        INNER JOIN genres g ON s.id_genre = g.id_genre
+        INNER JOIN songs_artists sa ON s.id_song = sa.id_song
+        INNER JOIN artists a2 ON sa.id_artist = a2.id_artist
+        WHERE s.id_song = ?');
+    $success = $stmt->execute([$songId]);
+    if (!$success)
+        return false;
+
+    $songs = [];
+    while ($song = $stmt->fetch()) {    // ToDo: code deduplication
+        if (!isset($songs[$songId])) {
+            $songs[$songId] = [
+                'id_song' => $songId,
+                'mp3_url' => $song['song_url'],
+                'name' => $song['song_name'],
+                'id_genre' => $song['id_genre'],
+                'genre' => $song['genre_name'],
+                'id_album' => $song['id_album'],
+                'album' => $song['album_name'],
+                'album_art' => $song['art_url']
+            ];
+        }
+
+        $songs[$songId]['artists'][] = [
+            'id_artist' => $song['id_artist'],
+            'artist' => $song['artist_name']
+        ];
+    }
+    return $songs[$songId];
 }

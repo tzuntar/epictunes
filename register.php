@@ -38,7 +38,6 @@ if (isset($_POST['username'])) {
     }
 }
 
-
 include_once './include/header.php' ?>
     <div class="header-center top-padding">
         <a href="index.php" class="logo">
