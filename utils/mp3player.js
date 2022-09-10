@@ -1,5 +1,4 @@
 const audio = new Audio();
-audio.src = 'userdata/music/i_like_that.mp3';
 audio.loop = false;
 audio.autoplay = false;
 
@@ -31,8 +30,10 @@ function frameLooper() {
 ***REMOVED***
 }
 
-function initAudioPlayer() {
-    let playButton, muteButton, seekSlider, volumeSlider, seeking = false, current_time, duration_time;
+function initAudioPlayer(mp3path) {
+    let playButton, muteButton, seekSlider, volumeSlider,
+        seeking = false, current_time, duration_time;
+    audio.src = mp3path;
     playButton = document.getElementById("playButton");
     muteButton = document.getElementById("mute-button");
     seekSlider = document.getElementById("seek-slider");
@@ -64,11 +65,10 @@ function initAudioPlayer() {
 ***REMOVED***
 
     function mute() {
+        audio.muted = !audio.muted;
         if (audio.muted) {
-            audio.muted = false;
             //muteButton.style.background = "url(images/speaker1.jpg) no-repeat";
     ***REMOVED*** else {
-            audio.muted = true;
             //muteButton.style.background = "url(images/mute1.jpg) no-repeat";
     ***REMOVED***
 ***REMOVED***
@@ -97,5 +97,3 @@ function initAudioPlayer() {
         duration_time.innerHTML = durationMin + ':' + durationSec;
 ***REMOVED***
 }
-
-window.addEventListener('load', initAudioPlayer);
