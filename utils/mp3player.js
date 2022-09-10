@@ -4,7 +4,7 @@ audio.autoplay = false;
 
 let canvas, ctx, source, context, analyser, fbc_array, bars, bar_x, bar_width, bar_height;
 
-function initMp3Player() {
+function initMp3Player(rgbBarColor) {
     context = new AudioContext();
     analyser = context.createAnalyser();
     canvas = document.getElementById('analyzer-render');
@@ -12,15 +12,15 @@ function initMp3Player() {
     source = context.createMediaElementSource(audio);
     source.connect(analyser);
     analyser.connect(context.destination);
-    frameLooper();
+    frameLooper(rgbBarColor);
 }
 
-function frameLooper() {
+function frameLooper(rgbBarColor) {
     window.requestAnimationFrame(frameLooper);
     fbc_array = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(fbc_array);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#FFF';
+    ctx.fillStyle = rgbBarColor;
     bars = 100;
     for (let i = 0; i < bars; i++) {
         bar_x = i * 3;
@@ -30,19 +30,17 @@ function frameLooper() {
     }
 }
 
-function initAudioPlayer(mp3path) {
-    let playButton, muteButton, seekSlider, volumeSlider,
+function initAudioPlayer(mp3path, rgbBarColor) {
+    let playButton, seekSlider, volumeSlider,
         seeking = false, current_time, duration_time;
     audio.src = mp3path;
     playButton = document.getElementById("playButton");
-    muteButton = document.getElementById("mute-button");
     seekSlider = document.getElementById("seek-slider");
     volumeSlider = document.getElementById("volume-slider");
     current_time = document.getElementById("current-time");
     duration_time = document.getElementById("duration");
 
     playButton.addEventListener('click', playPause);
-    muteButton.addEventListener('click', mute);
     seekSlider.addEventListener('mousedown', (event) => {
         seeking = true;
         seek(event);
@@ -54,22 +52,13 @@ function initAudioPlayer(mp3path) {
 
     function playPause() {
         if (context == null)
-            initMp3Player();
+            initMp3Player(rgbBarColor);
         if (audio.paused) {
             audio.play();
-            //playButton.style.background = "url(images/pause.jpg) no-repeat";
+            playButton.children[0].src = './assets/img/icons/pause.svg';
         } else {
             audio.pause();
-            //playButton.style.background = "url(images/play.jpg) no-repeat";
-        }
-    }
-
-    function mute() {
-        audio.muted = !audio.muted;
-        if (audio.muted) {
-            //muteButton.style.background = "url(images/speaker1.jpg) no-repeat";
-        } else {
-            //muteButton.style.background = "url(images/mute1.jpg) no-repeat";
+            playButton.children[0].src = './assets/img/icons/play.svg';
         }
     }
 

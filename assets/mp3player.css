@@ -1,91 +1,56 @@
-.mp3player-container {
-    width: 730px;
-    margin: 50px auto;
+#mp3player-container {
     padding: 5px;
-    background: #000;
+    background: white;
+    border-radius: 12px;
 }
 
-.mp3player-container #mute-button {
-    background: url(../images/speaker1.jpg) no-repeat;
-    border: none;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    outline: none;
+#mp3player-container #analyzer-render {
+    width: 100%;
+    height: 120px;
 }
 
-.mp3player-container #time-box {
+#mp3player-container #time-box {
     display: inline-block;
-    width: 80px;
-    background: #000;
-    border-bottom: 1px solid #333;
     text-align: center;
-    color: #090;
+    color: var(--color-accent);
     font-family: Verdana, Geneva, sans-serif;
     font-size: 11px;
 }
 
-.mp3player-container input {
-    outline: none;
+#mp3player-container input#seek-slider {
+    width: 70%;
 }
 
-.mp3player-container input#seek-slider {
-    width: 500px;
+#mp3player-container input#volume-slider {
+    width: 10%;
 }
 
-.mp3player-container input#volume-slider {
-    width: 70px;
-}
-
-.mp3player-container input[type='range'] {
+#mp3player-container input[type='range'] {
     -webkit-appearance: none !important;
-    margin: 0px;
-    padding: 0px;
-    background: #000;
+    margin: 0;
+    padding: 0;
     height: 13px;
-    border-bottom: 1px solid #333;
+    border-bottom: 2px solid var(--color-accent);
 }
 
-.mp3player-container input[type='range']::-moz-range-track {
-    border: none;
-    background: #000;
-}
-
-.mp3player-container input[type='range']::-webkit-slider-thumb {
+#mp3player-container input[type='range']::-webkit-slider-thumb {
     -webkit-appearance: none !important;
-    background: radial-gradient(#FFF, #333);
+    background: radial-gradient(var(--color-accent), var(--color-accent));
     height: 11px;
     width: 11px;
     border-radius: 100%;
     cursor: pointer;
 }
 
-.mp3player-container input[type='range']::-moz-range-thumb {
-    background: radial-gradient(#FFF, #333);
+#mp3player-container input[type='range']::-moz-range-thumb {
+    background: radial-gradient(var(--color-accent), var(--color-accent));
     height: 11px;
     width: 11px;
     border-radius: 100%;
     cursor: pointer;
 }
 
-.mp3player-container h1 {
-    font-family: Verdana, Geneva, sans-serif;
-    font-size: 12px;
-    color: #FFF;
-    padding: 5px;
-}
-
-.mp3player-container #mp3_player {
-    width: 700px;
-    height: 110px;
-    background: #000;
+#mp3player-container #mp3_player {
     padding: 5px;
     margin: 10px auto;
-}
-
-.mp3player-container #mp3_player > canvas {
-    width: 700px;
-    height: 100px;
-    background: #000;
-    float: left;
 }

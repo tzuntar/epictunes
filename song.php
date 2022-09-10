@@ -31,20 +31,21 @@ include_once 'include/sidebar.php' ?>
                     </div>
                     <div class="grid-col">
                         <h1 class="song-name"><?= $songData['name'] ?></h1>
-                        <div id="mp3player-container">
-                            <div id="mp3player">
-                                <canvas id="analyzer-render"></canvas>
+                        <div class="grid-row">
+                            <div id="mp3player-container">
+                                <div id="mp3player">
+                                    <canvas id="analyzer-render"></canvas>
+                                </div>
+                                <label>
+                                    <input id="seek-slider" type="range" min="0" max="500" value="0" step="1">
+                                </label>
+                                <div id="time-box">
+                                    <span id="current-time">00:00</span> • <span id="duration">00:00</span>
+                                </div>
+                                <label>
+                                    <input id="volume-slider" type="range" min="0" max="100" value="100" step="1">
+                                </label>
                             </div>
-                            <label>
-                                <input id="seek-slider" type="range" min="0" max="500" value="0" step="1">
-                            </label>
-                            <div id="time-box">
-                                <span id="current-time">00:00</span>| <span id="duration">00:00</span>
-                            </div>
-                            <button id="mute-button"></button>
-                            <label>
-                                <input id="volume-slider" type="range" min="0" max="100" value="100" step="1">
-                            </label>
                         </div>
                     </div>
                     <div class="grid-col">
@@ -70,10 +71,9 @@ include_once 'include/sidebar.php' ?>
     <script src="./utils/mp3player.js"></script>
     <script>
         $(document).ready(() => {
-            // applyBgColorCss($('.song-player-division')[0],
-            // getImgMutedColorRgb('albumArtBox'));
-            $('.song-name')[0].style.color = getImgVibrantColorRgb('albumArtBox');
-            initAudioPlayer('<?= $mp3path ?>');
+            const vibrantColor = getImgVibrantColorRgb('albumArtBox');
+            $('.song-name')[0].style.color = vibrantColor;
+            initAudioPlayer('<?= $mp3path ?>', vibrantColor);
         });
     </script>
 <?php include_once 'include/footer.php' ?>
