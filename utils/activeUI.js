@@ -8,12 +8,14 @@ const autoFillUsername = function (sourceFieldId, targetFieldId) {
         + Math.floor(1 + Math.random() * 50);
 };
 
-const getImgSignificantColorRgb = function (sourceTagId) {
+const getImgMutedColorRgb = function (sourceTagId) {
     const colors = new Vibrant(document.getElementById(sourceTagId));
     const rgb = colors.swatches().DarkMuted.rgb;
     return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 }
 
-const applyBgColorCss = function (element, rgbClause) {
-    element.style.backgroundColor = rgbClause;
+const getImgVibrantColorRgb = function (sourceTagId) {
+    const colors = new Vibrant(document.getElementById(sourceTagId));
+    const rgb = colors.swatches().DarkVibrant.rgb;
+    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 }

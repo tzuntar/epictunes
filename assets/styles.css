@@ -104,6 +104,10 @@ input[type='submit'] {
     text-align: center;
 }
 
+.grid-container {
+    display: grid;
+}
+
 /* Misc Utilities */
 .header-center {
     text-align: center;
@@ -249,12 +253,42 @@ input[type='submit'] {
 
 /* Song Page */
 .song-player-division {
-    color: white;
+    background-color: var(--sidebar-sel-color);
+    grid-template-columns: 0.25fr 10fr 4fr;
+}
+
+.song-name {
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 70px;
+    vertical-align: middle;
 }
 
 .album-art-big {
     width: 200px;
     padding: 20px 0;
+}
+
+.song-player-division .album-art-big {
+    margin-right: 20px;
+}
+
+.play-button {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    margin: 20px;
+}
+
+.play-button img {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    left: 4px;
 }
 
 /* Logo */
