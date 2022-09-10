@@ -2,11 +2,8 @@ const audio = new Audio();
 audio.src = 'userdata/music/i_like_that.mp3';
 audio.loop = false;
 audio.autoplay = false;
-//audio.play();
 
 let canvas, ctx, source, context, analyser, fbc_array, bars, bar_x, bar_width, bar_height;
-
-window.addEventListener('load', initMp3Player, false);
 
 function initMp3Player() {
     context = new AudioContext();
@@ -55,6 +52,8 @@ function initAudioPlayer() {
     audio.addEventListener('timeupdate', () => seekTimeUpdate());
 
     function playPause() {
+        if (context == null)
+            initMp3Player();
         if (audio.paused) {
             audio.play();
             //playButton.style.background = "url(images/pause.jpg) no-repeat";
