@@ -69,10 +69,11 @@ include_once 'include/sidebar.php' ?>
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="./utils/mp3player.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(() => {
             // applyBgColorCss($('.song-player-division')[0],
             // getImgMutedColorRgb('albumArtBox'));
             $('.song-name')[0].style.color = getImgVibrantColorRgb('albumArtBox');
+            initAudioPlayer('<?= $mp3path ?>');
         });
     </script>
 <?php include_once 'include/footer.php' ?>
