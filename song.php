@@ -11,6 +11,7 @@ if (!$songData)
     header('Location: index.php');
 
 $mainArtist = $songData['artists'][0]['artist'];
+$mainArtistId = $songData['artists'][0]['id_artist'];
 $document_title = $songData['name'] . ' by ' . $mainArtist;
 $mp3path = 'userdata/music/' . $songData['mp3_url'];
 $albumArt = mp3_get_album_art($mp3path);
@@ -53,12 +54,25 @@ include_once 'include/sidebar.php' ?>
                              id="albumArtBox" alt="Album Art"/>
                     </div>
                 </section>
-                <section class="artist-division">
-                    <!-- artist image -->
-                    <h2 class="accent"><?= $mainArtist ?></h2>
+                <section class="artist-division grid-container">
+                    <div class="grid-col">
+                        <img class="artist-photo" src="./assets/img/icons/avatar.svg" alt="Artist's Photo"/>
+                    </div>
+                    <div class="grid-col">
+                        <h2><a class="accent" href="user.php?id=<?= $mainArtistId ?>"><?= $mainArtist ?></a></h2>
+                        <a class="action-link fine-print" href="user.php?id=<?= $mainArtistId ?>">View profile →</a>
+                    </div>
                 </section>
                 <section class="comment-division">
-
+                    <form method="post" enctype="multipart/form-data"
+                          action="post_comment.php?songId=<?= $songData['id_song'] ?>">
+                        <label>
+                            <input name="new-comment" class="comment-entry" placeholder="Write a comment..."
+                                   type="text" required/>
+                        </label>
+                        <input class="neutral-button" type="submit" value="Post"/>
+                    </form>
+                    <p class="fine-print">No comments yet</p>
                 </section>
             </div>
         </main>

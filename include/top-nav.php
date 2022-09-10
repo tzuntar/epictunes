@@ -1,13 +1,15 @@
 <nav>
     <div class="search-box">
-        <label>
-            <input type="text" placeholder="Search..." name="search-box"/>
-        </label>
+        <form action="search.php">
+            <label>
+                <input type="text" placeholder="Search..." class="search-box" name="query"/>
+            </label>
+        </form>
     </div>
     <div class="profile-photo">
         <div class="flex-container">
             <img src="./assets/img/icons/avatar.svg" alt=""/>
-            <p><?= $_SESSION['name'] ?? 'Unknown' ?></p>
+            <p><a href="user.php?id=<?= $_SESSION['id'] ?? 'Unknown' ?>"><?= $_SESSION['name'] ?? 'Unknown' ?></a></p>
         </div>
     </div>
 </nav>
