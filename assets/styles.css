@@ -255,6 +255,7 @@ input[type='submit'] {
 .song-player-division {
     background-color: var(--sidebar-sel-color);
     grid-template-columns: 0.25fr 10fr 4fr;
+    grid-template-rows: 120px 180px;
 }
 
 .song-name {
@@ -285,14 +286,19 @@ input[type='submit'] {
 }
 
 .play-button img {
-    width: 30px;
-    height: 30px;
-    position: relative;
-    left: 4px;
+    width: 50px;
+    height: 50px;
+}
+
+#albumArtBox {
+    grid-row: 2;
+}
+
+#mp3player-container {
+    margin-right: 20px;
 }
 
 /* Logo */
-
 .logo p {
     display: inline;
     font-weight: 700;
