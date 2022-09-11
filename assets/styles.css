@@ -333,6 +333,17 @@ input[type='submit'] {
     margin-left: 10px;
 }
 
+/* Upload Pages */
+.step-number,
+.step-heading {
+    display: inline;
+}
+
+.step-number {
+    font-weight: 800;
+    margin-right: 10px;
+}
+
 /* Logo */
 .logo p {
     display: inline;
