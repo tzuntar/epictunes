@@ -188,3 +188,17 @@ function db_get_song_data(int $songId) {
 ***REMOVED***
     return $songs[$songId];
 }
+
+/**
+ * Store this song comment into the database
+ * @param string $comment the comment's content
+ * @param int $userId the user posting the comment
+ * @param int $songId the song on which the comment was posted
+ * @return bool whether the action succeeded
+ */
+function db_store_comment_for_song(string $comment, int $userId, int $songId): bool {
+    global $DB;
+    $stmt = $DB->prepare('INSERT INTO comments_songs (id_song, id_user, content)
+        VALUES (?, ?, ?)');
+    return $stmt->execute([$songId, $userId, $comment]);
+}
