@@ -344,6 +344,21 @@ input[type='submit'] {
     margin-right: 10px;
 }
 
+.meta-edit-grid {
+    grid-template-columns: 120px 1fr 200px;
+    grid-template-rows: repeat(6, auto);
+}
+
+.meta-edit-grid input[type='text'] {
+    margin-bottom: 10px;
+}
+
+.meta-edit-grid p {
+    line-height: 2rem;
+    text-align: right;
+    margin-right: 20px;
+}
+
 /* Logo */
 .logo p {
     display: inline;
