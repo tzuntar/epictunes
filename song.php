@@ -65,9 +65,9 @@ include_once 'include/sidebar.php' ?>
                 </section>
                 <section class="comment-division">
                     <form method="post" enctype="multipart/form-data"
-                          action="post_comment.php?songId=<?= $songData['id_song'] ?>">
+                          action="post_comment.php?song=<?= $songData['id_song'] ?>">
                         <label>
-                            <input name="new-comment" class="comment-entry" placeholder="Write a comment..."
+                            <input name="comment" class="comment-entry" placeholder="Write a comment..."
                                    type="text" required/>
                         </label>
                         <input class="neutral-button" type="submit" value="Post"/>
