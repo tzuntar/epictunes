@@ -202,3 +202,21 @@ function db_store_comment_for_song(string $comment, int $userId, int $songId): b
         VALUES (?, ?, ?)');
     return $stmt->execute([$songId, $userId, $comment]);
 }
+
+/**
+ * Retrieve all comments on this song
+ * @param int $songId the song's database ID
+ * @return array|false the resulting data or false if the query fails
+ */
+function db_get_comments_for_song(int $songId) {
+    global $DB;
+    $stmt = $DB->prepare('SELECT c.*, u.name AS user_name
+        FROM comments_songs c
+        INNER JOIN users u ON c.id_user = u.id_user
+        WHERE c.id_song = ?
+        ORDER BY c.date_time DESC');
+    $success = $stmt->execute([$songId]);
+    if (!$success)
+        return false;
+    return $stmt->fetchAll();
+}

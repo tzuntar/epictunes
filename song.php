@@ -15,6 +15,7 @@ $mainArtistId = $songData['artists'][0]['id_artist'];
 $document_title = $songData['name'] . ' by ' . $mainArtist;
 $mp3path = 'userdata/music/' . $songData['mp3_url'];
 $albumArt = mp3_get_album_art($mp3path);
+$comments = db_get_comments_for_song($_GET['id']);
 
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
@@ -72,7 +73,22 @@ include_once 'include/sidebar.php' ?>
                         </label>
                         <input class="neutral-button" type="submit" value="Post"/>
                     </form>
-                    <p class="fine-print">No comments yet</p>
+                    <?php if (!$comments || sizeof($comments) < 1) { ?>
+                        <p class="fine-print">No comments yet</p>
+                    <?php } else {
+                        foreach ($comments as $comment) { ?>
+                            <div class="grid-container comment-grid">
+                                <div class="grid-col">
+                                    <img src="./assets/img/icons/avatar.svg" alt=""/>
+                                </div>
+                                <div class="grid-col">
+                                    <p><strong><?= $comment['user_name'] ?></strong> at
+                                        <strong><?= $comment['date_time'] ?></strong></p>
+                                    <p><?= $comment['content'] ?></p>
+                                </div>
+                            </div>
+                        <?php }
+                    } ?>
                 </section>
             </div>
         </main>
