@@ -2,11 +2,11 @@
 ***REMOVED***
 if (!isset($_SESSION['identifier']))
     header('Location: login.php');
-if ($_FILES['mp3file']['name'] == 0)
+/*if ($_FILES['mp3file']['name'] == 0)
     header('Location: upload_song.php');
 
 $mp3file = 'userdata/music/' . $_FILES['mp3file']['name'];
-move_uploaded_file($_FILES['mp3file']['tmp_name'], $mp3file);
+move_uploaded_file($_FILES['mp3file']['tmp_name'], $mp3file);*/
 
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
