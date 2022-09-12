@@ -88,6 +88,58 @@ function db_get_saved_songs_summary_user(string $userId) {
 }
 
 /**
+ * Search the database for the songs that match this query
+ * @param string $query the query to look for
+ * @return array|false the resulting songs or false if the query fails
+ */
+function db_get_songs_search_title(string $query) {
+    global $DB;
+    $stmt = $DB->prepare('SELECT s.id_song,
+               s.name AS song_name,
+               s.song_url,
+               g.id_genre AS id_genre,
+               g.name AS genre_name,
+               a.id_album AS id_album,
+               a.name AS album_name,
+               a.art_url,
+               a2.id_artist AS id_artist,
+               a2.name AS artist_name
+        FROM songs s
+        INNER JOIN albums a ON s.id_album = a.id_album
+        INNER JOIN genres g ON s.id_genre = g.id_genre
+        INNER JOIN songs_artists sa ON s.id_song = sa.id_song
+        INNER JOIN artists a2 ON sa.id_artist = a2.id_artist
+        INNER JOIN songs_saves ss on s.id_song = ss.id_song
+        WHERE UPPER(s.name) LIKE ?');
+    $success = $stmt->execute(['%' . strtoupper(trim($query)) . '%']);
+    if (!$success)
+        return false;
+
+    $songs = [];
+    while ($song = $stmt->fetch()) {    // ToDo: code deduplication
+        $songId = $song['id_song'];
+        if (!isset($songs[$songId])) {
+            $songs[$songId] = [
+                'id_song' => $songId,
+                'mp3_url' => $song['song_url'],
+                'name' => $song['song_name'],
+                'id_genre' => $song['id_genre'],
+                'genre' => $song['genre_name'],
+                'id_album' => $song['id_album'],
+                'album' => $song['album_name'],
+                'album_art' => $song['art_url']
+            ];
+        }
+
+        $songs[$songId]['artists'][] = [
+            'id_artist' => $song['id_artist'],
+            'artist' => $song['artist_name']
+        ];
+    }
+    return $songs;
+}
+
+/**
  * Retrieves detailed data for this song
  * @param int $songId database ID of the song
  * @return false|mixed resulting data or false if the query fails
