@@ -79,11 +79,14 @@ include_once 'include/sidebar.php' ?>
                         foreach ($comments as $comment) { ?>
                             <div class="grid-container comment-grid">
                                 <div class="grid-col">
-                                    <img src="./assets/img/icons/avatar.svg" alt=""/>
+                                    <a href="user.php?id=<?= $comment['id_user'] ?>"><img
+                                                src="./assets/img/icons/avatar.svg" alt=""/></a>
                                 </div>
                                 <div class="grid-col">
-                                    <p><strong><?= $comment['user_name'] ?></strong> at
-                                        <strong><?= $comment['date_time'] ?></strong></p>
+                                    <p>
+                                        <a href="user.php?id=<?= $comment['id_user'] ?>">
+                                            <strong><?= $comment['user_name'] ?></strong></a>
+                                        at <strong><?= $comment['date_time'] ?></strong></p>
                                     <p><?= $comment['content'] ?></p>
                                 </div>
                             </div>

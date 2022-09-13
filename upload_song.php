@@ -22,7 +22,7 @@ include_once 'include/sidebar.php' ?>
                 <p class="fine-print">Only upload files you have the rights to.
                     Unauthorized uploading of copyrighted content is illegal and will
                     result in an immediate account termination.</p>
-                <p>
+                <p class="header-center">
                     <input type="submit" value="Continue" class="margin-top-20"/>
                 </p>
             </form>
