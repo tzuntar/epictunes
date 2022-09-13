@@ -2,11 +2,13 @@
 ***REMOVED***
 if (!isset($_SESSION['identifier']))
     header('Location: login.php');
-/*if ($_FILES['mp3file']['name'] == 0)
+if ($_FILES['mp3file']['name'] == 0)
     header('Location: upload_song.php');
+require_once 'utils/mp3.php';
 
-$mp3file = 'userdata/music/' . $_FILES['mp3file']['name'];
-move_uploaded_file($_FILES['mp3file']['tmp_name'], $mp3file);*/
+$mp3file = 'userdata/music/' . $_FILES['mp3file']['name'] . '-' . uniqid();
+move_uploaded_file($_FILES['mp3file']['tmp_name'], $mp3file);
+$mp3tags = mp3_get_song_data($mp3file);
 
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
@@ -16,10 +18,9 @@ include_once 'include/sidebar.php' ?>
     <main class="padding-20">
         <h1 class="step-number">2</h1>
         <h2 class="step-heading accent">Edit Data</h2>
-        <form class="margin-top-20" action="upload_song_confirm.php" method="post"
+        <form class="margin-top-20" action="upload_song_complete.php" method="post"
               enctype="multipart/form-data">
             <div class="grid-container meta-edit-grid">
-                <!-- ToDo: find out why the grid placement doesn't work correctly here -->
                 <div class="grid-col">
                     <div class="grid-row">
                         <p>Title:</p>
@@ -41,18 +42,48 @@ include_once 'include/sidebar.php' ?>
                     </div>
                 </div>
                 <div class="grid-col">
-                    <input type="text" name="title" required placeholder="Song title"/>
-                    <input type="text" name="artist" required placeholder="Artist names (separated by commas)"/>
-                    <input type="text" name="album" required placeholder="Album name"/>
-                    <input type="text" name="album_artist" required
-                           placeholder="Album artist names (separated by commas)"/>
-                    <input type="text" name="genre" required placeholder="Song genre"/>
-                    <input type="text" name="tags" placeholder="Song tags (separated by commas)"/>
+                    <label>
+                        <input type="text" name="title" required placeholder="Song title"
+                               value="<?= $mp3tags['title'] ?>"/>
+                    </label>
+                    <label>
+                        <input type="text" name="artist" required placeholder="Artist names (separated by commas)"
+                               value="<?= $mp3tags['artist'] ?>"/>
+                    </label>
+                    <label>
+                        <input type="text" name="album" required placeholder="Album name"
+                               value="<?= $mp3tags['album'] ?>"/>
+                    </label>
+                    <label>
+                        <input type="text" name="album_artist" required
+                               placeholder="Album artist names (separated by commas)"
+                               value="<?= $mp3tags['album_artist'] ?>"/>
+                    </label>
+                    <label>
+                        <input type="text" name="genre" required placeholder="Song genre"
+                               value="<?= $mp3tags['genre'] ?>"/>
+                    </label>
+                    <label>
+                        <input type="text" name="tags" placeholder="Song tags (separated by commas)"/>
+                    </label>
                 </div>
                 <div class="grid-col">
-                    <img src="" alt="Album Art" class="album-art-big"/>
+                    <img src="<?= $mp3tags['album_art'] ?>" alt="Album Art" class="album-art-big"/>
                 </div>
             </div>
+            <p>
+                <label>
+                    <input type="checkbox" name="confirmation" required/>
+                    I have the rights to upload this audio file. I agree to bear any
+                    responsibility for the content I publish on this website.
+                </label>
+            </p>
+            <p>
+                <input type="hidden" name="filename" value="<?= $mp3file ?>" readonly/>
+            </p>
+            <p class="header-center">
+                <input type="submit" value="Publish" class="margin-top-20"/>
+            </p>
         </form>
     </main>
 </div>
