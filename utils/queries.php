@@ -36,13 +36,246 @@ function db_create_user(string $name, string $username, string $email,
 }
 
 /**
- * Retrieve the card summary data of songs saved by this user
- * @param string $userId the user's ID
- * @return array|false the data or false if the query fails
+ * Returns ID of the last inserted object in the database,
+ * regardless of the table
+ * @return int the ID
  */
-function db_get_saved_songs_summary_user(string $userId) {
+function db_last_insert_id(): int {
     global $DB;
-    $stmt = $DB->prepare('SELECT s.id_song,
+    $id = $DB->query('SELECT LAST_INSERT_ID()');
+    return $id->fetch()[0];
+}
+
+/**
+ * An awful object-oriented data container
+ */
+class Album {
+    public int $id;
+    public string $name;
+    public array $artists;
+
+    public static function get_by_name(string $name) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT a.name AS album_name,
+            aa.id_artist AS id_artist
+            FROM albums a
+            INNER JOIN albums_artists aa on a.id_album = aa.id_album
+            WHERE a.name = ?');
+        if (!$stmt->execute([$name]))
+            return false;
+
+        $album = new Album();
+        while ($a = $stmt->fetch()) {
+            $album->name = $a['album_name'];
+            $album->artists[] = Artist::get($a['id_artist']);
+    ***REMOVED***
+        return $album;
+***REMOVED***
+
+    public static function get(int $id) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT a.name AS album_name,
+            aa.id_artist AS id_artist
+            FROM albums a
+            INNER JOIN albums_artists aa on a.id_album = aa.id_album
+            WHERE a.id_album = ?');
+        if (!$stmt->execute([$id]))
+            return false;
+
+        $album = new Album();
+        while ($a = $stmt->fetch()) {
+            $album->name = $a['album_name'];
+            $album->artists[] = Artist::get($a['id_artist']);
+    ***REMOVED***
+        return $album;
+***REMOVED***
+
+    public function insert() {
+        global $DB;
+        $stmt = $DB->prepare('INSERT INTO albums(name) VALUES (?)');
+        if (!$stmt->execute([$this->name]))
+            return false;
+        $sql = 'INSERT IGNORE INTO artists (name) VALUES '
+            . str_repeat(' (?), ', sizeof($this->artists));
+        $stmt = $DB->prepare(rtrim($sql, ', '));
+        foreach ($this->artists as $a)
+            $artistList[] = $a;
+        if (!isset($artistList))    // empty artist list safeguard
+            return false;
+        if (!$stmt->execute($artistList))
+            return false;
+        return Album::get(db_last_insert_id());
+***REMOVED***
+}
+
+class Genre extends stdClass {
+    public int $id;
+    public string $name;
+
+    public function get_or_create() {
+        global $DB;
+        $stmt = $DB->prepare('SELECT id_genre FROM genres WHERE name = ?');
+        if (!$stmt->execute([$this->name]))
+            return false;
+        if ($stmt->rowCount() < 1) {
+            $stmt = $DB->prepare('INSERT INTO genres (name) VALUES ?');
+            if (!$stmt->execute([$this->name]))
+                return false;
+            return $this->get_or_create();
+    ***REMOVED***
+        return Genre::get($stmt->fetch()['id_genre']);
+***REMOVED***
+
+    public static function get(int $id) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT * FROM genre WHERE id_genre = ?');
+        if (!$stmt->execute([$id]))
+            return false;
+        $result = $stmt->fetch();
+        $genre = new Genre();
+        $genre->id = $result['id_genre'];
+        $genre->name = $result['name'];
+        return $genre;
+***REMOVED***
+}
+
+// TempStopLatch: Everything below this line isn't finished yet
+
+class User extends stdClass {
+    public int $id;
+    public string $identifier;
+    public string $username;
+    public string $email;
+    public string $name;
+    public string $bio;
+    public string $date_registered;
+    public bool $isAdmin;
+    public string $profilePicUrl;
+    private string $passwordHash;
+
+    public static function get(int $id) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT * FROM users WHERE id_user = ?');
+        if (!$stmt->execute([$id]))
+            return false;
+        $data = $stmt->fetch();
+        $user = new User();
+        $user->id = $data['id_user'];
+        $user->identifier = $data['identifier'];
+        $user->username = $data['username'];
+        $user->name = $data['name'];
+        $user->bio = $data['bio'];
+        $user->date_registered = $data['date_registered'];
+        $user->isAdmin = $data['is_admin'];
+        $user->profilePicUrl = $data['profile_pic_url'];
+        $user->passwordHash = $data['password'];
+        return $user;
+***REMOVED***
+}
+
+class Artist extends stdClass {
+    public int $id;
+    public string $name;
+    public User $user;
+
+    public static function get(int $id) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT * FROM artists WHERE id_artist = ?');
+        if (!$stmt->execute([$id]))
+            return false;
+        $data = $stmt->fetch();
+        $artist = new Artist();
+        $artist->id = $data['id_artist'];
+        $artist->name = $data['name'];
+        if (isset($data['id_user']))
+            $artist->user = User::get($data['id_user']);
+        return $artist;
+***REMOVED***
+}
+
+/**
+ * Another awful object-oriented data container
+ */
+class Song extends stdClass {
+    public int $id;
+    public string $title;
+    public array $artists;
+    public Album $album;
+    public Genre $genre;
+    public array $tags;
+    public string $file_url;
+
+    public static function get(int $id) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT s.id_song,
+               s.name AS song_name,
+               s.song_url,
+               g.id_genre AS id_genre,
+               g.name AS genre_name,
+        FROM songs s
+        INNER JOIN genres g ON s.id_genre = g.id_genre
+        INNER JOIN songs_artists sa ON s.id_song = sa.id_song
+        WHERE s.id_song = ?');
+        if (!$stmt->execute([$id]))
+            return false;
+
+        $song = new Song();
+        while ($s = $stmt->fetch()) {
+            $song->id = $id;
+            $song->file_url = $s['song_url'];
+            $song->title = $s['song_name'];
+            $song->genre = Genre::get($s['id_genre']);
+            $song->album = Album::get($song['id_album']);
+            $song->artists[] = Artist::get($song['id_artist']);
+    ***REMOVED***
+        return $song;
+***REMOVED***
+
+    public static function get_by_title(string $title) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT s.id_song,
+               s.name AS song_name,
+               s.song_url,
+               g.id_genre AS id_genre,
+               g.name AS genre_name,
+               a.id_album AS id_album,
+               a.name AS album_name,
+               a.art_url,
+               a2.id_artist AS id_artist,
+               a2.name AS artist_name
+        FROM songs s
+        INNER JOIN albums a ON s.id_album = a.id_album
+        INNER JOIN genres g ON s.id_genre = g.id_genre
+        INNER JOIN songs_artists sa ON s.id_song = sa.id_song
+        INNER JOIN artists a2 ON sa.id_artist = a2.id_artist
+        WHERE s.name = ?');
+        $success = $stmt->execute([$title]);
+        if (!$success)
+            return false;
+
+        while ($song = $stmt->fetch()) {
+            $songData = [
+                'id_song' => $song['id_song'],
+                'mp3_url' => $song['song_url'],
+                'name' => $song['song_name'],
+                'id_genre' => $song['id_genre'],
+                'genre' => $song['genre_name'],
+                'id_album' => $song['id_album'],
+                'album' => $song['album_name'],
+                'album_art' => $song['art_url']
+            ];
+
+            $songData['artists'][] = [
+                'id_artist' => $song['id_artist'],
+                'artist' => $song['artist_name']
+            ];
+    ***REMOVED***
+        return $songData;
+***REMOVED***
+
+    public static function get_by_user_saves(string $userId) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT s.id_song,
                s.name AS song_name,
                s.song_url,
                g.id_genre AS id_genre,
@@ -59,42 +292,37 @@ function db_get_saved_songs_summary_user(string $userId) {
         INNER JOIN artists a2 ON sa.id_artist = a2.id_artist
         INNER JOIN songs_saves ss on s.id_song = ss.id_song
         WHERE ss.id_user = ?');
-    $success = $stmt->execute([$userId]);
-    if (!$success)
-        return false;
+        $success = $stmt->execute([$userId]);
+        if (!$success)
+            return false;
 
-    $songs = [];
-    while ($song = $stmt->fetch()) {
-        $songId = $song['id_song'];
-        if (!isset($songs[$songId])) {
-            $songs[$songId] = [
-                'id_song' => $songId,
-                'mp3_url' => $song['song_url'],
-                'name' => $song['song_name'],
-                'id_genre' => $song['id_genre'],
-                'genre' => $song['genre_name'],
-                'id_album' => $song['id_album'],
-                'album' => $song['album_name'],
-                'album_art' => $song['art_url']
+        $songs = [];
+        while ($song = $stmt->fetch()) {
+            $songId = $song['id_song'];
+            if (!isset($songs[$songId])) {
+                $songs[$songId] = [
+                    'id_song' => $songId,
+                    'mp3_url' => $song['song_url'],
+                    'name' => $song['song_name'],
+                    'id_genre' => $song['id_genre'],
+                    'genre' => $song['genre_name'],
+                    'id_album' => $song['id_album'],
+                    'album' => $song['album_name'],
+                    'album_art' => $song['art_url']
+                ];
+        ***REMOVED***
+
+            $songs[$songId]['artists'][] = [
+                'id_artist' => $song['id_artist'],
+                'artist' => $song['artist_name']
             ];
     ***REMOVED***
-
-        $songs[$songId]['artists'][] = [
-            'id_artist' => $song['id_artist'],
-            'artist' => $song['artist_name']
-        ];
+        return $songs;
 ***REMOVED***
-    return $songs;
-}
 
-/**
- * Search the database for the songs that match this query
- * @param string $query the query to look for
- * @return array|false the resulting songs or false if the query fails
- */
-function db_get_songs_search_title(string $query) {
-    global $DB;
-    $stmt = $DB->prepare('SELECT s.id_song,
+    public static function get_by_searching(string $query) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT s.id_song,
                s.name AS song_name,
                s.song_url,
                g.id_genre AS id_genre,
@@ -111,112 +339,75 @@ function db_get_songs_search_title(string $query) {
         INNER JOIN artists a2 ON sa.id_artist = a2.id_artist
         INNER JOIN songs_saves ss on s.id_song = ss.id_song
         WHERE UPPER(s.name) LIKE ?');
-    $success = $stmt->execute(['%' . strtoupper(trim($query)) . '%']);
-    if (!$success)
-        return false;
+        $success = $stmt->execute(['%' . strtoupper(trim($query)) . '%']);
+        if (!$success)
+            return false;
 
-    $songs = [];
-    while ($song = $stmt->fetch()) {    // ToDo: code deduplication
-        $songId = $song['id_song'];
-        if (!isset($songs[$songId])) {
-            $songs[$songId] = [
-                'id_song' => $songId,
-                'mp3_url' => $song['song_url'],
-                'name' => $song['song_name'],
-                'id_genre' => $song['id_genre'],
-                'genre' => $song['genre_name'],
-                'id_album' => $song['id_album'],
-                'album' => $song['album_name'],
-                'album_art' => $song['art_url']
+        $songs = [];
+        while ($song = $stmt->fetch()) {    // ToDo: code deduplication
+            $songId = $song['id_song'];
+            if (!isset($songs[$songId])) {
+                $songs[$songId] = [
+                    'id_song' => $songId,
+                    'mp3_url' => $song['song_url'],
+                    'name' => $song['song_name'],
+                    'id_genre' => $song['id_genre'],
+                    'genre' => $song['genre_name'],
+                    'id_album' => $song['id_album'],
+                    'album' => $song['album_name'],
+                    'album_art' => $song['art_url']
+                ];
+        ***REMOVED***
+
+            $songs[$songId]['artists'][] = [
+                'id_artist' => $song['id_artist'],
+                'artist' => $song['artist_name']
             ];
     ***REMOVED***
-
-        $songs[$songId]['artists'][] = [
-            'id_artist' => $song['id_artist'],
-            'artist' => $song['artist_name']
-        ];
+        return $songs;
 ***REMOVED***
-    return $songs;
-}
 
-/**
- * Retrieves detailed data for this song
- * @param int $songId database ID of the song
- * @return false|mixed resulting data or false if the query fails
- */
-function db_get_song_data(int $songId) {
-    global $DB;
-    $stmt = $DB->prepare('SELECT s.id_song,
-               s.name AS song_name,
-               s.song_url,
-               g.id_genre AS id_genre,
-               g.name AS genre_name,
-               a.id_album AS id_album,
-               a.name AS album_name,
-               a.art_url,
-               a2.id_artist AS id_artist,
-               a2.name AS artist_name
-        FROM songs s
-        INNER JOIN albums a ON s.id_album = a.id_album
-        INNER JOIN genres g ON s.id_genre = g.id_genre
-        INNER JOIN songs_artists sa ON s.id_song = sa.id_song
-        INNER JOIN artists a2 ON sa.id_artist = a2.id_artist
-        WHERE s.id_song = ?');
-    $success = $stmt->execute([$songId]);
-    if (!$success)
-        return false;
-
-    $songs = [];
-    while ($song = $stmt->fetch()) {    // ToDo: code deduplication
-        if (!isset($songs[$songId])) {
-            $songs[$songId] = [
-                'id_song' => $songId,
-                'mp3_url' => $song['song_url'],
-                'name' => $song['song_name'],
-                'id_genre' => $song['id_genre'],
-                'genre' => $song['genre_name'],
-                'id_album' => $song['id_album'],
-                'album' => $song['album_name'],
-                'album_art' => $song['art_url']
-            ];
-    ***REMOVED***
-
-        $songs[$songId]['artists'][] = [
-            'id_artist' => $song['id_artist'],
-            'artist' => $song['artist_name']
-        ];
+    public function insert() {
+        global $DB;
+        $album = db_insert_album($this->album);
+        if (!$album)
+            return false;
+        $stmt = $DB->prepare('INSERT INTO songs(name, id_album, id_genre, song_url) VALUES (?, ?, ?, ?)');
+        if (!$stmt->execute([$this->title, $this->album->id, $this->genre->id, $this->url]))
+            return false;
+        $sql = 'INSERT IGNORE INTO artists (name) VALUES '
+            . str_repeat(' (?), ', sizeof($this->artists));
+        $stmt = $DB->prepare(rtrim($sql, ', '));
+        foreach ($this->artists as $a)
+            $artistList[] = $a;
+        if (!isset($artistList))    // empty artist list safeguard
+            return false;
+        if (!$stmt->execute($artistList))
+            return false;
+        $genre = db_get_or_create_genre($this->genre);
+        if (!$genre)
+            return false;
+        // ToDo: tags, genre
+        return db_get_song_by_title($this->title);
 ***REMOVED***
-    return $songs[$songId];
-}
 
-/**
- * Store this song comment into the database
- * @param string $comment the comment's content
- * @param int $userId the user posting the comment
- * @param int $songId the song on which the comment was posted
- * @return bool whether the action succeeded
- */
-function db_store_comment_for_song(string $comment, int $userId, int $songId): bool {
-    global $DB;
-    $stmt = $DB->prepare('INSERT INTO comments_songs (id_song, id_user, content)
-        VALUES (?, ?, ?)');
-    return $stmt->execute([$songId, $userId, $comment]);
-}
+    public function get_comments() {
+        global $DB;
+        $stmt = $DB->prepare('SELECT c.*, u.name AS user_name
+            FROM comments_songs c
+            INNER JOIN users u ON c.id_user = u.id_user
+            WHERE c.id_song = ?
+            ORDER BY c.date_time DESC');
+        $success = $stmt->execute([$this->id]);
+        if (!$success)
+            return false;
+        return $stmt->fetchAll();
+***REMOVED***
 
-/**
- * Retrieve all comments on this song
- * @param int $songId the song's database ID
- * @return array|false the resulting data or false if the query fails
- */
-function db_get_comments_for_song(int $songId) {
-    global $DB;
-    $stmt = $DB->prepare('SELECT c.*, u.name AS user_name
-        FROM comments_songs c
-        INNER JOIN users u ON c.id_user = u.id_user
-        WHERE c.id_song = ?
-        ORDER BY c.date_time DESC');
-    $success = $stmt->execute([$songId]);
-    if (!$success)
-        return false;
-    return $stmt->fetchAll();
+    public function insert_comment(int $userId, string $content) {
+        global $DB;
+        $stmt = $DB->prepare('INSERT INTO comments_songs (id_song, id_user, content)
+            VALUES (?, ?, ?)');
+        return $stmt->execute([$this->id, $userId, $content]);
+***REMOVED***
 }
