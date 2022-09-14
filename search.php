@@ -6,7 +6,7 @@ require_once 'utils/queries.php';
 require_once 'utils/components.php';
 
 if (isset($_GET['query'])) {
-    $searchResultSongs = db_get_songs_search_title($_GET['query']);
+    $searchResultSongs = Song::get_by_searching($_GET['query']);
 }
 
 include_once 'include/header.php';
