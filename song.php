@@ -6,16 +6,16 @@ if (!isset($_GET['id']))
     header('Location: index.php');
 require_once 'utils/queries.php';
 require_once 'utils/mp3.php';
-$songData = db_get_song_data($_GET['id']);
+$songData = Song::get($_GET['id']);
 if (!$songData)
     header('Location: index.php');
 
-$mainArtist = $songData['artists'][0]['artist'];
-$mainArtistId = $songData['artists'][0]['id_artist'];
-$document_title = $songData['name'] . ' by ' . $mainArtist;
-$mp3path = 'userdata/music/' . $songData['mp3_url'];
+$mainArtist = $songData->album->artists[0];
+$mainArtistId = $songData->album->artists[0]->id;
+$document_title = $songData->title . ' by ' . $mainArtist->name;
+$mp3path = 'userdata/music/' . $songData->file_url;
 $albumArt = mp3_get_album_art($mp3path);
-$comments = db_get_comments_for_song($_GET['id']);
+$comments = $songData->get_comments();
 
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
@@ -32,7 +32,7 @@ include_once 'include/sidebar.php' ?>
                         </button>
                     </div>
                     <div class="grid-col">
-                        <h1 class="song-name"><?= $songData['name'] ?></h1>
+                        <h1 class="song-name"><?= $songData->title ?></h1>
                         <div class="grid-row">
                             <div id="mp3player-container">
                                 <div id="mp3player">
@@ -60,13 +60,13 @@ include_once 'include/sidebar.php' ?>
                         <img class="artist-photo" src="./assets/img/icons/avatar.svg" alt="Artist's Photo"/>
                     </div>
                     <div class="grid-col">
-                        <h2><a class="accent" href="user.php?id=<?= $mainArtistId ?>"><?= $mainArtist ?></a></h2>
+                        <h2><a class="accent" href="user.php?id=<?= $mainArtistId ?>"><?= $mainArtist->name ?></a></h2>
                         <a class="action-link fine-print" href="user.php?id=<?= $mainArtistId ?>">View profile →</a>
                     </div>
                 </section>
                 <section class="comment-division">
                     <form method="post" enctype="multipart/form-data"
-                          action="post_comment.php?song=<?= $songData['id_song'] ?>">
+                          action="post_comment.php?song=<?= $songData->id ?>">
                         <label>
                             <input name="comment" class="comment-entry" placeholder="Write a comment..."
                                    type="text" required/>

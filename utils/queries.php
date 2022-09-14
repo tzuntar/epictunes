@@ -145,7 +145,7 @@ class Genre extends stdClass {
 
     public static function get(int $id) {
         global $DB;
-        $stmt = $DB->prepare('SELECT * FROM genre WHERE id_genre = ?');
+        $stmt = $DB->prepare('SELECT * FROM genres WHERE id_genre = ?');
         if (!$stmt->execute([$id]))
             return false;
         $result = $stmt->fetch();
@@ -281,7 +281,9 @@ class Song extends stdClass {
                    s.name AS song_name,
                    s.song_url,
                    g.id_genre AS id_genre,
-                   g.name AS genre_name,
+                   s.id_album AS id_album,
+                   sa.id_artist,
+                   g.name AS genre_name
             FROM songs s
             INNER JOIN genres g ON s.id_genre = g.id_genre
             INNER JOIN songs_artists sa ON s.id_song = sa.id_song
@@ -313,7 +315,9 @@ class Song extends stdClass {
                    s.name AS song_name,
                    s.song_url,
                    g.id_genre AS id_genre,
-                   g.name AS genre_name,
+                   s.id_album,
+                   sa.id_artist,
+                   g.name AS genre_name
             FROM songs s
             INNER JOIN genres g ON s.id_genre = g.id_genre
             INNER JOIN songs_artists sa ON s.id_song = sa.id_song

@@ -5,7 +5,7 @@ if (!isset($_SESSION['identifier']))
     header('Location: login.php');
 require_once 'utils/queries.php';
 require_once 'utils/components.php';
-$userSongs = db_get_saved_songs_summary_user($_SESSION['id']);
+$userSongs = Song::get_by_user_saves($_SESSION['id']);
 
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
