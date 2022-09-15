@@ -9,7 +9,7 @@ $song = new Song();
 $song->file_url = $_POST['filename'];
 $song->title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $artistsEntry = filter_input(INPUT_POST, 'artist', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-if (!trim($artistsEntry)) {
+if (!trim($artistsEntry) == '') {
     $artistsEntry = str_replace(', ', ',', $artistsEntry);
     foreach (explode(',', $artistsEntry) as $a) {
         $artist = new Artist();

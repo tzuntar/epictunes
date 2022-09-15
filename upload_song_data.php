@@ -6,9 +6,11 @@ if ($_FILES['mp3file']['name'] == 0)
     header('Location: upload_song.php');
 require_once 'utils/mp3.php';
 
-$mp3file = 'userdata/music/' . $_FILES['mp3file']['name'] . '-' . uniqid();
-move_uploaded_file($_FILES['mp3file']['tmp_name'], $mp3file);
-$mp3tags = mp3_get_song_data($mp3file);
+$path = pathinfo($_FILES['mp3file']['name']);
+$mp3file = $path['filename'] . '-' . uniqid() . '.' . $path['extension'];   // to avoid filename collisions
+$uploadTarget = 'userdata/music/' . $mp3file;
+move_uploaded_file($_FILES['mp3file']['tmp_name'], $uploadTarget);
+$mp3tags = mp3_get_song_data($uploadTarget);
 
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
