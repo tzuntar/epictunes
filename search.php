@@ -20,8 +20,8 @@ include_once 'include/sidebar.php' ?>
             <div class="margin-top-20">
                 ***REMOVED*** if (isset($searchResultSongs) && $searchResultSongs !== false) {
                     render_song_list($searchResultSongs);
-            ***REMOVED*** else { // ToDo: make sure this is displayed properly ?>
-                    <div class="full-center">
+            ***REMOVED*** else { ?>
+                    <div class="full-center text-center">
                         <h1 class="full-alert">No Results</h1>
                         <p class="fine-print">Try rewording your query</p>
                     </div>

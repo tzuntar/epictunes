@@ -51,12 +51,16 @@ class Album {
     public string $name;
     public array $artists;
 
+    public function __construct() {
+        $this->artists = [];
+***REMOVED***
+
     public static function get_by_name(string $name) {
         global $DB;
         $stmt = $DB->prepare('SELECT a.name AS album_name,
             aa.id_artist AS id_artist
             FROM albums a
-            INNER JOIN albums_artists aa on a.id_album = aa.id_album
+            LEFT JOIN albums_artists aa on a.id_album = aa.id_album
             WHERE a.name = ?');
         if (!$stmt->execute([$name]))
             return false;
@@ -74,7 +78,7 @@ class Album {
         $stmt = $DB->prepare('SELECT a.name AS album_name,
             aa.id_artist AS id_artist
             FROM albums a
-            INNER JOIN albums_artists aa on a.id_album = aa.id_album
+            LEFT JOIN albums_artists aa on a.id_album = aa.id_album
             WHERE a.id_album = ?');
         if (!$stmt->execute([$id]))
             return false;
@@ -82,12 +86,13 @@ class Album {
         $album = new Album();
         while ($a = $stmt->fetch()) {
             $album->name = $a['album_name'];
-            $album->artists[] = Artist::get($a['id_artist']);
+            if ($a['id_artist'] !== null)
+                $album->artists[] = Artist::get($a['id_artist']);
     ***REMOVED***
         return $album;
 ***REMOVED***
 
-    public function get_or_create() {
+    public function get_or_create() {   // FixMe: this one's hideous!
         global $DB;
         $stmt = $DB->prepare('SELECT id_album FROM albums WHERE name = ?');
         if (!$stmt->execute([$this->name]))
@@ -172,6 +177,8 @@ class User extends stdClass {
         global $DB;
         $stmt = $DB->prepare('SELECT * FROM users WHERE id_user = ?');
         if (!$stmt->execute([$id]))
+            return false;
+        if ($stmt->rowCount() < 1)
             return false;
         $data = $stmt->fetch();
         $user = new User();
@@ -275,6 +282,11 @@ class Song extends stdClass {
     public array $tags;
     public string $file_url;
 
+    public function __construct() {
+        $this->artists = [];
+        $this->tags = [];
+***REMOVED***
+
     public static function get_by_user_saves(string $userId) {
         global $DB;
         $stmt = $DB->prepare('SELECT s.id_song,
@@ -285,9 +297,9 @@ class Song extends stdClass {
                    sa.id_artist,
                    g.name AS genre_name
             FROM songs s
-            INNER JOIN genres g ON s.id_genre = g.id_genre
-            INNER JOIN songs_artists sa ON s.id_song = sa.id_song
-            INNER JOIN songs_saves ss ON ss.id_song = s.id_song
+            LEFT JOIN genres g ON s.id_genre = g.id_genre
+            LEFT JOIN songs_artists sa ON s.id_song = sa.id_song
+            LEFT JOIN songs_saves ss ON ss.id_song = s.id_song
             WHERE ss.id_user = ?');
         if (!$stmt->execute([$userId]))
             return false;
@@ -319,8 +331,8 @@ class Song extends stdClass {
                    sa.id_artist,
                    g.name AS genre_name
             FROM songs s
-            INNER JOIN genres g ON s.id_genre = g.id_genre
-            INNER JOIN songs_artists sa ON s.id_song = sa.id_song
+            LEFT JOIN genres g ON s.id_genre = g.id_genre
+            LEFT JOIN songs_artists sa ON s.id_song = sa.id_song
             WHERE s.id_song = ?');
         if (!$stmt->execute([$id]))
             return false;
@@ -342,11 +354,12 @@ class Song extends stdClass {
         $stmt = $DB->prepare('SELECT s.id_song,
                    s.name AS song_name,
                    s.song_url,
-                   g.id_genre AS id_genre,
-                   g.name AS genre_name,
+                   s.id_album,
+                   g.id_genre,
+                   sa.id_artist
             FROM songs s
-            INNER JOIN genres g ON s.id_genre = g.id_genre
-            INNER JOIN songs_artists sa ON s.id_song = sa.id_song
+            LEFT JOIN genres g ON s.id_genre = g.id_genre
+            LEFT JOIN songs_artists sa ON s.id_song = sa.id_song
             WHERE UPPER(s.name) LIKE ?');
         if (!$stmt->execute(['%' . strtoupper(trim($query)) . '%']))
             return false;
@@ -370,13 +383,22 @@ class Song extends stdClass {
 
     public function insert() {
         global $DB;
-        $albumId = $this->album->get_or_create();
-        $genreId = $this->genre->get_or_create();
-        if (!$albumId || !$genreId)
-            return false;
+        if (isset($this->album)) {
+            $albumResult = $this->album->get_or_create();
+            if (!$albumResult)
+                return false;
+            // $this->album = Album::get_by_name($this->album->name);
+            $this->album = $albumResult;
+    ***REMOVED***
+        if (isset($this->genre)) {
+            $genreResult = $this->genre->get_or_create();
+            if (!$genreResult)
+                return false;
+            $this->genre = $genreResult;
+    ***REMOVED***
 
         $stmt = $DB->prepare('INSERT INTO songs(name, id_album, id_genre, song_url) VALUES (?, ?, ?, ?)');
-        if (!$stmt->execute([$this->title, $albumId, $this->genre->id, $this->url]))
+        if (!$stmt->execute([$this->title, $this->album->id, $this->genre->id, $this->file_url]))
             return false;
 
         foreach ($this->artists as $artist) {
@@ -401,8 +423,8 @@ class Song extends stdClass {
                    g.id_genre AS id_genre,
                    g.name AS genre_name,
             FROM songs s
-            INNER JOIN genres g ON s.id_genre = g.id_genre
-            INNER JOIN songs_artists sa ON s.id_song = sa.id_song
+            LEFT JOIN genres g ON s.id_genre = g.id_genre
+            LEFT JOIN songs_artists sa ON s.id_song = sa.id_song
             WHERE s.song_name = ?');
         if (!$stmt->execute([$title]))
             return false;
@@ -423,7 +445,7 @@ class Song extends stdClass {
         global $DB;
         $stmt = $DB->prepare('SELECT c.*, u.name AS user_name
             FROM comments_songs c
-            INNER JOIN users u ON c.id_user = u.id_user
+            LEFT JOIN users u ON c.id_user = u.id_user
             WHERE c.id_song = ?
             ORDER BY c.date_time DESC');
         $success = $stmt->execute([$this->id]);

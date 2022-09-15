@@ -142,6 +142,16 @@ input[type='submit'] {
     color: var(--color-accent);
 }
 
+.full-center {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
 
 /* Sidebar Styles */
 .sidebar {
