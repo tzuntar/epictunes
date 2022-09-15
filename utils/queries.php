@@ -75,7 +75,8 @@ class Album {
 
     public static function get(int $id) {
         global $DB;
-        $stmt = $DB->prepare('SELECT a.name AS album_name,
+        $stmt = $DB->prepare('SELECT a.id_album,
+            a.name AS album_name,
             aa.id_artist AS id_artist
             FROM albums a
             LEFT JOIN albums_artists aa on a.id_album = aa.id_album
@@ -85,6 +86,7 @@ class Album {
 
         $album = new Album();
         while ($a = $stmt->fetch()) {
+            $album->id = $a['id_album'];    // Do NOT ever forget to do this again!
             $album->name = $a['album_name'];
             if ($a['id_artist'] !== null)
                 $album->artists[] = Artist::get($a['id_artist']);
@@ -92,7 +94,7 @@ class Album {
         return $album;
 ***REMOVED***
 
-    public function get_or_create() {   // FixMe: this one's hideous!
+    public function get_or_create() {   // This one's hideous!
         global $DB;
         $stmt = $DB->prepare('SELECT id_album FROM albums WHERE name = ?');
         if (!$stmt->execute([$this->name]))
@@ -101,10 +103,14 @@ class Album {
             $stmt = $DB->prepare('INSERT INTO albums (name) VALUES (?)');
             if (!$stmt->execute([$this->name]))
                 return false;
-            $newAlbumId = db_last_insert_id();
-            foreach ($this->artists as $artist) {
+            $this->id = db_last_insert_id();
+            for ($i = 0; $i < sizeof($this->artists); $i++) {
+                $artistResult = $this->artists[$i]->get_or_create();
+                if (!$artistResult)
+                    return false;
+                $this->artists[$i] = $artistResult;
                 $stmt = $DB->prepare('INSERT INTO albums_artists (id_album, id_artist) VALUES (?, ?)');
-                if (!$stmt->execute([$newAlbumId, $artist->id]))
+                if (!$stmt->execute([$this->id, $this->artists[$i]->id]))
                     return false;
         ***REMOVED***
             return $this->get_or_create();
@@ -186,10 +192,10 @@ class User extends stdClass {
         $user->identifier = $data['identifier'];
         $user->username = $data['username'];
         $user->name = $data['name'];
-        $user->bio = $data['bio'];
+        $user->bio = $data['bio'] ?: '';
         $user->date_registered = $data['date_registered'];
         $user->isAdmin = $data['is_admin'];
-        $user->profilePicUrl = $data['profile_pic_url'];
+        $user->profilePicUrl = $data['profile_pic_url'] ?: '';
         $user->passwordHash = $data['password'];
         return $user;
 ***REMOVED***
@@ -311,8 +317,10 @@ class Song extends stdClass {
                 $song->id = $s['id_song'];
                 $song->file_url = $s['song_url'];
                 $song->title = $s['song_name'];
-                $song->genre = Genre::get($s['id_genre']);
-                $song->album = Album::get($s['id_album']);
+                if ($s['id_genre'] != null)
+                    $song->genre = Genre::get($s['id_genre']);
+                if ($s['id_album'] != null)
+                    $song->album = Album::get($s['id_album']);
                 $songs[$song->id] = $song;
         ***REMOVED***
 
@@ -342,9 +350,12 @@ class Song extends stdClass {
             $song->id = $s['id_song'];
             $song->file_url = $s['song_url'];
             $song->title = $s['song_name'];
-            $song->genre = Genre::get($s['id_genre']);
-            $song->album = Album::get($s['id_album']);
-            $song->artists[] = Artist::get($s['id_artist']);
+            if ($s['id_genre'] != null)
+                $song->genre = Genre::get($s['id_genre']);
+            if ($s['id_album'] != null)
+                $song->album = Album::get($s['id_album']);
+            if ($s['id_artist'] != null)
+                $song->artists[] = Artist::get($s['id_artist']);
     ***REMOVED***
         return $song;
 ***REMOVED***
@@ -387,7 +398,6 @@ class Song extends stdClass {
             $albumResult = $this->album->get_or_create();
             if (!$albumResult)
                 return false;
-            // $this->album = Album::get_by_name($this->album->name);
             $this->album = $albumResult;
     ***REMOVED***
         if (isset($this->genre)) {
@@ -396,21 +406,29 @@ class Song extends stdClass {
                 return false;
             $this->genre = $genreResult;
     ***REMOVED***
+        for ($i = 0; $i < sizeof($this->artists); $i++) {
+            $artistResult = $this->artists[$i]->get_or_create();
+            if (!$artistResult)
+                return false;
+            $this->artists[$i] = $artistResult;
+    ***REMOVED***
 
         $stmt = $DB->prepare('INSERT INTO songs(name, id_album, id_genre, song_url) VALUES (?, ?, ?, ?)');
         if (!$stmt->execute([$this->title, $this->album->id, $this->genre->id, $this->file_url]))
             return false;
 
+        $this->id = db_last_insert_id();
         foreach ($this->artists as $artist) {
-            $artistId = $artist->get_or_create();
             $stmt = $DB->prepare('INSERT INTO songs_artists (id_song, id_artist) VALUES (?, ?)');
-            if (!$stmt->execute([$this->id, $artistId]))
+            if (!$stmt->execute([$this->id, $artist->id]))
                 return false;
     ***REMOVED***
         foreach ($this->tags as $tag) {
             $tagId = $tag->get_or_create();
-            $stmt = $DB->prepare('INSERT INTO songs_tags (id_song, id_tag) VALUES (?, ?)');
-            !$stmt->execute([$this->id, $tagId]);
+            if ($tagId) {
+                $stmt = $DB->prepare('INSERT INTO songs_tags (id_song, id_tag) VALUES (?, ?)');
+                !$stmt->execute([$this->id, $tagId]);
+        ***REMOVED***
     ***REMOVED***
         return Song::get_by_title($this->title);
 ***REMOVED***
@@ -419,13 +437,14 @@ class Song extends stdClass {
         global $DB;
         $stmt = $DB->prepare('SELECT s.id_song,
                    s.name AS song_name,
+                   s.id_album,
                    s.song_url,
                    g.id_genre AS id_genre,
-                   g.name AS genre_name,
+                   sa.id_artist
             FROM songs s
             LEFT JOIN genres g ON s.id_genre = g.id_genre
             LEFT JOIN songs_artists sa ON s.id_song = sa.id_song
-            WHERE s.song_name = ?');
+            WHERE s.name = ?');
         if (!$stmt->execute([$title]))
             return false;
 
@@ -434,9 +453,12 @@ class Song extends stdClass {
             $song->id = $s['id_song'];
             $song->file_url = $s['song_url'];
             $song->title = $s['song_name'];
-            $song->genre = Genre::get($s['id_genre']);
-            $song->album = Album::get($s['id_album']);
-            $song->artists[] = Artist::get($s['id_artist']);
+            if ($s['id_genre'] != null)
+                $song->genre = Genre::get($s['id_genre']);
+            if ($s['id_album'] != null)
+                $song->album = Album::get($s['id_album']);
+            if ($s['id_artist'] != null)
+                $song->artists[] = Artist::get($s['id_artist']);
     ***REMOVED***
         return $song;
 ***REMOVED***
