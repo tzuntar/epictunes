@@ -491,10 +491,10 @@ class Song extends stdClass {
                 return false;
         }
         foreach ($this->tags as $tag) {
-            $tagId = $tag->get_or_create();
-            if ($tagId) {
+            $tagResult = $tag->get_or_create();
+            if ($tagResult) {
                 $stmt = $DB->prepare('INSERT INTO songs_tags (id_song, id_tag) VALUES (?, ?)');
-                !$stmt->execute([$this->id, $tagId]);
+                !$stmt->execute([$this->id, $tagResult->id]);
             }
         }
         return Song::get_by_title($this->title);
