@@ -138,6 +138,10 @@ input[type='submit'] {
     margin-top: 20px;
 }
 
+.margin-lr-20 {
+    margin: 0 20px;
+}
+
 .accent {
     color: var(--color-accent);
 }

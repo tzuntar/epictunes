@@ -328,10 +328,9 @@ class Song extends stdClass {
         $this->tags = [];
 ***REMOVED***
 
-    public static function get_by_artist(int $artistId, bool $queryUserId = false) {
+    public static function get_by_album(Album $album) {
         global $DB;
-        if ($queryUserId) {
-            $stmt = $DB->prepare('SELECT s.id_song,
+        $stmt = $DB->prepare('SELECT s.id_song,
                    s.name AS song_name,
                    s.song_url,
                    g.id_genre AS id_genre,
@@ -345,23 +344,8 @@ class Song extends stdClass {
             LEFT JOIN albums alb ON alb.id_album = s.id_album
             LEFT JOIN albums_artists aa ON aa.id_album = alb.id_album
             LEFT JOIN artists a2 ON a2.id_artist = aa.id_artist
-            WHERE (a.id_user = ?) OR (a2.id_user = ?)');
-    ***REMOVED*** else {
-            $stmt = $DB->prepare('SELECT s.id_song,
-                   s.name AS song_name,
-                   s.song_url,
-                   g.id_genre AS id_genre,
-                   s.id_album AS id_album,
-                   sa.id_artist,
-                   g.name AS genre_name
-            FROM songs s
-            LEFT JOIN genres g ON s.id_genre = g.id_genre
-            LEFT JOIN songs_artists sa ON s.id_song = sa.id_song
-            LEFT JOIN albums alb ON alb.id_album = s.id_album
-            LEFT JOIN albums_artists aa ON aa.id_album = alb.id_album
-            WHERE (sa.id_artist = ?) OR (aa.id_artist = ?)');
-    ***REMOVED***
-        if (!$stmt->execute([$artistId, $artistId]))
+            WHERE (s.id_album = ?)');
+        if (!$stmt->execute([$album->id]))
             return false;
         return self::fetch_query_results($stmt);
 ***REMOVED***
@@ -420,6 +404,44 @@ class Song extends stdClass {
                 $song->artists[] = Artist::get($s['id_artist']);
     ***REMOVED***
         return $song;
+***REMOVED***
+
+    public static function get_by_artist(int $artistId, bool $queryUserId = false) {
+        global $DB;
+        if ($queryUserId) {
+            $stmt = $DB->prepare('SELECT s.id_song,
+                   s.name AS song_name,
+                   s.song_url,
+                   g.id_genre AS id_genre,
+                   s.id_album AS id_album,
+                   sa.id_artist,
+                   g.name AS genre_name
+            FROM songs s
+            LEFT JOIN genres g ON s.id_genre = g.id_genre
+            LEFT JOIN songs_artists sa ON s.id_song = sa.id_song
+            LEFT JOIN artists a ON a.id_artist = sa.id_artist
+            LEFT JOIN albums alb ON alb.id_album = s.id_album
+            LEFT JOIN albums_artists aa ON aa.id_album = alb.id_album
+            LEFT JOIN artists a2 ON a2.id_artist = aa.id_artist
+            WHERE (a.id_user = ?) OR (a2.id_user = ?)');
+    ***REMOVED*** else {
+            $stmt = $DB->prepare('SELECT s.id_song,
+                   s.name AS song_name,
+                   s.song_url,
+                   g.id_genre AS id_genre,
+                   s.id_album AS id_album,
+                   sa.id_artist,
+                   g.name AS genre_name
+            FROM songs s
+            LEFT JOIN genres g ON s.id_genre = g.id_genre
+            LEFT JOIN songs_artists sa ON s.id_song = sa.id_song
+            LEFT JOIN albums alb ON alb.id_album = s.id_album
+            LEFT JOIN albums_artists aa ON aa.id_album = alb.id_album
+            WHERE (sa.id_artist = ?) OR (aa.id_artist = ?)');
+    ***REMOVED***
+        if (!$stmt->execute([$artistId, $artistId]))
+            return false;
+        return self::fetch_query_results($stmt);
 ***REMOVED***
 
     public static function get_by_user_saves(int $userId) {
