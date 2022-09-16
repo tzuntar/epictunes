@@ -60,8 +60,9 @@ include_once 'include/sidebar.php' ?>
                         <img class="artist-photo" src="./assets/img/icons/avatar.svg" alt="Artist's Photo"/>
                     </div>
                     <div class="grid-col">
-                        <h2><a class="accent" href="user.php?id=<?= $mainArtistId ?>"><?= $mainArtist->name ?></a></h2>
-                        <a class="action-link fine-print" href="user.php?id=<?= $mainArtistId ?>">View profile →</a>
+                        <h2><a class="accent" href="artist.php?id=<?= $mainArtistId ?>"><?= $mainArtist->name ?></a>
+                        </h2>
+                        <a class="action-link fine-print" href="artist.php?id=<?= $mainArtistId ?>">View profile →</a>
                     </div>
                 </section>
                 <section class="comment-division">
@@ -79,12 +80,12 @@ include_once 'include/sidebar.php' ?>
                         foreach ($comments as $comment) { ?>
                             <div class="grid-container comment-grid">
                                 <div class="grid-col">
-                                    <a href="user.php?id=<?= $comment['id_user'] ?>"><img
+                                    <a href="artist.php?id=<?= $comment['id_user'] ?>"><img
                                                 src="./assets/img/icons/avatar.svg" alt=""/></a>
                                 </div>
                                 <div class="grid-col">
                                     <p>
-                                        <a href="user.php?id=<?= $comment['id_user'] ?>">
+                                        <a href="artist.php?id=<?= $comment['id_user'] ?>">
                                             <strong><?= $comment['user_name'] ?></strong></a>
                                         at <strong><?= $comment['date_time'] ?></strong></p>
                                     <p><?= $comment['content'] ?></p>
