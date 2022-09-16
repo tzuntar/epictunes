@@ -206,6 +206,19 @@ class Artist extends stdClass {
     public string $name;
     public User $user;
 
+    public static function get_all() {
+        global $DB;
+        if ($stmt = $DB->query('SELECT * FROM artists')) {
+            while ($a = $stmt->fetch()) {
+                $artist = new Artist();
+                $artist->id = $a['id_artist'];
+                $artist->name = $a['name'];
+                $artists[] = $artist;
+        ***REMOVED***
+    ***REMOVED***
+        return $artists ?? false;
+***REMOVED***
+
     public function get_or_create() {
         global $DB;
         if (isset($this->user)) {
@@ -293,9 +306,10 @@ class Song extends stdClass {
         $this->tags = [];
 ***REMOVED***
 
-    public static function get_by_user_saves(string $userId) {
+    public static function get_by_artist(int $artistId, bool $queryUserId = false) {
         global $DB;
-        $stmt = $DB->prepare('SELECT s.id_song,
+        if ($queryUserId) {
+            $stmt = $DB->prepare('SELECT s.id_song,
                    s.name AS song_name,
                    s.song_url,
                    g.id_genre AS id_genre,
@@ -305,13 +319,39 @@ class Song extends stdClass {
             FROM songs s
             LEFT JOIN genres g ON s.id_genre = g.id_genre
             LEFT JOIN songs_artists sa ON s.id_song = sa.id_song
-            LEFT JOIN songs_saves ss ON ss.id_song = s.id_song
-            WHERE ss.id_user = ?');
-        if (!$stmt->execute([$userId]))
+            LEFT JOIN artists a ON a.id_artist = sa.id_artist
+            LEFT JOIN albums alb ON alb.id_album = s.id_album
+            LEFT JOIN albums_artists aa ON aa.id_album = alb.id_album
+            LEFT JOIN artists a2 ON a2.id_artist = aa.id_artist
+            WHERE (a.id_user = ?) OR (a2.id_user = ?)');
+    ***REMOVED*** else {
+            $stmt = $DB->prepare('SELECT s.id_song,
+                   s.name AS song_name,
+                   s.song_url,
+                   g.id_genre AS id_genre,
+                   s.id_album AS id_album,
+                   sa.id_artist,
+                   g.name AS genre_name
+            FROM songs s
+            LEFT JOIN genres g ON s.id_genre = g.id_genre
+            LEFT JOIN songs_artists sa ON s.id_song = sa.id_song
+            LEFT JOIN albums alb ON alb.id_album = s.id_album
+            LEFT JOIN albums_artists aa ON aa.id_album = alb.id_album
+            WHERE (sa.id_artist = ?) OR (aa.id_artist = ?)');
+    ***REMOVED***
+        if (!$stmt->execute([$artistId, $artistId]))
             return false;
+        return self::fetch_query_results($stmt);
+***REMOVED***
 
+    /**
+     * Processes this statement and extracts all results into an array
+     * @param $statement mixed an open, already executed PDO statement
+     * @return array the resulting data
+     */
+    private static function fetch_query_results($statement): array {
         $songs = [];
-        while ($s = $stmt->fetch()) {
+        while ($s = $statement->fetch()) {
             if (!array_key_exists($s['id_song'], $songs)) {
                 $song = new Song();
                 $song->id = $s['id_song'];
@@ -360,6 +400,26 @@ class Song extends stdClass {
         return $song;
 ***REMOVED***
 
+    public static function get_by_user_saves(int $userId) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT s.id_song,
+                   s.name AS song_name,
+                   s.song_url,
+                   g.id_genre AS id_genre,
+                   s.id_album AS id_album,
+                   sa.id_artist,
+                   g.name AS genre_name
+            FROM songs s
+            LEFT JOIN genres g ON s.id_genre = g.id_genre
+            LEFT JOIN songs_artists sa ON s.id_song = sa.id_song
+            LEFT JOIN songs_saves ss ON ss.id_song = s.id_song
+            WHERE ss.id_user = ?');
+        if (!$stmt->execute([$userId]))
+            return false;
+
+        return self::fetch_query_results($stmt);
+***REMOVED***
+
     public static function get_by_searching(string $query) {
         global $DB;
         $stmt = $DB->prepare('SELECT s.id_song,
@@ -374,22 +434,7 @@ class Song extends stdClass {
             WHERE UPPER(s.name) LIKE ?');
         if (!$stmt->execute(['%' . strtoupper(trim($query)) . '%']))
             return false;
-
-        $songs = [];
-        while ($s = $stmt->fetch()) {
-            if (!array_key_exists($s['id_song'], $songs)) {
-                $song = new Song();
-                $song->id = $s['id_song'];
-                $song->file_url = $s['song_url'];
-                $song->title = $s['song_name'];
-                $song->genre = Genre::get($s['id_genre']);
-                $song->album = Album::get($s['id_album']);
-                $songs[$song->id] = $song;
-        ***REMOVED***
-
-            $songs[$s['id_song']]->artists[] = Artist::get($s['id_artist']);
-    ***REMOVED***
-        return $songs;
+        return self::fetch_query_results($stmt);
 ***REMOVED***
 
     public function insert() {

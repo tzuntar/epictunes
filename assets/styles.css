@@ -152,6 +152,12 @@ input[type='submit'] {
     text-align: center;
 }
 
+.centered-flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 /* Sidebar Styles */
 .sidebar {
@@ -356,6 +362,24 @@ input[type='submit'] {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* User Profile Pages */
+.user-summary-division {
+    background-color: var(--sidebar-sel-color);
+    grid-template-columns: 0.25fr auto;
+}
+
+.user-name {
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 70px;
+    vertical-align: middle;
+}
+
+.user-profile-pic {
+    width: 70px;
+    height: 70px;
 }
 
 /* Upload Pages */
