@@ -51,11 +51,11 @@ function render_album_list($albums) {
                          alt="Album Art"/>
                 </div>
                 <div>
-                    <p><?= $album->name ?></p>
+                    <p><a href="album.php?id=<?= $album->id ?>"><?= $album->name ?></a></p>
                     <p class="sub-label">
                         <?php foreach ($album->artists as $artist) { ?>
-                            <p><a href="artist.php?id=<?= $artist->id ?>"><?= $artist->name ?></a></p>
-                        <?php } ?>
+                    <p><a href="artist.php?id=<?= $artist->id ?>"><?= $artist->name ?></a></p>
+                    <?php } ?>
                     </p>
                 </div>
             </div>
