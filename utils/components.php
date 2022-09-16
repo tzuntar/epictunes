@@ -15,7 +15,7 @@ function render_song_list($songs) {
                     <p class="sub-label">
                         ***REMOVED*** $artists = '';
                         foreach ($song->artists as $artist)
-                            $artists .= $artist->name . ' / ';
+                            $artists .= '<a href="artist.php?id=' . $artist->id . '">' . $artist->name . '</a>' . ' / ';
                         echo rtrim($artists, ' /') ?></p>
                 </div>
             </div>
