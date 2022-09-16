@@ -94,6 +94,28 @@ class Album {
         return $album;
     }
 
+    public static function get_all() {
+        global $DB;
+        if ($stmt = $DB->query('SELECT a.id_album, a.name, art.id_artist
+            FROM albums a
+            LEFT JOIN albums_artists aa ON a.id_album = aa.id_album
+            LEFT JOIN artists art ON art.id_artist = aa.id_artist
+            ORDER BY a.name ASC')) {
+            $albums = [];
+            while ($a = $stmt->fetch()) {
+                if (!array_key_exists($a['id_album'], $albums)) {
+                    $album = new Album();
+                    $album->id = $a['id_album'];
+                    $album->name = $a['name'];
+                    $albums[$album->id] = $album;
+                }
+                if ($a['id_artist'] != null)
+                    $albums[$a['id_album']]->artists[] = Artist::get($a['id_artist']);
+            }
+        }
+        return $albums ?? false;
+    }
+
     public function get_or_create() {   // This one's hideous!
         global $DB;
         $stmt = $DB->prepare('SELECT id_album FROM albums WHERE name = ?');
@@ -208,7 +230,7 @@ class Artist extends stdClass {
 
     public static function get_all() {
         global $DB;
-        if ($stmt = $DB->query('SELECT * FROM artists')) {
+        if ($stmt = $DB->query('SELECT * FROM artists ORDER BY name ASC')) {
             while ($a = $stmt->fetch()) {
                 $artist = new Artist();
                 $artist->id = $a['id_artist'];
