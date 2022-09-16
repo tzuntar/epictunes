@@ -22,3 +22,22 @@ function render_song_list($songs) {
         </div>
     <?php }
 }
+
+function render_artist_list($artists) {
+    foreach ($artists as $artist) { ?>
+        <div class="song-list-card">
+            <div class="flex-container">
+                <div>
+                    <img class="album-art-list profile-photo-list" src="/assets/img/icons/avatar.svg"
+                         alt="Artist's Photo"/>
+                </div>
+                <div>
+                    <p><a href="user.php?id=<?= $artist->id ?>"><?= $artist->name ?></a></p>
+                    <p class="sub-label">
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    <?php }
+}
