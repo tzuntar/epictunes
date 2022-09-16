@@ -32,9 +32,30 @@ function render_artist_list($artists) {
                          alt="Artist's Photo"/>
                 </div>
                 <div>
-                    <p><a href="user.php?id=<?= $artist->id ?>"><?= $artist->name ?></a></p>
+                    <p><a href="artist.php?id=<?= $artist->id ?>"><?= $artist->name ?></a></p>
                     <p class="sub-label">
 
+                    </p>
+                </div>
+            </div>
+        </div>
+    ***REMOVED*** }
+}
+
+function render_album_list($albums) {
+    foreach ($albums as $album) { ?>
+        <div class="song-list-card">
+            <div class="flex-container">
+                <div>
+                    <img class="album-art-list profile-photo-list" src="/assets/img/icons/avatar.svg"
+                         alt="Album Art"/>
+                </div>
+                <div>
+                    <p><?= $album->name ?></p>
+                    <p class="sub-label">
+                        ***REMOVED*** foreach ($album->artists as $artist) { ?>
+                            <p><a href="artist.php?id=<?= $artist->id ?>"><?= $artist->name ?></a></p>
+                        ***REMOVED*** } ?>
                     </p>
                 </div>
             </div>
