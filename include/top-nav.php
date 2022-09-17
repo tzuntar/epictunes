@@ -9,7 +9,7 @@
     <div class="profile-photo">
         <div class="flex-container">
             <img src="./assets/img/icons/avatar.svg" alt=""/>
-            <p><a href="user.php?id=<?= $_SESSION['id'] ?? 'Unknown' ?>"><?= $_SESSION['name'] ?? 'Unknown' ?></a></p>
+            <p><a href="user_settings.php"><?= $_SESSION['name'] ?? 'Unknown' ?></a></p>
         </div>
     </div>
 </nav>
