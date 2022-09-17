@@ -146,6 +146,14 @@ input[type='submit'] {
     color: var(--color-accent);
 }
 
+.accent-underline {
+    border-bottom: 2px solid var(--color-accent);
+}
+
+.light-underline {
+    border-bottom: 2px solid var(--sidebar-sel-color);
+}
+
 .full-center {
     align-items: center;
     justify-content: center;

@@ -55,22 +55,28 @@ class Album {
         $this->artists = [];
     }
 
-    public static function get_by_name(string $name) {
+    public static function get_by_searching(string $query) {
         global $DB;
-        $stmt = $DB->prepare('SELECT a.name AS album_name,
-            aa.id_artist AS id_artist
+        $stmt = $DB->prepare('SELECT a.id_album,
+                a.name
             FROM albums a
-            LEFT JOIN albums_artists aa on a.id_album = aa.id_album
-            WHERE a.name = ?');
-        if (!$stmt->execute([$name]))
+            LEFT JOIN albums_artists aa ON a.id_album = aa.id_album
+            WHERE UPPER(a.name) LIKE ?');
+        if (!$stmt->execute(['%' . strtoupper(trim($query)) . '%']))
             return false;
 
-        $album = new Album();
+        $albums = [];
         while ($a = $stmt->fetch()) {
-            $album->name = $a['album_name'];
-            $album->artists[] = Artist::get($a['id_artist']);
+            if (!array_key_exists($a['id_album'], $albums)) {
+                $album = new Album();
+                $album->id = $a['id_album'];
+                $album->name = $a['name'];
+                $albums[$album->id] = $album;
+            }
+            if (isset($a['id_artist']))
+                $albums[$a['id_album']]->artists[] = Artist::get($a['id_artist']);
         }
-        return $album;
+        return $albums;
     }
 
     public static function get(int $id) {
@@ -90,6 +96,24 @@ class Album {
             $album->name = $a['album_name'];
             if ($a['id_artist'] !== null)
                 $album->artists[] = Artist::get($a['id_artist']);
+        }
+        return $album;
+    }
+
+    public static function get_by_name(string $name) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT a.name AS album_name,
+            aa.id_artist AS id_artist
+            FROM albums a
+            LEFT JOIN albums_artists aa ON a.id_album = aa.id_album
+            WHERE a.name = ?');
+        if (!$stmt->execute([$name]))
+            return false;
+
+        $album = new Album();
+        while ($a = $stmt->fetch()) {
+            $album->name = $a['album_name'];
+            $album->artists[] = Artist::get($a['id_artist']);
         }
         return $album;
     }
@@ -227,6 +251,22 @@ class Artist extends stdClass {
     public int $id;
     public string $name;
     public User $user;
+
+    public static function get_by_searching(string $query) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT a.name, a.id_artist
+            FROM artists a
+            WHERE UPPER(a.name) LIKE ?');
+        if (!$stmt->execute(['%' . strtoupper(trim($query)) . '%']))
+            return false;
+        while ($a = $stmt->fetch()) {
+            $artist = new Artist();
+            $artist->id = $a['id_artist'];
+            $artist->name = $a['name'];
+            $artists[] = $artist;
+        }
+        return $artists ?? false;
+    }
 
     public static function get_all() {
         global $DB;
