@@ -16,6 +16,9 @@
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: var(--lighter-bg-color);
+    display: flex;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
@@ -173,12 +176,12 @@ input[type='submit'] {
 
 /* Sidebar Styles */
 .sidebar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
     background-color: white;
     width: 250px;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
+    height: 100vh;
 }
 
 .sidebar nav ul {
@@ -221,8 +224,6 @@ input[type='submit'] {
 
 /* Main Content Area */
 .root-container {
-    position: relative;
-    left: 250px;
     width: calc(100% - 250px);
 }
 
