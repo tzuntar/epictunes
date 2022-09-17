@@ -16,6 +16,9 @@
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: var(--lighter-bg-color);
+}
+
+.body-flex {
     display: flex;
     margin: 0;
     padding: 0;
