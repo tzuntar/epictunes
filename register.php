@@ -1,6 +1,7 @@
 ***REMOVED***
 ***REMOVED***
 $document_title = 'Create Account';
+$noflex = true;
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/queries.php';
 
