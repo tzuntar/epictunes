@@ -17,7 +17,7 @@
         </ul>
         <p>Others</p>
         <ul>
-            <li><a href="user_settings.php"><img src="./assets/img/icons/settings.svg" alt=""/>Settings</a></li>
+            <li><a href="user_settings.php"><img src="./assets/img/icons/settings.svg" alt=""/>Preferences</a></li>
             <li><a href="logout.php"><img src="./assets/img/icons/logout.svg" alt=""/>Log Out</a></li>
         </ul>
     </nav>
