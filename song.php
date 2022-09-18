@@ -5,6 +5,7 @@ if (!isset($_SESSION['identifier']))
 if (!isset($_GET['id']))
     header('Location: index.php');
 require_once 'utils/queries.php';
+require_once 'utils/components.php';
 require_once 'utils/mp3.php';
 $songData = Song::get($_GET['id']);
 if (!$songData)
@@ -88,7 +89,7 @@ include_once 'include/sidebar.php' ?>
                                         <a href="artist.php?id=<?= $comment['id_user'] ?>">
                                             <strong><?= $comment['user_name'] ?></strong></a>
                                         at <strong><?= $comment['date_time'] ?></strong></p>
-                                    <p><?= $comment['content'] ?></p>
+                                    <p><?= highlight_comment_timestamps($comment['content']) ?></p>
                                 </div>
                             </div>
                         <?php }
