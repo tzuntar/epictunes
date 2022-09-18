@@ -1,13 +1,9 @@
 ***REMOVED***
-$db_hostname = 'localhost';
-$db_username = 'root';
-$db_password = '5dqsotchfpqrh';
-$db_database = 'epictunes';
+$db_hostname = 'tobija-zuntar.eu';
+$db_username = 'tobijazuntar_epictunes';
+$db_password = 'agwcURky4HXPBbv';
+$db_database = 'tobijazuntar_epictunes';
 $top_level = 'https://epictunes.tobija-zuntar.eu';
-
-// prod:
-// tobijazuntar_epictunes
-// agwcURky4HXPBbv
 
 if (getenv('DEBUG') == 1) {
     error_reporting(E_ALL);

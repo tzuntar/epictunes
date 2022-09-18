@@ -1,7 +1,7 @@
 ***REMOVED***
 require_once 'mp3.php';
 
-function render_song_list($songs) {
+function render_song_list(array $songs, bool $enableEditControls = false) {
     foreach ($songs as $song) {
         $mp3path = 'userdata/music/' . $song->file_url;
         $albumArt = mp3_get_album_art($mp3path) ?>
@@ -10,13 +10,21 @@ function render_song_list($songs) {
                 <div>
                     <img class="album-art-list" src="<?= $albumArt ?>" alt="Album Art"/>
                 </div>
-                <div>
-                    <p><a href="song.php?id=<?= $song->id ?>"><?= $song->title ?></a></p>
-                    <p class="sub-label">
-                        ***REMOVED*** $artists = '';
-                        foreach ($song->artists as $artist)
-                            $artists .= '<a href="artist.php?id=' . $artist->id . '">' . $artist->name . '</a>' . ' / ';
-                        echo rtrim($artists, ' /') ?></p>
+                <div class="flex-container flex-grow-right">
+                    <div>
+                        <p><a href="song.php?id=<?= $song->id ?>"><?= $song->title ?></a></p>
+                        <p class="sub-label">
+                            ***REMOVED*** $artists = '';
+                            foreach ($song->artists as $artist)
+                                $artists .= '<a href="artist.php?id=' . $artist->id . '">' . $artist->name . '</a>' . ' / ';
+                            echo rtrim($artists, ' /') ?></p>
+                    </div>
+                    ***REMOVED*** if ($enableEditControls) { ?>
+                        <div>
+                            <p><a href="edit_song.php?id=<?= $song->id ?>" class="action-link">Edit →</a></p>
+                            <p><a href="delete_song.php?id=<?= $song->id ?>" class="action-link">Delete</a></p>
+                        </div>
+                    ***REMOVED*** } ?>
                 </div>
             </div>
         </div>
