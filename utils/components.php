@@ -1,7 +1,7 @@
 <?php
 require_once 'mp3.php';
 
-function render_song_list(array $songs, bool $enableEditControls = false) {
+function render_song_list(array $songs, bool $enableEditControls = true) {
     foreach ($songs as $song) {
         $mp3path = 'userdata/music/' . $song->file_url;
         $albumArt = mp3_get_album_art($mp3path) ?>
