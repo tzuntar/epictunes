@@ -49,6 +49,13 @@ function initAudioPlayer(mp3path, rgbBarColor) {
     seekSlider.addEventListener('mouseup', () => seeking = false);
     volumeSlider.addEventListener("mousemove", setVolume);
     audio.addEventListener('timeupdate', () => seekTimeUpdate());
+    const seekLinks = document.getElementsByClassName('seek-link');
+    for (let e = 0; e < seekLinks.length; e++) {
+        const timeSplit = seekLinks[e].innerHTML.split(':')
+        const timeInSeconds = (parseInt(timeSplit[0]) * 60)
+            + parseInt(timeSplit[1]);
+        seekLinks[e].addEventListener('click', () => seekTo(timeInSeconds))
+***REMOVED***
 
     function playPause() {
         if (context == null)
@@ -65,6 +72,13 @@ function initAudioPlayer(mp3path, rgbBarColor) {
     function seek(event) {
         if (!seeking) return;
         seekSlider.value = event.clientX - seekSlider.offsetLeft;
+        audio.currentTime = audio.duration * (seekSlider.value / 500);
+***REMOVED***
+
+    function seekTo(timeInSeconds) {
+        if (context == null)
+            initMp3Player(rgbBarColor);
+        seekSlider.value = timeInSeconds;
         audio.currentTime = audio.duration * (seekSlider.value / 500);
 ***REMOVED***
 

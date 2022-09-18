@@ -380,6 +380,12 @@ input[type='submit'] {
     align-items: center;
 }
 
+.seek-link:hover {
+    color: var(--color-accent);
+    font-weight: 500;
+    cursor: pointer;
+}
+
 /* User Profile Pages */
 .user-summary-division {
     background-color: var(--sidebar-sel-color);

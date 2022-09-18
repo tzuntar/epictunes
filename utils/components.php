@@ -62,3 +62,15 @@ function render_album_list($albums) {
         </div>
     ***REMOVED*** }
 }
+
+/**
+ * Marks all timestamps in this comment as clickable seek links
+ * @param $comment string original comment
+ * @return string comment with all timestamps marked
+ */
+function highlight_comment_timestamps(string $comment): string {
+    if (preg_match('/(?<minute>\d+):(?<second>\d+)/', $comment, $matches, PREG_OFFSET_CAPTURE))
+        $comment = str_replace($matches[0][0],
+            '<a class="seek-link">' . $matches[0][0] . '</a>', $comment);
+    return $comment;
+}
