@@ -51,12 +51,13 @@ include_once 'include/sidebar.php' ?>
                             </div>
                         </div>
                     </div>
-                    <div class="grid-col">
-                        <img src="<?= $albumArt ?>" class="album-art-big"
+                    <div class="grid-col flex-column">
+                        <p>&nbsp;</p>
+                        <img src="<?= $albumArt ?>" class="album-art-big flex-end"
                              id="albumArtBox" alt="Album Art"/>
                     </div>
                 </section>
-                <section class="artist-division grid-container">
+                <section class="artist-division grid-container padding-lr-20">
                     <div class="grid-col">
                         <img class="artist-photo" src="./assets/img/icons/avatar.svg" alt="Artist's Photo"/>
                     </div>
@@ -66,7 +67,7 @@ include_once 'include/sidebar.php' ?>
                         <a class="action-link fine-print" href="artist.php?id=<?= $mainArtistId ?>">View profile →</a>
                     </div>
                 </section>
-                <section class="comment-division">
+                <section class="comment-division padding-lr-20">
                     <form method="post" enctype="multipart/form-data"
                           action="post_comment.php?song=<?= $songData->id ?>">
                         <label>

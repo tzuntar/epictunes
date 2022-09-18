@@ -120,6 +120,15 @@ input[type='submit'] {
     flex: 1;
 }
 
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-end {
+    align-self: flex-end;
+}
+
 .grid-container {
     display: grid;
 }
@@ -143,6 +152,10 @@ input[type='submit'] {
 
 .padding-20 {
     padding: 20px;
+}
+
+.padding-lr-20 {
+    padding: 0 20px;
 }
 
 .margin-top-20 {
@@ -385,6 +398,10 @@ input[type='submit'] {
     align-items: center;
 }
 
+.seek-link {
+    font-weight: 500;
+}
+
 .seek-link:hover {
     color: var(--color-accent);
     font-weight: 500;
@@ -470,6 +487,10 @@ input[type='submit'] {
     .flex-container {
         display: block;
         text-align: center;
+***REMOVED***
+
+    .flex-child-half:first-child {
+        margin-right: 0;
 ***REMOVED***
 
     .flex-child-half:nth-child(2) {
