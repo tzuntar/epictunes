@@ -180,6 +180,27 @@ class Album {
             return false;
         return Album::get(db_last_insert_id());
     }
+
+    public function trigger_dead_check(): bool {
+        global $DB;
+        $stmt = $DB->prepare('SELECT a.id_album FROM albums a
+            INNER JOIN songs s ON s.id_album = a.id_album
+            WHERE a.id_album = ?');
+        if (!$stmt->execute([$this->id]) || $stmt->rowCount() > 0)
+            return false;
+        // if we came so far the album is empty
+        return self::delete();
+    }
+
+    public function delete(): bool {
+        global $DB;
+        $stmt = $DB->prepare('DELETE FROM albums WHERE id_album = ?');
+        if (!$stmt->execute([$this->id]))
+            return false;
+        foreach ($this->artists as $artist)
+            $artist->trigger_dead_check();
+        return true;
+    }
 }
 
 class Genre extends stdClass {
@@ -320,6 +341,24 @@ class Artist extends stdClass {
         if (isset($data['id_user']))
             $artist->user = User::get($data['id_user']);
         return $artist;
+    }
+
+    public function trigger_dead_check(): bool {
+        global $DB;
+        $stmt = $DB->prepare('SELECT a.id_artist FROM artists a
+            INNER JOIN songs_artists s ON s.id_artist = a.id_artist
+            WHERE a.id_artist = ?');
+        if (!$stmt->execute([$this->id]) || $stmt->rowCount() > 0)
+            return false;
+        // if we came so far the artist is not present in any song;
+        // if the artist is still present in an album the delete will fail either way
+        return self::delete();
+    }
+
+    public function delete(): bool {
+        global $DB;
+        $stmt = $DB->prepare('DELETE FROM artists WHERE id_artist = ?');
+        return $stmt->execute([$this->id]);
     }
 }
 
@@ -590,6 +629,29 @@ class Song extends stdClass {
                 $song->artists[] = Artist::get($s['id_artist']);
         }
         return $song;
+    }
+
+    public function delete(): bool {
+        global $DB;
+        $stmts[] = $DB->prepare('DELETE FROM songs_saves WHERE id_song = ?');
+        $stmts[] = $DB->prepare('DELETE FROM comments_songs WHERE id_song = ?');
+        $stmts[] = $DB->prepare('DELETE FROM songs_tags WHERE id_song = ?');
+        $stmts[] = $DB->prepare('DELETE FROM songs_artists WHERE id_song = ?');
+        foreach ($stmts as $stmt)
+            $stmt->execute([$this->id]);
+        $stmt = $DB->prepare('DELETE FROM songs WHERE id_song = ?');
+        if (!$stmt->execute([$this->id]))
+            return false;
+        $this->album->trigger_dead_check();
+        foreach ($this->artists as $artist)
+            $artist->trigger_dead_check();
+        return true;
+    }
+
+    public function check_ownership(int $userId): bool {
+        if (!isset($this->artists[0]) || !isset($this->artists[0]->user))
+            return false;
+        return $this->artists[0]->user->id === $userId;
     }
 
     public function get_comments() {

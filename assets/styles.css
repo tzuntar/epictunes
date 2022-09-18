@@ -115,6 +115,11 @@ input[type='submit'] {
     text-align: center;
 }
 
+.flex-grow-right {
+    justify-content: space-between;
+    flex: 1;
+}
+
 .grid-container {
     display: grid;
 }
@@ -478,5 +483,23 @@ input[type='submit'] {
     .root-container {
         left: 0;
         width: 100%;
+    }
+
+    .root-container .search-box {
+        justify-content: left;
+        margin: 0;
+    }
+
+    .root-container .search-box input {
+        width: 30vw;
+    }
+
+    .root-container nav .profile-photo {
+        margin: auto 0;
+    }
+
+    .root-container nav .profile-photo p {
+        float: left;
+        margin-right: 5px;
     }
 }
