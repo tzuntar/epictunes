@@ -188,8 +188,11 @@ class Album {
             WHERE a.id_album = ?');
         if (!$stmt->execute([$this->id]) || $stmt->rowCount() > 0)
             return false;
-        // if we came so far the album is empty
-        return self::delete();
+        try {   // if we came so far the album is empty
+            return self::delete();
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public function delete(): bool {
@@ -352,7 +355,11 @@ class Artist extends stdClass {
             return false;
         // if we came so far the artist is not present in any song;
         // if the artist is still present in an album the delete will fail either way
-        return self::delete();
+        try {
+            return self::delete();
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public function delete(): bool {
