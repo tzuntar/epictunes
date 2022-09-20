@@ -638,6 +638,12 @@ class Song extends stdClass {
         return $song;
 ***REMOVED***
 
+    public function save(int $userId): bool {
+        global $DB;
+        $stmt = $DB->prepare('INSERT INTO songs_saves (id_song, id_user) VALUES (?, ?)');
+        return $stmt->execute([$this->id, $userId]);
+***REMOVED***
+
     public function delete(): bool {
         global $DB;
         $stmts[] = $DB->prepare('DELETE FROM songs_saves WHERE id_song = ?');
