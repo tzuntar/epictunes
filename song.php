@@ -11,6 +11,11 @@ $songData = Song::get($_GET['id']);
 if (!$songData)
     header('Location: index.php');
 
+if (isset($_GET['action'])) {
+    if ($_GET['action'] == 'save')
+        $songData->save($_SESSION['id']);
+}
+
 $mainArtist = $songData->album->artists[0];
 $mainArtistId = $songData->album->artists[0]->id;
 $document_title = $songData->title . ' by ' . $mainArtist->name;
@@ -31,6 +36,11 @@ include_once 'include/sidebar.php' ?>
                         <button id="playButton" class="play-button">
                             <img id="playIcon" src="./assets/img/icons/play.svg" alt="Play"/>
                         </button>
+                        <a href="song.php?id=<?= $_GET['id'] ?>&action=save">
+                            <button id="saveButton" class="play-button">
+                                <img class="icon-make-smaller" src="./assets/img/icons/save.svg" alt="Save"/>
+                            </button>
+                        </a>
                     </div>
                     <div class="grid-col">
                         <h1 class="song-name"><?= $songData->title ?></h1>
