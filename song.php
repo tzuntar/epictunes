@@ -10,10 +10,13 @@ require_once 'utils/mp3.php';
 $songData = Song::get($_GET['id']);
 if (!$songData)
     header('Location: index.php');
+$isSaved = $songData->check_is_saved($_SESSION['id']);
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'save')
-        $songData->save($_SESSION['id']);
+        if ($isSaved) $songData->unsave($_SESSION['id']);
+        else $songData->save($_SESSION['id']);
+    header('Location: song.php?id=' . $_GET['id']);
 }
 
 $mainArtist = $songData->album->artists[0];
@@ -38,7 +41,8 @@ include_once 'include/sidebar.php' ?>
                         </button>
                         <a href="song.php?id=<?= $_GET['id'] ?>&action=save">
                             <button id="saveButton" class="play-button">
-                                <img class="icon-make-smaller" src="./assets/img/icons/save.svg" alt="Save"/>
+                                <img class="icon-make-smaller" alt="Save"
+                                     src="./assets/img/icons/<?= $isSaved ? 'unsave.svg' : 'save.svg' ?>"/>
                             </button>
                         </a>
                     </div>
