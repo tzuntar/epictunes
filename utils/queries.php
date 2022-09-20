@@ -644,6 +644,20 @@ class Song extends stdClass {
         return $stmt->execute([$this->id, $userId]);
 ***REMOVED***
 
+    public function unsave(int $userId): bool {
+        global $DB;
+        $stmt = $DB->prepare('DELETE FROM songs_saves WHERE id_song = ? AND id_user = ?');
+        return $stmt->execute([$this->id, $userId]);
+***REMOVED***
+
+    public function check_is_saved(int $userId): bool {
+        global $DB;
+        $stmt = $DB->prepare('SELECT id_ss FROM songs_saves WHERE id_song = ? AND id_user = ?');
+        if (!$stmt->execute([$this->id, $userId]))
+            return false;
+        return $stmt->rowCount() > 0;
+***REMOVED***
+
     public function delete(): bool {
         global $DB;
         $stmts[] = $DB->prepare('DELETE FROM songs_saves WHERE id_song = ?');
