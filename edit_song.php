@@ -61,7 +61,7 @@ include_once 'include/sidebar.php' ?>
                     </label>
                     <label>
                         <input type="text" name="album" required placeholder="Album name"
-                               value="<?= $song->album ?? '' ?>"/>
+                               value="<?= $song->album->name ?? '' ?>"/>
                     </label>
                     <label>
                         <input type="text" name="album_artist" required
@@ -70,7 +70,7 @@ include_once 'include/sidebar.php' ?>
                     </label>
                     <label>
                         <input type="text" name="genre" required placeholder="Song genre"
-                               value="<?= $song->genre ?? '' ?>"/>
+                               value="<?= $song->genre->name ?? '' ?>"/>
                     </label>
                     <label>
                         <input type="text" name="tags" placeholder="Song tags (separated by commas)"
@@ -78,7 +78,7 @@ include_once 'include/sidebar.php' ?>
                     </label>
                 </div>
                 <div class="grid-col">
-                    <img src="<?= mp3_get_album_art('/userdata/uploads/' . $song->file_url) ?>" alt="Album Art"
+                    <img src="<?= mp3_get_album_art('userdata/music/' . $song->file_url) ?>" alt="Album Art"
                          class="album-art-big"/>
                 </div>
             </div>
