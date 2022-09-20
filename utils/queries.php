@@ -269,6 +269,25 @@ class User extends stdClass {
         $user->passwordHash = $data['password'];
         return $user;
 ***REMOVED***
+
+    public static function get_all() {
+        global $DB;
+        $stmt = $DB->query('SELECT * FROM users');
+        while ($data = $stmt->fetch()) {
+            $user = new User();
+            $user->id = $data['id_user'];
+            $user->identifier = $data['identifier'];
+            $user->username = $data['username'];
+            $user->name = $data['name'];
+            $user->bio = $data['bio'] ?: '';
+            $user->date_registered = $data['date_registered'];
+            $user->isAdmin = $data['is_admin'];
+            $user->profilePicUrl = $data['profile_pic_url'] ?: '';
+            $user->passwordHash = $data['password'];
+            $users[] = $user;
+    ***REMOVED***
+        return $users ?? false;
+***REMOVED***
 }
 
 class Artist extends stdClass {
@@ -490,6 +509,25 @@ class Song extends stdClass {
                 $song->artists[] = Artist::get($s['id_artist']);
     ***REMOVED***
         return $song;
+***REMOVED***
+
+    public static function get_all() {
+        global $DB;
+        $stmt = $DB->query('SELECT s.id_song,
+                   s.name AS song_name,
+                   s.song_url,
+                   g.id_genre AS id_genre,
+                   s.id_album AS id_album,
+                   sa.id_artist,
+                   g.name AS genre_name
+            FROM songs s
+            LEFT JOIN genres g ON s.id_genre = g.id_genre
+            LEFT JOIN songs_artists sa ON s.id_song = sa.id_song
+            LEFT JOIN artists a ON a.id_artist = sa.id_artist
+            LEFT JOIN albums alb ON alb.id_album = s.id_album
+            LEFT JOIN albums_artists aa ON aa.id_album = alb.id_album
+            LEFT JOIN artists a2 ON a2.id_artist = aa.id_artist');
+        return self::fetch_query_results($stmt);
 ***REMOVED***
 
     public static function get_by_artist(int $artistId, bool $queryUserId = false) {

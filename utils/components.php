@@ -31,6 +31,29 @@ function render_song_list(array $songs, bool $enableEditControls = true) {
     ***REMOVED*** }
 }
 
+function render_user_list(array $users) {
+    foreach ($users as $user) { ?>
+        <div class="song-list-card">
+            <div class="flex-container">
+                <div>
+                    <img class="album-art-list" alt="Profile Photo"
+                         src="<?= 'assets/img/icons/avatar.svg' ?>"/>
+                </div>
+                <div class="flex-container flex-grow-right">
+                    <div>
+                        <p><?= $user->name ?></p>
+                        <p class="sub-label"><?= $user->username ?></p>
+                    </div>
+                    <div>
+                        <p><a href="edit_user.php?id=<?= $user->id ?>" class="action-link">Edit →</a></p>
+                        <p><a href="delete_user.php?id=<?= $user->id ?>" class="action-link">Delete</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    ***REMOVED*** }
+}
+
 function render_artist_list($artists) {
     foreach ($artists as $artist) { ?>
         <div class="song-list-card">
