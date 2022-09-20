@@ -27,10 +27,12 @@ function mp3_get_song_data(string $filePath): array {
     $getID3 = new getID3;
     $fileInfo = $getID3->analyze($filePath);
     $fileData['title'] = $fileInfo['tags']['id3v1']['title'][0];
-    $fileData['artist'] = str_replace('/', ', ', $fileInfo['tags']['id3v1']['artist'][0]);
+    $fileData['artist'] = str_replace(';', ', ',
+        str_replace('/', ', ', $fileInfo['tags']['id3v1']['artist'][0]));
     $fileData['album'] = $fileInfo['tags']['id3v1']['album'][0];
     $fileData['genre'] = $fileInfo['tags']['id3v2']['genre'][0];
-    $fileData['album_artist'] = $fileInfo['tags']['id3v2']['band'][0];
+    $fileData['album_artist'] = str_replace(';', ', ',
+        str_replace('/', ', ', $fileInfo['tags']['id3v2']['band'][0]));
     $fileData['album_art'] = mp3_get_album_art($filePath);
     return $fileData;
 }
