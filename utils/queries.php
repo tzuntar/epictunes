@@ -261,6 +261,7 @@ class User extends stdClass {
         $user->id = $data['id_user'];
         $user->identifier = $data['identifier'];
         $user->username = $data['username'];
+        $user->email = $data['email'];
         $user->name = $data['name'];
         $user->bio = $data['bio'] ?: '';
         $user->date_registered = $data['date_registered'];
@@ -278,6 +279,7 @@ class User extends stdClass {
             $user->id = $data['id_user'];
             $user->identifier = $data['identifier'];
             $user->username = $data['username'];
+            $user->email = $data['email'];
             $user->name = $data['name'];
             $user->bio = $data['bio'] ?: '';
             $user->date_registered = $data['date_registered'];
@@ -287,6 +289,32 @@ class User extends stdClass {
             $users[] = $user;
         }
         return $users ?? false;
+    }
+
+    public function update(User $updatedData): bool {
+        global $DB;
+        $stmt = $DB->prepare('UPDATE users SET name = ?, username = ?, email = ?,
+                 password = ?, is_admin = ? WHERE id_user = ?');
+        return $stmt->execute([$updatedData->name, $updatedData->username,
+            $updatedData->email, $updatedData->passwordHash, $updatedData->isAdmin, $this->id]);
+    }
+
+    public function delete(): bool {
+        global $DB;
+        $postedSongs = Song::get_by_artist($this->id, true);
+        foreach ($postedSongs as $song) {
+            $postedComments = $song->get_comments_by_user($this->id);
+            foreach ($postedComments as $comment)
+                $song->delete_comment($comment['id_comment']);
+            $song->delete();
+        }
+        $songSaves = Song::get_by_user_saves($this->id);
+        foreach ($songSaves as $save)
+            $save->unsave($save->id);
+        $stmt = $DB->prepare('DELETE FROM artists WHERE id_user = ?');
+        $stmt->execute([$this->id]);
+        $stmt = $DB->prepare('DELETE FROM users WHERE id_user = ?');
+        return $stmt->execute([$this->id]);
     }
 }
 
@@ -727,8 +755,20 @@ class Song extends stdClass {
             WHERE c.id_song = ?
             ORDER BY c.date_time DESC');
         $success = $stmt->execute([$this->id]);
-        if (!$success)
-            return false;
+        if (!$success) return false;
+        return $stmt->fetchAll();
+    }
+
+    public function get_comments_by_user(int $userId) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT c.*, u.name AS user_name
+            FROM comments_songs c
+            LEFT JOIN users u ON c.id_user = u.id_user
+            WHERE (c.id_song = ?)
+              AND (c.id_user = ?)
+            ORDER BY c.date_time DESC');
+        $success = $stmt->execute([$this->id, $userId]);
+        if (!$success) return false;
         return $stmt->fetchAll();
     }
 
@@ -737,5 +777,11 @@ class Song extends stdClass {
         $stmt = $DB->prepare('INSERT INTO comments_songs (id_song, id_user, content)
             VALUES (?, ?, ?)');
         return $stmt->execute([$this->id, $userId, $content]);
+    }
+
+    public function delete_comment(int $commentId): bool {
+        global $DB;
+        $stmt = $DB->prepare('DELETE FROM comments WHERE id_comment = ?');
+        return $stmt->execute([$commentId]);
     }
 }

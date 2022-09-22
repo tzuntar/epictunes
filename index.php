@@ -21,6 +21,5 @@ include_once 'include/sidebar.php' ?>
             </div>
         </main>
 
-        <div class="player"></div>
     </div>
 <?php include_once 'include/footer.php' ?>

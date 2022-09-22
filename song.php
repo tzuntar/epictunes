@@ -113,7 +113,6 @@ include_once 'include/sidebar.php' ?>
             </div>
         </main>
 
-        <div class="player"></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vibrant.js/1.0.0/Vibrant.min.js"
             integrity="sha512-V6rhYmJy8NZQF8F0bhJiTM0iI6wX/FKJoWvYrCM15UIeb6p38HjvTZWfO0IxJnMZrHWUJZJqLuWK0zslra2FVw=="
