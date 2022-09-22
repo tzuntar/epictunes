@@ -252,7 +252,7 @@ input[type='submit'] {
 .root-container nav {
     display: flex;
     justify-content: space-between;
-    padding: 0 10px;
+    padding: 10px 10px 0;
     position: sticky;
     top: 0;
     background-color: var(--lighter-bg-color);
@@ -447,15 +447,30 @@ input[type='submit'] {
     grid-template-rows: repeat(6, auto);
 }
 
-.meta-edit-grid input[type='text'] {
+.user-edit-grid {
+    grid-template-columns: 200px auto;
+    grid-template-rows: repeat(6, auto);
+}
+
+.meta-edit-grid input[type='text'],
+.user-edit-grid input[type='text'],
+.user-edit-grid input[type='email'],
+.user-edit-grid input[type='password'] {
     margin-bottom: 10px;
     width: 35vw;
 }
 
-.meta-edit-grid p {
+.meta-edit-grid .field-label,
+.user-edit-grid .field-label {
     line-height: 2rem;
     text-align: right;
     margin-right: 20px;
+}
+
+.meta-edit-grid .field-labels p,
+.user-edit-grid .field-labels p {
+    line-height: 2rem;
+    text-align: left;
 }
 
 /* Logo */

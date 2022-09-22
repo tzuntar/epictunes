@@ -71,22 +71,22 @@ include_once 'include/sidebar.php' ?>
             <div class="grid-container meta-edit-grid">
                 <div class="grid-col">
                     <div class="grid-row">
-                        <p>Title:</p>
+                        <p class="field-label">Title:</p>
                     </div>
                     <div class="grid-row">
-                        <p>Artists:</p>
+                        <p class="field-label">Artists:</p>
                     </div>
                     <div class="grid-row">
-                        <p>Album:</p>
+                        <p class="field-label">Album:</p>
                     </div>
                     <div class="grid-row">
-                        <p>...by:</p>
+                        <p class="field-label">...by:</p>
                     </div>
                     <div class="grid-row">
-                        <p>Genre:</p>
+                        <p class="field-label">Genre:</p>
                     </div>
                     <div class="grid-row">
-                        <p>Tags:</p>
+                        <p class="field-label">Tags:</p>
                     </div>
                 </div>
                 <div class="grid-col">
