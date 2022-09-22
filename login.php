@@ -20,6 +20,8 @@ if (isset($_POST['username'])) {
     ***REMOVED***
     ***REMOVED***
     ***REMOVED***
+    ***REMOVED***
+    ***REMOVED***
     ***REMOVED*** else $loginMessage = 'Incorrect username or password';
 ***REMOVED***
 }
