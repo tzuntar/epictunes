@@ -118,7 +118,7 @@ include_once 'include/sidebar.php' ?>
                 </div>
                 <div class="grid-col">
                     <img src="<?= mp3_get_album_art('userdata/music/' . $song->file_url) ?>" alt="Album Art"
-                         class="album-art-big"/>
+                         class="album-art-big" id="albumArtBox"/>
                 </div>
             </div>
             <p>

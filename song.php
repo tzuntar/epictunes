@@ -102,9 +102,16 @@ include_once 'include/sidebar.php' ?>
                                 </div>
                                 <div class="grid-col">
                                     <p>
+                                        ***REMOVED*** if ($_SESSION['is_admin']) { ?>
+                                            <a href="artist.php?id=<?= $comment['id_user'] ?>">
+                                                <strong><?= $comment['user_name'] ?></strong></a>
+                                            at <strong><?= $comment['date_time'] ?></strong> • <a
+                                                    href="delete_comment.php?id=<?= $comment['id_comment'] ?>"><em>Delete</em></a>
+                                        ***REMOVED*** } else { ?>
                                         <a href="artist.php?id=<?= $comment['id_user'] ?>">
                                             <strong><?= $comment['user_name'] ?></strong></a>
                                         at <strong><?= $comment['date_time'] ?></strong></p>
+                                    ***REMOVED*** } ?>
                                     <p><?= highlight_comment_timestamps($comment['content']) ?></p>
                                 </div>
                             </div>

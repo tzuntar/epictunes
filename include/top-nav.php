@@ -1,4 +1,5 @@
 <nav>
+    <img onclick="toggleMenu()" class="menu-toggle" src="/assets/img/icons/menu.svg" alt="Menu"/>
     <div class="search-box">
         <form action="search.php">
             <label>
