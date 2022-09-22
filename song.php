@@ -96,8 +96,9 @@ include_once 'include/sidebar.php' ?>
                         foreach ($comments as $comment) { ?>
                             <div class="grid-container comment-grid">
                                 <div class="grid-col">
-                                    <a href="artist.php?id=<?= $comment['id_user'] ?>"><img
-                                                src="./assets/img/icons/avatar.svg" alt=""/></a>
+                                    <a href="artist.php?id=<?= $comment['id_user'] ?>">
+                                        <img alt="Profile Photo" class="round-profile-photo"
+                                             src="<?= $comment['profile_pic_url'] ?? './assets/img/icons/avatar.svg' ?>"/></a>
                                 </div>
                                 <div class="grid-col">
                                     <p>

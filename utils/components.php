@@ -37,7 +37,7 @@ function render_user_list(array $users) {
             <div class="flex-container">
                 <div>
                     <img class="album-art-list" alt="Profile Photo"
-                         src="<?= 'assets/img/icons/avatar.svg' ?>"/>
+                         src="<?= $user->profilePicUrl ?? './assets/img/icons/avatar.svg' ?>"/>
                 </div>
                 <div class="flex-container flex-grow-right">
                     <div>

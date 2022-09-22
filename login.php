@@ -19,6 +19,8 @@ if (isset($_POST['username'])) {
             $_SESSION['identifier'] = $user['identifier'];
             $_SESSION['name'] = $user['name'];
             $_SESSION['is_admin'] = $user['is_admin'];
+            if (isset($user['profile_pic_url']))
+                $_SESSION['profile_pic'] = $user['profile_pic_url'];
             header('Location: index.php');
         } else $loginMessage = 'Incorrect username or password';
     }

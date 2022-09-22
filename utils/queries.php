@@ -266,7 +266,8 @@ class User extends stdClass {
         $user->bio = $data['bio'] ?: '';
         $user->date_registered = $data['date_registered'];
         $user->isAdmin = $data['is_admin'];
-        $user->profilePicUrl = $data['profile_pic_url'] ?: '';
+        if (isset($data['profile_pic_url']))
+            $user->profilePicUrl = $data['profile_pic_url'];
         $user->passwordHash = $data['password'];
         return $user;
     }
@@ -284,7 +285,8 @@ class User extends stdClass {
             $user->bio = $data['bio'] ?: '';
             $user->date_registered = $data['date_registered'];
             $user->isAdmin = $data['is_admin'];
-            $user->profilePicUrl = $data['profile_pic_url'] ?: '';
+            if (isset($data['profile_pic_url']))
+                $user->profilePicUrl = $data['profile_pic_url'];
             $user->passwordHash = $data['password'];
             $users[] = $user;
         }
@@ -297,6 +299,12 @@ class User extends stdClass {
                  password = ?, is_admin = ? WHERE id_user = ?');
         return $stmt->execute([$updatedData->name, $updatedData->username,
             $updatedData->email, $updatedData->passwordHash, $updatedData->isAdmin, $this->id]);
+    }
+
+    public function update_profile_pic(string $newFilePath): bool {
+        global $DB;
+        $stmt = $DB->prepare('UPDATE users SET profile_pic_url = ? WHERE id_user = ?');
+        return $stmt->execute([$newFilePath, $this->id]);
     }
 
     public function delete(): bool {
@@ -749,7 +757,8 @@ class Song extends stdClass {
 
     public function get_comments() {
         global $DB;
-        $stmt = $DB->prepare('SELECT c.*, u.name AS user_name
+        $stmt = $DB->prepare('SELECT c.*, u.name AS user_name,
+                u.profile_pic_url
             FROM comments_songs c
             LEFT JOIN users u ON c.id_user = u.id_user
             WHERE c.id_song = ?
