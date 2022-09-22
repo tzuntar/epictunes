@@ -60,6 +60,7 @@ include_once './include/header.php' ?>
                 </p>
                 <input class="margin-top-20" type="submit" value="Sign In"/>
             </form>
+            <p class="padding-top-20"><a class="action-link" href="redirect.php">Login with Google</a></p>
             <p class="padding-top-40">Don't have an account yet? Create a free account today</p>
             <a class="action-link" href="register.php">Create Account →</a>
         </div>
