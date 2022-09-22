@@ -16,6 +16,35 @@ function db_get_user(string $username) {
 }
 
 /**
+ * Retrieve or create Google OAuth user record
+ * @param string $uid OAuth UID
+ * @param string $name user's full name
+ * @param string $email user's email
+ * @return false|mixed the user's record or false on failure
+ */
+function db_get_user_google_oauth(string $uid, string $name, string $email) {
+    global $DB;
+    $reqUser = $DB->prepare("SELECT u.* FROM users u
+        WHERE (u.oauth_provider = 'google')
+          AND (u.oauth_uid = ?)");
+    if (!$reqUser->execute([$uid]))
+        return false;
+    if ($reqUser->rowCount() > 0)   // UID already in the DB
+        return $reqUser->fetch();
+    // new user, not in the DB yet
+    $newUser = $DB->prepare('INSERT INTO users (identifier, username, name, email,
+                   oauth_provider, oauth_uid) VALUES (?, ?, ?, ?, ?, ?)');
+    try {
+        $username = $name . random_int(10, 50);
+***REMOVED*** catch (Exception $e) {
+        return false;
+***REMOVED***
+    if (!$newUser->execute([uniqid(), $username, $name, $email, 'google', $uid]))
+        return false;
+    return db_get_user_google_oauth($uid, $name, $email);
+}
+
+/**
  * Create the user in the database and return their record
  * @param string $name the user's full name
  * @param string $username the user's username
