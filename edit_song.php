@@ -127,6 +127,34 @@ include_once 'include/sidebar.php' ?>
             <p class="header-center">
                 <input type="submit" value="Save" class="margin-top-20"/>
             </p>
+            <?php if ($_SESSION['is_admin']) {
+                $comments = $song->get_comments(); ?>
+                <h2 class="accent margin-lr-20 light-underline">Comments</h2>
+                <section class="comment-division padding-lr-20">
+                    <?php if (!$comments || sizeof($comments) < 1) { ?>
+                        <p class="fine-print">No comments yet</p>
+                    <?php } else {
+                        foreach ($comments as $comment) { ?>
+                            <div class="grid-container comment-grid">
+                                <div class="grid-col">
+                                    <a href="artist.php?id=<?= $comment['id_user'] ?>">
+                                        <img alt="Profile Photo" class="round-profile-photo"
+                                             src="<?= $comment['profile_pic_url'] ?? './assets/img/icons/avatar.svg' ?>"/></a>
+                                </div>
+                                <div class="grid-col">
+                                    <p>
+                                        <a href="artist.php?id=<?= $comment['id_user'] ?>">
+                                            <strong><?= $comment['user_name'] ?></strong></a>
+                                        at <strong><?= $comment['date_time'] ?></strong> • <a
+                                                href="delete_comment.php?id=<?= $comment['id_comment'] ?>"><em>Delete</em></a>
+                                    </p>
+                                    <p><?= $comment['content'] ?></p>
+                                </div>
+                            </div>
+                        <?php }
+                    } ?>
+                </section>
+            <?php } ?>
         </form>
     </main>
 </div>
