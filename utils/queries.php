@@ -242,6 +242,12 @@ class Genre extends stdClass {
     }
 }
 
+final class AlertType {
+    public const ALERT_INFO = 'info';
+    public const ALERT_WARNING = 'warning';
+    public const ALERT_SEVERE_WARNING = 'severe_warning';
+}
+
 class User extends stdClass {
     public int $id;
     public string $identifier;
@@ -270,7 +276,7 @@ class User extends stdClass {
         $user->date_registered = $data['date_registered'];
         $user->isAdmin = $data['is_admin'];
         if (isset($data['profile_pic_url'])) $user->profilePicUrl = $data['profile_pic_url'];
-        $user->passwordHash = $data['password'];
+        $user->passwordHash = $data['password'] ?: '';
         return $user;
     }
 
@@ -288,7 +294,7 @@ class User extends stdClass {
             $user->date_registered = $data['date_registered'];
             $user->isAdmin = $data['is_admin'];
             if (isset($data['profile_pic_url'])) $user->profilePicUrl = $data['profile_pic_url'];
-            $user->passwordHash = $data['password'];
+            $user->passwordHash = $data['password'] ?: '';
             $users[] = $user;
         }
         return $users ?? false;
@@ -321,6 +327,27 @@ class User extends stdClass {
         $stmt->execute([$this->id]);
         $stmt = $DB->prepare('DELETE FROM users WHERE id_user = ?');
         return $stmt->execute([$this->id]);
+    }
+
+    public function notify(string $message, string $type, int $adminUserId): bool {
+        global $DB;
+        $stmt = $DB->prepare('INSERT INTO users_notifications (id_user, id_admin_user,
+                                 content, type) VALUES (?, ?, ?, ?)');
+        return $stmt->execute([$this->id, $adminUserId, $message, $type]);
+    }
+
+    public function check_notifications(bool $autoExpire = true) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT content, date_time, type FROM users_notifications
+                                WHERE id_user = ?');
+        if (!$stmt->execute([$this->id]))
+            return false;
+        $notifications = $stmt->fetchAll();
+        if ($autoExpire) {
+            $stmt = $DB->prepare('DELETE FROM users_notifications WHERE id_user = ?');
+            $stmt->execute([$this->id]);
+        }
+        return $notifications;
     }
 }
 
