@@ -46,7 +46,8 @@ function render_user_list(array $users) {
                     </div>
                     <div>
                         <p><a href="edit_user.php?id=<?= $user->id ?>" class="action-link">Edit →</a></p>
-                        <p><a href="delete_user.php?id=<?= $user->id ?>" class="action-link">Delete</a></p>
+                        <p><a href="delete_user.php?id=<?= $user->id ?>" class="action-link">Delete</a> • <a
+                                    href="admin_notify.php?id=<?= $user->id ?>">Notify</a></p>
                     </div>
                 </div>
             </div>

@@ -55,6 +55,7 @@ input[type='text'],
 input[type='email'],
 input[type='password'],
 input[type='tel'],
+select,
 textarea {
     background-color: var(--input-box-bg);
     border: none;
@@ -62,6 +63,15 @@ textarea {
     line-height: 40px;
     padding: 0 20px;
     width: 250px;
+}
+
+select {
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+textarea {
+    font-family: 'Montserrat', sans-serif;
 }
 
 input[type='checkbox'] {
@@ -77,6 +87,7 @@ textarea::placeholder {
 
 input:focus,
 textarea:focus,
+select:focus,
 a {
     outline-color: var(--color-accent);
 }
@@ -492,6 +503,10 @@ input[type='submit'] {
 .user-edit-grid .field-labels p {
     line-height: 2rem;
     text-align: left;
+}
+
+.user-edit-grid textarea {
+    display: block;
 }
 
 /* Logo */
