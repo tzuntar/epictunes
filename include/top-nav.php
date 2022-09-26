@@ -16,3 +16,20 @@
         </a>
     </div>
 </nav>
+<?php if (isset($_SESSION['identifier'])) {
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/queries.php';
+    global $top_level;
+    $notifications = User::check_notifications($_SESSION['id'], false);
+    if ($notifications) {
+        foreach ($notifications as $n) { ?>
+            <div class="notification-bar notification-<?= str_replace('_', '-', $n['type']) ?>">
+                <p><strong>⚠ <?= $n['content'] ?></strong> •
+                    <?= date('m/d/Y h:i A', strtotime($n['date_time'])) ?>
+                    <button onclick="fetch('<?= $top_level ?>/utils/dismissNotification.php?id=<?= $n['id_notification'] ?>').then(() => location.reload())">
+                        Dismiss
+                    </button>
+                </p>
+            </div>
+        <?php }
+    }
+}

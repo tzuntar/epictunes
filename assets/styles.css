@@ -313,6 +313,37 @@ input[type='submit'] {
     font-weight: 600;
 }
 
+/* Notifications */
+.notification-bar {
+    margin: 10px 0;
+    padding: 0 10px;
+    line-height: 42px;
+}
+
+.notification-info {
+    background-color: dodgerblue;
+    color: white;
+}
+
+.notification-warning {
+    background-color: darkorange;
+}
+
+.notification-severe-warning {
+    background-color: firebrick;
+    color: white;
+}
+
+.notification-bar button {
+    background-color: rgba(0, 0, 0, 70%);
+    float: right;
+    line-height: 25px;
+    border-radius: 8px;
+    margin: 8px 0;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 /* Song List Cards */
 .song-list-card {
     border-radius: 14px;
