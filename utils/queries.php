@@ -336,16 +336,21 @@ class User extends stdClass {
         return $stmt->execute([$this->id, $adminUserId, $message, $type]);
 ***REMOVED***
 
-    public function check_notifications(bool $autoExpire = true) {
+    public static function dismiss_notification(int $notificationId): bool {
         global $DB;
-        $stmt = $DB->prepare('SELECT content, date_time, type FROM users_notifications
-                                WHERE id_user = ?');
-        if (!$stmt->execute([$this->id]))
+        $stmt = $DB->prepare('DELETE FROM users_notifications WHERE id_notification = ?');
+        return $stmt->execute([$notificationId]);
+***REMOVED***
+
+    public static function check_notifications(int $userId, bool $autoExpire = true) {
+        global $DB;
+        $stmt = $DB->prepare('SELECT * FROM users_notifications WHERE id_user = ?');
+        if (!$stmt->execute([$userId]))
             return false;
         $notifications = $stmt->fetchAll();
         if ($autoExpire) {
             $stmt = $DB->prepare('DELETE FROM users_notifications WHERE id_user = ?');
-            $stmt->execute([$this->id]);
+            $stmt->execute([$userId]);
     ***REMOVED***
         return $notifications;
 ***REMOVED***

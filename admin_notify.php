@@ -47,9 +47,9 @@ include_once 'include/sidebar.php' ?>
                         </label>
                         <label>
                             <select name="alert_type" required>
-                                <option name="info" selected>Information</option>
-                                <option name="warning">Warning</option>
-                                <option name="severe_warning">Severe Warning</option>
+                                <option value="info" selected>Information</option>
+                                <option value="warning">Warning</option>
+                                <option value="severe_warning">Severe Warning</option>
                             </select>
                         </label>
                         <label>
