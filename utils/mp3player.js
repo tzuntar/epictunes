@@ -78,8 +78,8 @@ function initAudioPlayer(mp3path, rgbBarColor) {
     function seekTo(timeInSeconds) {
         if (context == null)
             initMp3Player(rgbBarColor);
-        seekSlider.value = timeInSeconds;
-        audio.currentTime = audio.duration * (seekSlider.value / 500);
+        audio.currentTime = timeInSeconds;
+        seekSlider.value = (seekSlider.value / 500) / audio.duration;
 ***REMOVED***
 
     function setVolume() {
