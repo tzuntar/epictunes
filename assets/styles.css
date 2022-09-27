@@ -231,11 +231,15 @@ input[type='submit'] {
 }
 
 .sidebar nav ul li {
-    padding: 10px 0;
     color: var(--sidebar-label-color);
     cursor: pointer;
-    line-height: 24px;
     font-weight: 300;
+}
+
+.sidebar li a {
+    display: block;
+    line-height: 24px;
+    padding: 10px 0;
 }
 
 .sidebar nav ul li img {
