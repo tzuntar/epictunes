@@ -789,3 +789,13 @@ class Song extends stdClass {
         return $stmt->execute([$commentId]);
     }
 }
+
+function get_upload_stats_per_month(int $numMonths) {
+    global $DB;
+    $stmt = $DB->prepare('SELECT MONTH(date_added), COUNT(id_song) FROM songs
+        WHERE (date_added >= DATE_SUB(now(), INTERVAL ? MONTH))
+        GROUP BY MONTH(date_added)');
+    if (!$stmt->execute([$numMonths]))
+        return false;
+    return $stmt->fetchAll();
+}
