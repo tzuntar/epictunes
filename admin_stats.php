@@ -30,12 +30,10 @@ include_once 'include/sidebar.php' ?>
                             foreach ($stats as $s)  // fill the fields of all 6 months even if there's no data for them
                                 $results[$month] = $s[0] == $month ? $s[1] : 0;
                     ***REMOVED***
-                        if (isset($results))    // [month][count]... -> [count]...
-                            echo json_encode($results);
-                        ?>');
+                        if (isset($results)) echo json_encode($results); ?>');
                     let months = [];    // map month numbers to names
                     Object.keys(data).reverse().forEach(monthNum => {
-                        months.push(monthNames[parseInt(monthNum)])
+                        months.push(monthNames[parseInt(monthNum) - 1])
                 ***REMOVED***);
                     const ctx = document.getElementById('uploadStats').getContext('2d');
                     const uploadStatsChart = new Chart(ctx, {
