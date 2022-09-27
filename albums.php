@@ -16,7 +16,7 @@ include_once 'include/sidebar.php' ?>
         <h2 class="accent padding-20">My Albums</h2>
         <div class="margin-top-20">
             ***REMOVED*** if ($albums) {
-                render_album_list($albums);
+                render_album_list($albums, $_SESSION['is_admin']);
         ***REMOVED*** ?>
         </div>
     </main>

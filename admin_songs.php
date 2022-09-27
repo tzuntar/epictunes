@@ -18,7 +18,7 @@ include_once 'include/sidebar.php' ?>
             <h2 class="accent padding-20"><?= $document_title ?></h2>
             <div class="margin-top-20">
                 ***REMOVED*** if (isset($allSongs)) {
-                    render_song_list($allSongs);
+                    render_song_list($allSongs, true);
             ***REMOVED*** ?>
             </div>
         </main>

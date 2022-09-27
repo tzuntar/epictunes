@@ -27,11 +27,11 @@ include_once 'include/sidebar.php' ?>
                 ***REMOVED*** if ($songsFound || $albumsFound || $artistsFound) {
                     if ($songsFound) {
                         echo '<h2 class="accent margin-lr-20 light-underline">Songs</h2>';
-                        render_song_list($searchResultSongs);
+                        render_song_list($searchResultSongs, $_SESSION['is_admin']);
                 ***REMOVED***
                     if ($albumsFound) {
                         echo '<h2 class="accent margin-lr-20 light-underline">Albums</h2>';
-                        render_album_list($searchResultAlbums);
+                        render_album_list($searchResultAlbums, $_SESSION['is_admin']);
                 ***REMOVED***
                     if ($artistsFound) {
                         echo '<h2 class="accent margin-lr-20 light-underline">Artists</h2>';

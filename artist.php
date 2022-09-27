@@ -28,7 +28,7 @@ include_once 'include/sidebar.php' ?>
             </section>
             <section class="user-song-list">
                 ***REMOVED*** if (isset($postedSongs)) {
-                    render_song_list($postedSongs);
+                    render_song_list($postedSongs, $_SESSION['is_admin']);
             ***REMOVED*** ?>
             </section>
         </div>
