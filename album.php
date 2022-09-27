@@ -32,7 +32,7 @@ include_once 'include/sidebar.php' ?>
             </section>
             <section class="user-song-list">
                 <?php if (isset($containedSongs)) {
-                    render_song_list($containedSongs);
+                    render_song_list($containedSongs, $_SESSION['is_admin']);
                 } ?>
             </section>
         </div>

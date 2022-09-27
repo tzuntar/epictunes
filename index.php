@@ -16,7 +16,7 @@ include_once 'include/sidebar.php' ?>
             <h2 class="accent padding-20">My Music</h2>
             <div class="margin-top-20">
                 <?php if (isset($userSongs)) {
-                    render_song_list($userSongs);
+                    render_song_list($userSongs, $_SESSION['is_admin']);
                 } ?>
             </div>
         </main>
