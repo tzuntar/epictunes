@@ -21,7 +21,7 @@
 
 ## 🎵 About <a name = "about"></a>
 
-This is the repository of EpicTunes, the best music streaming platform out there.
+This is the repository of EpicTunes, the best music streaming platform out there. Visit it on [epictunes.tobija-zuntar.eu](https://epictunes.tobija-zuntar.eu).
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 

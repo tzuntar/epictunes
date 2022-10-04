@@ -105,12 +105,12 @@ include_once 'include/sidebar.php' ?>
                                         ***REMOVED*** if ($_SESSION['is_admin']) { ?>
                                             <a href="artist.php?id=<?= $comment['id_user'] ?>">
                                                 <strong><?= $comment['user_name'] ?></strong></a>
-                                            at <strong><?= $comment['date_time'] ?></strong> • <a
+                                            at <strong><?= date('d. m. Y, H:i', strtotime($comment['date_time'])) ?></strong> • <a
                                                     href="delete_comment.php?id=<?= $comment['id_comment'] ?>"><em>Delete</em></a>
                                         ***REMOVED*** } else { ?>
                                         <a href="artist.php?id=<?= $comment['id_user'] ?>">
                                             <strong><?= $comment['user_name'] ?></strong></a>
-                                        at <strong><?= $comment['date_time'] ?></strong></p>
+                                        at <strong><?= date('d. m. Y, H:i', strtotime($comment['date_time'])) ?></strong></p>
                                     ***REMOVED*** } ?>
                                     <p><?= highlight_comment_timestamps($comment['content']) ?></p>
                                 </div>
