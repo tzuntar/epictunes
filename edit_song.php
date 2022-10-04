@@ -143,8 +143,7 @@ include_once 'include/sidebar.php' ?>
                                 </div>
                                 <div class="grid-col">
                                     <p>
-                                        <a href="artist.php?id=<?= $comment['id_user'] ?>">
-                                            <strong><?= $comment['user_name'] ?></strong></a>
+                                            <strong><?= $comment['user_name'] ?></strong>
                                         at <strong><?= date('m/d/Y h:i A', strtotime($comment['date_time'])) ?></strong> • <a
                                                 href="delete_comment.php?id=<?= $comment['id_comment'] ?>"><em>Delete</em></a>
                                     </p>
