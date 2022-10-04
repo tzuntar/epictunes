@@ -652,11 +652,6 @@ class Song extends stdClass {
 
     public function insert() {
         global $DB;
-        if (isset($this->album)) {
-            $albumResult = $this->album->get_or_create();
-            if (!$albumResult) return false;
-            $this->album = $albumResult;
-    ***REMOVED***
         if (isset($this->genre)) {
             $genreResult = $this->genre->get_or_create();
             if (!$genreResult) return false;
@@ -666,6 +661,11 @@ class Song extends stdClass {
             $artistResult = $this->artists[$i]->get_or_create();
             if (!$artistResult) return false;
             $this->artists[$i] = $artistResult;
+    ***REMOVED***
+        if (isset($this->album)) {
+            $albumResult = $this->album->get_or_create();
+            if (!$albumResult) return false;
+            $this->album = $albumResult;
     ***REMOVED***
 
         $stmt = $DB->prepare('INSERT INTO songs(name, id_album, id_genre, song_url) VALUES (?, ?, ?, ?)');

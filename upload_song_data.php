@@ -70,7 +70,7 @@ include_once 'include/sidebar.php' ?>
                     </label>
                 </div>
                 <div class="grid-col">
-                    <img src="<?= $mp3tags['album_art'] ?>" alt="Album Art" class="album-art-big"/>
+                    <img src="<?= $mp3tags['album_art'] ?? './assets/img/icons/avatar.svg' ?>" alt="Album Art" class="album-art-big"/>
                 </div>
             </div>
             <p>
