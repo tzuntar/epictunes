@@ -92,6 +92,15 @@ function render_album_list($albums, bool $adminEditControls = false) {
                         <?php } ?>
                         </p>
                     </div>
+                <?php } else { ?>
+                    <div>
+                        <p><a href="album.php?id=<?= $album->id ?>"><?= $album->name ?></a></p>
+                        <p class="sub-label">
+                            <?php foreach ($album->artists as $artist) { ?>
+                        <p><a href="artist.php?id=<?= $artist->id ?>"><?= $artist->name ?></a></p>
+                        <?php } ?>
+                        </p>
+                    </div>
                 <?php } ?>
             </div>
         </div>
