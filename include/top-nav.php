@@ -24,7 +24,7 @@
         foreach ($notifications as $n) { ?>
             <div class="notification-bar notification-<?= str_replace('_', '-', $n['type']) ?>">
                 <p><strong>⚠ <?= $n['content'] ?></strong> •
-                    <?= date('m/d/Y h:i A', strtotime($n['date_time'])) ?>
+                    <?= date('d. m. Y, H:i', strtotime($n['date_time'])) ?>
                     <button onclick="fetch('<?= $top_level ?>/utils/dismissNotification.php?id=<?= $n['id_notification'] ?>').then(() => location.reload())">
                         Dismiss
                     </button>

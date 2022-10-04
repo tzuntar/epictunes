@@ -145,7 +145,7 @@ include_once 'include/sidebar.php' ?>
                                     <p>
                                         <a href="artist.php?id=<?= $comment['id_user'] ?>">
                                             <strong><?= $comment['user_name'] ?></strong></a>
-                                        at <strong><?= $comment['date_time'] ?></strong> • <a
+                                        at <strong><?= date('m/d/Y h:i A', strtotime($comment['date_time'])) ?></strong> • <a
                                                 href="delete_comment.php?id=<?= $comment['id_comment'] ?>"><em>Delete</em></a>
                                     </p>
                                     <p><?= $comment['content'] ?></p>
