@@ -48,7 +48,11 @@ if (isset($_POST['title'])) {
     }
     $result = $newSong->insert();
     $song->delete();
-    if ($result) header('Location: song.php?id=' . $result->id);
+    if ($result) {
+        if ($_SESSION['is_admin'])
+            header('Location: admin_songs.php');
+        header('Location: song.php?id=' . $result->id);
+    }
 }
 
 $songArtists = '';
