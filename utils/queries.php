@@ -208,13 +208,14 @@ class Genre extends stdClass {
 
     public function get_or_create() {
         global $DB;
-        $stmt = $DB->prepare('SELECT id_genre FROM genres WHERE name = ?');
-        if (!$stmt->execute([$this->name])) return false;
-        if ($stmt->rowCount() < 1) {
+        try {
             $stmt = $DB->prepare('INSERT INTO genres (name) VALUES (?)');
-            if (!$stmt->execute([$this->name])) return false;
-            return $this->get_or_create();
-        } else return Genre::get($stmt->fetch()['id_genre']);
+            $stmt->execute([$this->name]);
+        } catch (Exception $ignored) { }
+        $stmt = $DB->prepare('SELECT id_genre FROM genres WHERE name = ?');
+        if (!$stmt->execute([$this->name]))
+            return false;
+        return Genre::get($stmt->fetch()['id_genre']);
     }
 
     public static function get(int $id) {
@@ -378,24 +379,14 @@ class Artist extends stdClass {
 
     public function get_or_create() {
         global $DB;
-        if (isset($this->user)) {
-            $stmt = $DB->prepare('SELECT id_artist FROM artists 
-                 WHERE name = ? AND id_user = ?');
-            if (!$stmt->execute([$this->name, $this->user->id])) return false;
-        } else {
-            $stmt = $DB->prepare('SELECT id_artist FROM artists WHERE name = ?');
-            if (!$stmt->execute([$this->name])) return false;
-        }
-        if ($stmt->rowCount() < 1) {
-            if (isset($this->user)) {
-                $stmt = $DB->prepare('INSERT INTO artists (name, id_user) VALUES (?, ?)');
-                if ($stmt->execute([$this->name, $this->user->id])) return false;
-            } else {
-                $stmt = $DB->prepare('INSERT INTO artists (name) VALUES (?)');
-                if ($stmt->execute([$this->name])) return false;
-            }
-            return $this->get_or_create();
-        } else return Artist::get($stmt->fetch()['id_artist']);
+        try {
+            $stmt = $DB->prepare('INSERT INTO artists (name) VALUES (?)');
+            $stmt->execute([$this->name]);
+        } catch (Exception $ignored) { }
+        $stmt = $DB->prepare('SELECT id_artist FROM artists WHERE name = ?');
+        if (!$stmt->execute([$this->name]))
+            return false;
+        return Artist::get($stmt->fetch()['id_artist']);
     }
 
     public static function get(int $id) {

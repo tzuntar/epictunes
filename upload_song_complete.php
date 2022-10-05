@@ -40,7 +40,7 @@ if (!trim($tags) == '') {
     }
 }
 $result = $song->insert();
-if ($result) {
+if (isset($result->id)) {
     $result->save($_SESSION['id']);
     header('Location: song.php?id=' . $result->id);
 }
