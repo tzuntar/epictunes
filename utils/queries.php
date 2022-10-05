@@ -61,17 +61,6 @@ function db_create_user(string $name, string $username, string $email, string $p
     return false;
 }
 
-/**
- * Returns ID of the last inserted object in the database,
- * regardless of the table
- * @return int the ID
- */
-function db_last_insert_id(): int {
-    global $DB;
-    $id = $DB->query('SELECT LAST_INSERT_ID()');
-    return $id->fetch()[0];
-}
-
 class Album {
     public int $id;
     public string $name;
@@ -117,7 +106,7 @@ class Album {
         while ($a = $stmt->fetch()) {
             $album->id = $a['id_album'];    // Do NOT ever forget to do this again!
             $album->name = $a['album_name'];
-            if ($a['id_artist'] !== null) $album->artists[] = Artist::get($a['id_artist']);
+            if ($a['id_artist'] != null) $album->artists[] = Artist::get($a['id_artist']);
     ***REMOVED***
         return $album;
 ***REMOVED***
@@ -167,7 +156,7 @@ class Album {
         if ($stmt->rowCount() < 1) {
             $stmt = $DB->prepare('INSERT INTO albums (name) VALUES (?)');
             if (!$stmt->execute([$this->name])) return false;
-            $this->id = db_last_insert_id();
+            $this->id = $DB->lastInsertId();
             for ($i = 0; $i < sizeof($this->artists); $i++) {
                 $artistResult = $this->artists[$i]->get_or_create();
                 if (!$artistResult) return false;
@@ -176,8 +165,7 @@ class Album {
                 if (!$stmt->execute([$this->id, $this->artists[$i]->id])) return false;
         ***REMOVED***
             return $this->get_or_create();
-    ***REMOVED***
-        return Album::get($stmt->fetch()['id_album']);
+    ***REMOVED*** else return Album::get($stmt->fetch()['id_album']);
 ***REMOVED***
 
     public function insert() {
@@ -189,7 +177,7 @@ class Album {
         foreach ($this->artists as $a) $artistList[] = $a;
         if (!isset($artistList))    // empty artist list safeguard return false;
             if (!$stmt->execute($artistList)) return false;
-        return Album::get(db_last_insert_id());
+        return Album::get($DB->lastInsertId());
 ***REMOVED***
 
     public function trigger_dead_check(): bool {
@@ -226,8 +214,7 @@ class Genre extends stdClass {
             $stmt = $DB->prepare('INSERT INTO genres (name) VALUES (?)');
             if (!$stmt->execute([$this->name])) return false;
             return $this->get_or_create();
-    ***REMOVED***
-        return Genre::get($stmt->fetch()['id_genre']);
+    ***REMOVED*** else return Genre::get($stmt->fetch()['id_genre']);
 ***REMOVED***
 
     public static function get(int $id) {
@@ -408,8 +395,7 @@ class Artist extends stdClass {
                 if ($stmt->execute([$this->name])) return false;
         ***REMOVED***
             return $this->get_or_create();
-    ***REMOVED***
-        return Artist::get($stmt->fetch()['id_artist']);
+    ***REMOVED*** else return Artist::get($stmt->fetch()['id_artist']);
 ***REMOVED***
 
     public static function get(int $id) {
@@ -458,8 +444,7 @@ class SongTag extends stdClass {
             $stmt = $DB->prepare('INSERT INTO tags (name) VALUES (?)');
             if (!$stmt->execute([$this->name])) return false;
             return $this->get_or_create();
-    ***REMOVED***
-        return SongTag::get($stmt->fetch()['id_tag']);
+    ***REMOVED*** else return SongTag::get($stmt->fetch()['id_tag']);
 ***REMOVED***
 
     public static function get(int $id) {
@@ -671,7 +656,7 @@ class Song extends stdClass {
         $stmt = $DB->prepare('INSERT INTO songs(name, id_album, id_genre, song_url) VALUES (?, ?, ?, ?)');
         if (!$stmt->execute([$this->title, $this->album->id, $this->genre->id, $this->file_url])) return false;
 
-        $this->id = db_last_insert_id();
+        $this->id = $DB->lastInsertId();
         foreach ($this->artists as $artist) {
             $stmt = $DB->prepare('INSERT INTO songs_artists (id_song, id_artist) VALUES (?, ?)');
             if (!$stmt->execute([$this->id, $artist->id])) return false;
@@ -680,10 +665,10 @@ class Song extends stdClass {
             $tagResult = $tag->get_or_create();
             if ($tagResult) {
                 $stmt = $DB->prepare('INSERT INTO songs_tags (id_song, id_tag) VALUES (?, ?)');
-                !$stmt->execute([$this->id, $tagResult->id]);
+                $stmt->execute([$this->id, $tagResult->id]);
         ***REMOVED***
     ***REMOVED***
-        return Song::get_by_title($this->title);
+        return Song::get($this->id);
 ***REMOVED***
 
     public static function get_by_title(string $title) {
