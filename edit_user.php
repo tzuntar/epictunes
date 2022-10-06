@@ -34,51 +34,47 @@ include_once 'include/sidebar.php' ?>
         <h2 class="accent padding-20">Edit User Data</h2>
         <form class="margin-top-20" method="post" enctype="multipart/form-data">
             <div class="grid-container user-edit-grid">
-                <div class="grid-col">
-                    <div class="grid-row">
-                        <p class="field-label">Name:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p class="field-label">Username:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p class="field-label">Email:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p class="field-label">Password:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p class="field-label">Confirm Password:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p class="field-label">Administrator:</p>
-                    </div>
-                </div>
-                <div class="grid-col">
-                    <label>
-                        <input type="text" name="name" required placeholder="Full name"
-                               value="<?= $user->name ?>"/>
-                    </label>
-                    <label>
-                        <input type="text" name="username" required placeholder="Username (without spaces)"
-                               value="<?= $user->username ?>"/>
-                    </label>
-                    <label>
-                        <input type="email" name="email" required placeholder="E-mail"
-                               value="<?= $user->email ?? '' ?>"/>
-                    </label>
-                    <label>
-                        <input type="password" name="password" placeholder="New password"/>
-                    </label>
-                    <label>
-                        <input type="password" name="confirm_password" placeholder="Re-enter the password"/>
-                    </label>
-                    <p>
-                        <label>
-                            <input type="checkbox" name="is_admin" <?= $user->isAdmin ? ' checked ' : '' ?>/>
-                        </label>
-                    </p>
-                </div>
+                <table class="edit-table">
+                    <tr>
+                        <td><p class="field-label">Name:</p></td>
+                        <td><label>
+                                <input type="text" name="name" required placeholder="Full name"
+                                       value="<?= $user->name ?>"/>
+                            </label></td>
+                    </tr>
+                    <tr>
+                        <td><p class="field-label">Username:</p></td>
+                        <td><label>
+                                <input type="text" name="username" required placeholder="Username (without spaces)"
+                                       value="<?= $user->username ?>"/>
+                            </label></td>
+                    </tr>
+                    <tr>
+                        <td><p class="field-label">E-mail:</p></td>
+                        <td><label>
+                                <input type="email" name="email" required placeholder="E-mail"
+                                       value="<?= $user->email ?? '' ?>"/>
+                            </label></td>
+                    </tr>
+                    <tr>
+                        <td><p class="field-label">Password:</p></td>
+                        <td><label>
+                                <input type="password" name="password" placeholder="New password"/>
+                            </label></td>
+                    </tr>
+                    <tr>
+                        <td><p class="field-label">Confirm:</p></td>
+                        <td><label>
+                                <input type="password" name="confirm_password" placeholder="Re-enter the password"/>
+                            </label></td>
+                    </tr>
+                    <tr>
+                        <td><p class="field-label">Administrator:</p></td>
+                        <td><label>
+                                <input type="checkbox" name="is_admin" <?= $user->isAdmin ? ' checked ' : '' ?>/>
+                            </label></td>
+                    </tr>
+                </table>
             </div>
             <p class="header-center">
                 <input type="submit" value="Save" class="margin-top-20"/>
