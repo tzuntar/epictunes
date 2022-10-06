@@ -30,31 +30,33 @@ include_once 'include/sidebar.php' ?>
             <form class="margin-top-20" method="post" enctype="multipart/form-data">
                 <div class="grid-container user-edit-grid">
                     <div class="grid-col">
-                        <div class="grid-row">
-                            <p class="field-label">Username:</p>
-                        </div>
-                        <div class="grid-row">
-                            <p class="field-label">Alert Type:</p>
-                        </div>
-                        <div class="grid-row">
-                            <p class="field-label">Message:</p>
-                        </div>
-                    </div>
-                    <div class="grid-col">
-                        <label>
-                            <input type="text" name="userid" required value="<?= $targetUser->username ?>" readonly
-                                   disabled/>
-                        </label>
-                        <label>
-                            <select name="alert_type" required>
-                                <option value="info" selected>Information</option>
-                                <option value="warning">Warning</option>
-                                <option value="severe_warning">Severe Warning</option>
-                            </select>
-                        </label>
-                        <label>
-                            <textarea name="message" required placeholder="Enter your message..."></textarea>
-                        </label>
+                        <table class="edit-table">
+                            <tr>
+                                <td><p class="field-label">Username:</p></td>
+                                <td><label>
+                                        <input type="text" name="userid" required value="<?= $targetUser->username ?>"
+                                               readonly
+                                               disabled/>
+                                    </label></td>
+                            </tr>
+                            <tr>
+                                <td><p class="field-label">Alert Type:</p></td>
+                                <td><label>
+                                        <select name="alert_type" required>
+                                            <option value="info" selected>Information</option>
+                                            <option value="warning">Warning</option>
+                                            <option value="severe_warning">Severe Warning</option>
+                                        </select>
+                                    </label></td>
+                            </tr>
+                            <tr>
+                                <td><p class="field-label">Message:</p></td>
+                                <td><label>
+                                        <textarea name="message" required
+                                                  placeholder="Enter your message..."></textarea>
+                                    </label></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
                 <p>
