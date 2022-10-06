@@ -75,51 +75,51 @@ include_once 'include/sidebar.php' ?>
         <form class="margin-top-20" method="post" enctype="multipart/form-data">
             <div class="grid-container meta-edit-grid">
                 <div class="grid-col">
-                    <div class="grid-row">
-                        <p class="field-label">Title:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p class="field-label">Artists:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p class="field-label">Album:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p class="field-label">...by:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p class="field-label">Genre:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p class="field-label">Tags:</p>
-                    </div>
-                </div>
-                <div class="grid-col">
-                    <label>
-                        <input type="text" name="title" required placeholder="Song title"
-                               value="<?= $song->title ?>"/>
-                    </label>
-                    <label>
-                        <input type="text" name="artist" required placeholder="Artist names (separated by commas)"
-                               value="<?= isset($songArtists) ? rtrim($songArtists, ', ') : '' ?>"/>
-                    </label>
-                    <label>
-                        <input type="text" name="album" required placeholder="Album name"
-                               value="<?= $song->album->name ?? '' ?>"/>
-                    </label>
-                    <label>
-                        <input type="text" name="album_artist" required
-                               placeholder="Album artist names (separated by commas)"
-                               value="<?= isset($albumArtists) ? rtrim($albumArtists, ', ') : '' ?>"/>
-                    </label>
-                    <label>
-                        <input type="text" name="genre" required placeholder="Song genre"
-                               value="<?= $song->genre->name ?? '' ?>"/>
-                    </label>
-                    <label>
-                        <input type="text" name="tags" placeholder="Song tags (separated by commas)"
-                               value="<?= isset($songTags) ? rtrim($songTags, ', ') : '' ?>"/>
-                    </label>
+                    <table class="edit-table">
+                        <tr>
+                            <td><p class="field-label">Title:</p></td>
+                            <td><label>
+                                    <input type="text" name="title" required placeholder="Song title"
+                                           value="<?= $song->title ?>"/>
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td><p class="field-label">Artists:</p></td>
+                            <td><label>
+                                    <input type="text" name="artist" required placeholder="Artist names (separated by commas)"
+                                           value="<?= isset($songArtists) ? rtrim($songArtists, ', ') : '' ?>"/>
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td><p class="field-label">Album:</p></td>
+                            <td><label>
+                                    <input type="text" name="album" required placeholder="Album name"
+                                           value="<?= $song->album->name ?? '' ?>"/>
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td><p class="field-label">...by:</p></td>
+                            <td><label>
+                                    <input type="text" name="album_artist" required
+                                           placeholder="Album artist names (separated by commas)"
+                                           value="<?= isset($albumArtists) ? rtrim($albumArtists, ', ') : '' ?>"/>
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td><p class="field-label">Genre:</p></td>
+                            <td><label>
+                                    <input type="text" name="genre" required placeholder="Song genre"
+                                           value="<?= $song->genre->name ?? '' ?>"/>
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td><p class="field-label">Tags:</p></td>
+                            <td><label>
+                                    <input type="text" name="tags" placeholder="Song tags (separated by commas)"
+                                           value="<?= isset($songTags) ? rtrim($songTags, ', ') : '' ?>"/>
+                                </label></td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="grid-col">
                     <img src="<?= $albumArt ?: '/assets/img/icons/avatar.svg' ?>" alt="Album Art"
@@ -148,8 +148,10 @@ include_once 'include/sidebar.php' ?>
                                 </div>
                                 <div class="grid-col">
                                     <p>
-                                            <strong><?= $comment['user_name'] ?></strong>
-                                        at <strong><?= date('d. m. Y, H:i', strtotime($comment['date_time'])) ?></strong> • <a
+                                        <strong><?= $comment['user_name'] ?></strong>
+                                        at
+                                        <strong><?= date('d. m. Y, H:i', strtotime($comment['date_time'])) ?></strong> •
+                                        <a
                                                 href="delete_comment.php?id=<?= $comment['id_comment'] ?>"><em>Delete</em></a>
                                     </p>
                                     <p><?= $comment['content'] ?></p>

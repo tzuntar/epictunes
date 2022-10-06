@@ -24,50 +24,50 @@ include_once 'include/sidebar.php' ?>
               enctype="multipart/form-data">
             <div class="grid-container meta-edit-grid">
                 <div class="grid-col">
-                    <div class="grid-row">
-                        <p>Title:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p>Artists:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p>Album:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p>...by:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p>Genre:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p>Tags:</p>
-                    </div>
-                </div>
-                <div class="grid-col">
-                    <label>
-                        <input type="text" name="title" required placeholder="Song title"
-                               value="<?= $mp3tags['title'] ?>"/>
-                    </label>
-                    <label>
-                        <input type="text" name="artist" required placeholder="Artist names (separated by commas)"
-                               value="<?= $mp3tags['artist'] ?>"/>
-                    </label>
-                    <label>
-                        <input type="text" name="album" required placeholder="Album name"
-                               value="<?= $mp3tags['album'] ?>"/>
-                    </label>
-                    <label>
-                        <input type="text" name="album_artist" required
-                               placeholder="Album artist names (separated by commas)"
-                               value="<?= $mp3tags['album_artist'] ?>"/>
-                    </label>
-                    <label>
-                        <input type="text" name="genre" required placeholder="Song genre"
-                               value="<?= $mp3tags['genre'] ?>"/>
-                    </label>
-                    <label>
-                        <input type="text" name="tags" placeholder="Song tags (separated by commas)"/>
-                    </label>
+                    <table class="edit-table">
+                        <tr>
+                            <td><p class="field-label">Title:</p></td>
+                            <td><label>
+                                    <input type="text" name="title" required placeholder="Song title"
+                                           value="<?= $mp3tags['title'] ?>"/>
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td><p class="field-label">Artists:</p></td>
+                            <td><label>
+                                    <input type="text" name="artist" required placeholder="Artist names (separated by commas)"
+                                           value="<?= $mp3tags['artist'] ?>"/>
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td><p class="field-label">Album:</p></td>
+                            <td><label>
+                                    <input type="text" name="album" required placeholder="Album name"
+                                           value="<?= $mp3tags['album'] ?>"/>
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td><p class="field-label">...by:</p></td>
+                            <td><label>
+                                    <input type="text" name="album_artist" required
+                                           placeholder="Album artist names (separated by commas)"
+                                           value="<?= $mp3tags['album_artist'] ?>"/>
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td><p class="field-label">Genre:</p></td>
+                            <td><label>
+                                    <input type="text" name="genre" required placeholder="Song genre"
+                                           value="<?= $mp3tags['genre'] ?>"/>
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td><p class="field-label">Tags:</p></td>
+                            <td><label>
+                                    <input type="text" name="tags" placeholder="Song tags (separated by commas)"/>
+                                </label></td>
+                        </tr>
+                    </table>
                 </div>
                 <?php if (isset($mp3tags['album_art'])) { ?>
                 <div class="grid-col">
