@@ -15,7 +15,11 @@ const getImgMutedColorRgb = function (sourceTagId) {
 }
 
 const getImgVibrantColorRgb = function (sourceTagId) {
-    const colors = new Vibrant(document.getElementById(sourceTagId));
-    const rgb = colors.swatches().DarkVibrant.rgb;
-    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+    try {
+        const colors = new Vibrant(document.getElementById(sourceTagId));
+        const rgb = colors.swatches().DarkVibrant.rgb;
+        return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+    } catch (ignored) {
+        return 'rgb(0, 0, 0)';
+    }
 }

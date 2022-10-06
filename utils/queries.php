@@ -211,7 +211,8 @@ class Genre extends stdClass {
         try {
             $stmt = $DB->prepare('INSERT INTO genres (name) VALUES (?)');
             $stmt->execute([$this->name]);
-        } catch (Exception $ignored) { }
+        } catch (Exception $ignored) {
+        }
         $stmt = $DB->prepare('SELECT id_genre FROM genres WHERE name = ?');
         if (!$stmt->execute([$this->name]))
             return false;
@@ -382,7 +383,8 @@ class Artist extends stdClass {
         try {
             $stmt = $DB->prepare('INSERT INTO artists (name) VALUES (?)');
             $stmt->execute([$this->name]);
-        } catch (Exception $ignored) { }
+        } catch (Exception $ignored) {
+        }
         $stmt = $DB->prepare('SELECT id_artist FROM artists WHERE name = ?');
         if (!$stmt->execute([$this->name]))
             return false;

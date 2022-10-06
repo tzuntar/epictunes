@@ -67,7 +67,7 @@ include_once 'include/sidebar.php' ?>
                     </div>
                     <div class="grid-col flex-column">
                         <p>&nbsp;</p>
-                        <img src="<?= $albumArt ?>" class="album-art-big flex-end"
+                        <img src="<?= $albumArt ?: '/assets/img/icons/avatar.svg' ?>" class="album-art-big flex-end"
                              id="albumArtBox" alt="Album Art"/>
                     </div>
                 </section>
@@ -103,12 +103,16 @@ include_once 'include/sidebar.php' ?>
                                 <div class="grid-col">
                                     <p>
                                         <?php if ($_SESSION['is_admin']) { ?>
-                                                <strong><?= $comment['user_name'] ?></strong>
-                                            at <strong><?= date('d. m. Y, H:i', strtotime($comment['date_time'])) ?></strong> • <a
+                                            <strong><?= $comment['user_name'] ?></strong>
+                                            at
+                                            <strong><?= date('d. m. Y, H:i', strtotime($comment['date_time'])) ?></strong> •
+                                            <a
                                                     href="delete_comment.php?id=<?= $comment['id_comment'] ?>"><em>Delete</em></a>
                                         <?php } else { ?>
-                                            <strong><?= $comment['user_name'] ?></strong>
-                                        at <strong><?= date('d. m. Y, H:i', strtotime($comment['date_time'])) ?></strong></p>
+                                        <strong><?= $comment['user_name'] ?></strong>
+                                        at
+                                        <strong><?= date('d. m. Y, H:i', strtotime($comment['date_time'])) ?></strong>
+                                    </p>
                                     <?php } ?>
                                     <p><?= highlight_comment_timestamps($comment['content']) ?></p>
                                 </div>

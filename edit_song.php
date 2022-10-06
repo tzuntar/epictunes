@@ -64,6 +64,7 @@ foreach ($song->album->artists as $artist)
     $albumArtists .= $artist->name . ', ';
 foreach ($song->tags as $tag)
     $songTags .= $tag->name . ', ';
+$albumArt = mp3_get_album_art('userdata/music/' . $song->file_url);
 
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
@@ -121,7 +122,7 @@ include_once 'include/sidebar.php' ?>
                     </label>
                 </div>
                 <div class="grid-col">
-                    <img src="<?= mp3_get_album_art('userdata/music/' . $song->file_url) ?>" alt="Album Art"
+                    <img src="<?= $albumArt ?: '/assets/img/icons/avatar.svg' ?>" alt="Album Art"
                          class="album-art-big" id="albumArtBox"/>
                 </div>
             </div>

@@ -30,7 +30,7 @@ function frameLooper(rgbBarColor) {
     }
 }
 
-function initAudioPlayer(mp3path, rgbBarColor) {
+function initAudioPlayer(mp3path, rgbBarColor = "000") {
     let playButton, seekSlider, volumeSlider,
         seeking = false, current_time, duration_time;
     audio.src = mp3path;

@@ -8,7 +8,8 @@ function render_song_list(array $songs, bool $adminEditControls = false) {
         <div class="song-list-card">
             <div class="flex-container">
                 <div>
-                    <img class="album-art-list" src="<?= $albumArt ?>" alt="Album Art"/>
+                    <img class="album-art-list" src="<?= $albumArt ?: '/assets/img/icons/avatar.svg' ?>"
+                         alt="Album Art"/>
                 </div>
                 <div class="flex-container flex-grow-right">
                     <div>

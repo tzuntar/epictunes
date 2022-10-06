@@ -69,9 +69,11 @@ include_once 'include/sidebar.php' ?>
                         <input type="text" name="tags" placeholder="Song tags (separated by commas)"/>
                     </label>
                 </div>
+                <?php if (isset($mp3tags['album_art'])) { ?>
                 <div class="grid-col">
-                    <img src="<?= $mp3tags['album_art'] ?? './assets/img/icons/avatar.svg' ?>" alt="Album Art" class="album-art-big"/>
+                    <img src="<?= $mp3tags['album_art'] ?: '/assets/img/icons/avatar.svg' ?>" alt="Album Art" class="album-art-big"/>
                 </div>
+                <?php } ?>
             </div>
             <p>
                 <label>
