@@ -783,3 +783,13 @@ function get_upload_stats_per_month(int $numMonths) {
         return false;
     return $stmt->fetchAll();
 }
+
+function get_comment_stats_per_month(int $numMonths) {
+    global $DB;
+    $stmt = $DB->prepare('SELECT MONTH(date_time), COUNT(id_comment) FROM comments_songs
+        WHERE (date_time >= DATE_SUB(now(), INTERVAL ? MONTH))
+        GROUP BY MONTH(date_time)');
+    if (!$stmt->execute([$numMonths]))
+        return false;
+    return $stmt->fetchAll();
+}
