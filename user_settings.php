@@ -19,7 +19,8 @@ if (!empty($_FILES['profile_photo']['name'])) {
 //    global $top_level;
     $path = pathinfo($_FILES['profile_photo']['name']);
     $imageFile = $path['filename'] . '-' . uniqid() . '.' . $path['extension'];   // to avoid filename collisions
-    $uploadTarget = /*$top_level . */'./userdata/profile_pics/' . $imageFile;
+    $uploadTarget = /*$top_level . */
+        './userdata/profile_pics/' . $imageFile;
     if (move_uploaded_file($_FILES['profile_photo']['tmp_name'], $uploadTarget)
         && $user->update_profile_pic($uploadTarget))
         $_SESSION['profile_pic'] = $uploadTarget;
@@ -34,22 +35,20 @@ include_once 'include/sidebar.php' ?>
         <form class="margin-top-20" method="post" enctype="multipart/form-data">
             <h2 class="accent margin-lr-20 light-underline">Change Password</h2>
             <div class="grid-container user-edit-grid margin-top-20">
-                <div class="grid-col">
-                    <div class="grid-row">
-                        <p class="field-label">Password:</p>
-                    </div>
-                    <div class="grid-row">
-                        <p class="field-label">Confirm Password:</p>
-                    </div>
-                </div>
-                <div class="grid-col">
-                    <label>
-                        <input type="password" name="password" placeholder="New password"/>
-                    </label>
-                    <label>
-                        <input type="password" name="confirm_password" placeholder="Re-enter the password"/>
-                    </label>
-                </div>
+                <table class="edit-table">
+                    <tr>
+                        <td><p class="field-label">Password:</p></td>
+                        <td><label>
+                                <input type="password" name="password" placeholder="New password"/>
+                            </label></td>
+                    </tr>
+                    <tr>
+                        <td><p class="field-label">Confirm:</p></td>
+                        <td><label>
+                                <input type="password" name="confirm_password" placeholder="Re-enter the password"/>
+                            </label></td>
+                    </tr>
+                </table>
             </div>
 
             <h2 class="accent margin-lr-20 light-underline">Change Profile Photo</h2>
