@@ -25,7 +25,7 @@
         <?php } ?>
         <p>Account</p>
         <ul>
-            <!--            <li><a href="posted_songs.php"><img src="./assets/img/icons/music.svg" alt=""/>Posted Songs</a></li>-->
+            <li><a href="posted_songs.php"><img src="./assets/img/icons/music.svg" alt=""/>Posted Songs</a></li>
             <li><a href="user_settings.php"><img src="./assets/img/icons/settings.svg" alt=""/>Preferences</a></li>
             <li><a href="logout.php"><img src="./assets/img/icons/logout.svg" alt=""/>Log Out</a></li>
         </ul>

@@ -19,8 +19,10 @@ if (isset($_GET['action'])) {
     header('Location: song.php?id=' . $_GET['id']);
 }
 
-$mainArtist = $songData->album->artists[0];
-$mainArtistId = $songData->album->artists[0]->id;
+$mainArtist = $songData->artists[0];
+$mainArtistId = $songData->artists[0]->id;
+if (isset($mainArtist->user->profilePicUrl))
+    $mainArtistPhoto = $mainArtist->user->profilePicUrl;
 $document_title = $songData->title . ' by ' . $mainArtist->name;
 $mp3path = 'userdata/music/' . $songData->file_url;
 $albumArt = mp3_get_album_art($mp3path);
@@ -73,10 +75,19 @@ include_once 'include/sidebar.php' ?>
                 </section>
                 <section class="artist-division grid-container padding-lr-20">
                     <div class="grid-col">
-                        <img class="artist-photo" src="./assets/img/icons/avatar.svg" alt="Artist's Photo"/>
+                        <img class="artist-photo"
+                             src="<?= $mainArtistPhoto ?: './assets/img/icons/avatar.svg' ?>"
+                             alt="Artist's Photo"/>
                     </div>
                     <div class="grid-col">
                         <h2><a class="accent" href="artist.php?id=<?= $mainArtistId ?>"><?= $mainArtist->name ?></a>
+                            <?php if (sizeof($songData->artists) > 1) { ?>
+                                <strong class="fine-print"> • </strong>
+                                <?php for ($i = 1; $i < sizeof($songData->artists); $i++) { ?>
+                                    <a class="action-link fine-print"
+                                       href="artist.php?id=<?= $songData->artists[$i]->id ?>"><?= $songData->artists[$i]->name ?></a>
+                                <?php } ?>
+                            <?php } ?>
                         </h2>
                         <a class="action-link fine-print" href="artist.php?id=<?= $mainArtistId ?>">View profile →</a>
                     </div>

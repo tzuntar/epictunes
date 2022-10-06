@@ -10,6 +10,8 @@ $artist = Artist::get($_GET['id']);
 $postedSongs = Song::get_by_artist($_GET['id']);
 if (!$artist) header('Location: ' . $_SERVER['HTTP_REFERER']);
 $document_title = $artist->name . "'s Profile";
+if (isset($artist->user->profilePicUrl))
+    $artistPhoto = $artist->user->profilePicUrl;
 
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
@@ -20,7 +22,8 @@ include_once 'include/sidebar.php' ?>
         <div class="margin-top-20">
             <section class="user-summary-division grid-container">
                 <div class="grid-col centered-flex-container">
-                    <img class="user-profile-pic" src="/assets/img/icons/avatar.svg" alt="Profile Picture"/>
+                    <img class="user-profile-pic" src="<?= $artistPhoto ?: '/assets/img/icons/avatar.svg' ?>"
+                         alt="Profile Picture"/>
                 </div>
                 <div class="grid-col">
                     <h1 class="user-name"><?= $artist->name ?></h1>

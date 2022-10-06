@@ -37,7 +37,7 @@ function render_user_list(array $users) {
         <div class="song-list-card">
             <div class="flex-container">
                 <div>
-                    <img class="album-art-list" alt="Profile Photo"
+                    <img class="album-art-list user-profile-pic" alt="Profile Photo"
                          src="<?= $user->profilePicUrl ?? './assets/img/icons/avatar.svg' ?>"/>
                 </div>
                 <div class="flex-container flex-grow-right">
@@ -58,11 +58,15 @@ function render_user_list(array $users) {
 }
 
 function render_artist_list($artists) {
-    foreach ($artists as $artist) { ?>
+    foreach ($artists as $artist) {
+        if (isset($artist->user->profilePicUrl))
+            $artistPhoto = $artist->user->profilePicUrl;
+        else unset($artistPhoto) ?>
         <div class="song-list-card">
             <div class="flex-container">
                 <div>
-                    <img class="album-art-list profile-photo-list" src="/assets/img/icons/avatar.svg"
+                    <img class="album-art-list user-profile-pic"
+                         src="<?= $artistPhoto ?: '/assets/img/icons/avatar.svg' ?>"
                          alt="Artist's Photo"/>
                 </div>
                 <div>
@@ -81,7 +85,7 @@ function render_album_list($albums, bool $adminEditControls = false) {
         <div class="song-list-card">
             <div class="flex-container">
                 <div>
-                    <img class="album-art-list profile-photo-list" src="/assets/img/icons/avatar.svg"
+                    <img class="album-art-list" src="/assets/img/icons/avatar.svg"
                          alt="Album Art"/>
                 </div>
                 <?php if ($adminEditControls) { ?>

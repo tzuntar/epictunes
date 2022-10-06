@@ -182,7 +182,7 @@ input[type='submit'] {
 }
 
 .accent {
-    color: var(--color-accent);
+    color: var(--color-accent) !important;
 }
 
 .accent-underline {
@@ -434,6 +434,7 @@ input[type='submit'] {
     width: 70px;
     height: 70px;
     margin-right: 15px;
+    border-radius: 50%;
 }
 
 .artist-division h2 {
@@ -496,6 +497,7 @@ input[type='submit'] {
 .user-profile-pic {
     width: 70px;
     height: 70px;
+    border-radius: 50% !important;
 }
 
 /* Upload Pages */

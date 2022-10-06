@@ -372,6 +372,7 @@ class Artist extends stdClass {
                 $artist = new Artist();
                 $artist->id = $a['id_artist'];
                 $artist->name = $a['name'];
+                if (isset($a['id_user'])) $artist->user = User::get($a['id_user']);
                 $artists[] = $artist;
             }
         }
@@ -381,8 +382,13 @@ class Artist extends stdClass {
     public function get_or_create() {
         global $DB;
         try {
-            $stmt = $DB->prepare('INSERT INTO artists (name) VALUES (?)');
-            $stmt->execute([$this->name]);
+            if (isset($this->user->id)) {
+                $stmt = $DB->prepare('INSERT INTO artists (name, id_user) VALUES (?, ?)');
+                $stmt->execute([$this->name, $this->user->id]);
+            } else {
+                $stmt = $DB->prepare('INSERT INTO artists (name) VALUES (?)');
+                $stmt->execute([$this->name]);
+            }
         } catch (Exception $ignored) {
         }
         $stmt = $DB->prepare('SELECT id_artist FROM artists WHERE name = ?');

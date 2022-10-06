@@ -2,13 +2,17 @@
 session_start();
 if (!isset($_SESSION['identifier']))
     header('Location: login.php');
-if (!isset($_POST['filename']) || !isset($_POST['title']))
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
+if (empty($_POST['filename']) || empty($_POST['title']))
+    header('Location: upload_song.php');
 require_once 'utils/queries.php';
 $song = new Song();
 $song->file_url = $_POST['filename'];
 $song->title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $artistsEntry = filter_input(INPUT_POST, 'artist', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$userArtist = new Artist(); // set current user as main artist
+$userArtist->name = $_SESSION['name'];
+$userArtist->user = User::get($_SESSION['id']);
+$song->artists[] = $userArtist;
 if (!trim($artistsEntry) == '') {
     $artistsEntry = str_replace(', ', ',', $artistsEntry);
     foreach (explode(',', $artistsEntry) as $a) {

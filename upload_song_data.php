@@ -33,7 +33,7 @@ include_once 'include/sidebar.php' ?>
                                 </label></td>
                         </tr>
                         <tr>
-                            <td><p class="field-label">Artists:</p></td>
+                            <td><p class="field-label">Collaborators:</p></td>
                             <td><label>
                                     <input type="text" name="artist" required placeholder="Artist names (separated by commas)"
                                            value="<?= $mp3tags['artist'] ?>"/>
