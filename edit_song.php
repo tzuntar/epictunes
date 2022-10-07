@@ -55,21 +55,20 @@ if (isset($_POST['title'])) {
     }
 }
 
-$songArtists = '';
 $albumArtists = '';
 $songTags = '';
-foreach ($song->artists as $artist)
-    $songArtists .= $artist->name . ', ';
 foreach ($song->album->artists as $artist)
     $albumArtists .= $artist->name . ', ';
 foreach ($song->tags as $tag)
     $songTags .= $tag->name . ', ';
 $albumArt = mp3_get_album_art('userdata/music/' . $song->file_url);
+$artistsNotIn = Artist::get_artists_not_in($song);
 
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
 <div class="root-container">
     <?php include_once 'include/top-nav.php' ?>
+    <link rel="stylesheet" href="/assets/combobox.css"/>
     <main>
         <h2 class="accent padding-20">Edit Song Data</h2>
         <form class="margin-top-20" method="post" enctype="multipart/form-data">
@@ -83,12 +82,27 @@ include_once 'include/sidebar.php' ?>
                                            value="<?= $song->title ?>"/>
                                 </label></td>
                         </tr>
-                        <tr>
+                        <tr class="vertical-bottom">
                             <td><p class="field-label">Artists:</p></td>
-                            <td><label>
-                                    <input type="text" name="artist" required placeholder="Artist names (separated by commas)"
-                                           value="<?= isset($songArtists) ? rtrim($songArtists, ', ') : '' ?>"/>
-                                </label></td>
+                            <td>
+                                <span id="combo3-remove" style="display: none">remove</span>
+                                <ul class="selected-options" id="artist-combo-selected"></ul>
+                                <div class="combo js-multiselect">
+                                    <input aria-activedescendant=""
+                                           aria-autocomplete="none"
+                                           aria-controls="artist-listbox"
+                                           aria-expanded="false"
+                                           aria-haspopup="listbox"
+                                           aria-labelledby="artist-combo artist-combo-selected"
+                                           id="artist-combo"
+                                           name="artist-combo"
+                                           class="combo-input"
+                                           role="combobox"
+                                           placeholder="Search for artists..."
+                                           type="text"/>
+                                    <div class="combo-menu" role="listbox" id="artist-listbox"></div>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td><p class="field-label">Album:</p></td>
@@ -128,6 +142,7 @@ include_once 'include/sidebar.php' ?>
             </div>
             <p>
                 <input type="hidden" name="filename" value="<?= $song->file_url ?>" readonly/>
+                <input type="hidden" name="artist" value="" id="artistsHidden"/>
             </p>
             <p class="header-center">
                 <input type="submit" value="Save" class="margin-top-20"/>
@@ -151,8 +166,7 @@ include_once 'include/sidebar.php' ?>
                                         <strong><?= $comment['user_name'] ?></strong>
                                         at
                                         <strong><?= date('d. m. Y, H:i', strtotime($comment['date_time'])) ?></strong> •
-                                        <a
-                                                href="delete_comment.php?id=<?= $comment['id_comment'] ?>"><em>Delete</em></a>
+                                        <a href="delete_comment.php?id=<?= $comment['id_comment'] ?>"><em>Delete</em></a>
                                     </p>
                                     <p><?= $comment['content'] ?></p>
                                 </div>
@@ -163,5 +177,24 @@ include_once 'include/sidebar.php' ?>
             <?php } ?>
         </form>
     </main>
+    <script src="/utils/combobox.js"></script>
+    <script>
+        const artists = [];
+        <?php if (isset($song->artists))
+            foreach ($song->artists as $artist)
+                echo "artists.push({text: `" . html_entity_decode($artist->name) . "`, selected: true});";
+        foreach ($artistsNotIn as $entry)
+            echo "artists.push({text: `" . html_entity_decode($entry['name']) . "`, selected: false});" ?>
+        const comboBox = initMultiselect('.js-multiselect', artists);
+
+        function syncArtists() {
+            let items = '';
+            comboBox.selectedEl.querySelectorAll('li').forEach(li => items += li.outerText.replace('"', '\\"') + ',');
+            document.getElementById('artistsHidden').value = items.substring(0, items.length - 1);
+        }
+
+        syncArtists();
+        document.getElementById('artist-combo').addEventListener('change', () => syncArtists(), false);
+    </script>
 </div>
 <?php include_once 'include/footer.php' ?>

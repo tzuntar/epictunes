@@ -379,6 +379,17 @@ class Artist extends stdClass {
         return $artists ?? false;
     }
 
+    public static function get_artists_not_in(Song $song) {
+        global $DB;
+        $except = '';
+        foreach ($song->artists as $artist)
+            $except .= str_replace("'", "\\'", $artist->name) . ",";
+        $stmt = $DB->prepare('SELECT a.name FROM artists a WHERE a.name NOT IN (?)');
+        if (!$stmt->execute([rtrim($except, ',')]))
+            return false;
+        return $stmt->fetchAll();
+    }
+
     public function get_or_create() {
         global $DB;
         try {
