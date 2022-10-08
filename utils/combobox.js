@@ -227,6 +227,8 @@ Multiselect.prototype.removeOption = function (index) {
     // remove button
     const buttonEl = document.getElementById(`${this.idBase}-remove-${index}`);
     this.selectedEl.removeChild(buttonEl.parentElement);
+    if (typeof syncArtists === "function")  // breaks all known design principles
+        syncArtists();
 };
 
 Multiselect.prototype.selectOption = function (index) {
@@ -263,7 +265,9 @@ Multiselect.prototype.updateOption = function (index) {
     else this.selectOption(index);
 
     this.inputEl.value = '';
-};
+    if (typeof syncArtists === "function")  // breaks all known design principles
+        syncArtists();
+}
 
 Multiselect.prototype.updateMenuState = function (open, callFocus = true) {
     this.open = open;
