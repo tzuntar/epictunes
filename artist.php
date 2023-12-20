@@ -1,5 +1,5 @@
-***REMOVED***
-***REMOVED***
+<?php
+session_start();
 if (!isset($_SESSION['identifier']))
     header('Location: login.php');
 if (!isset($_GET['id']))
@@ -14,7 +14,7 @@ $document_title = $artist->name . "'s Profile";
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
 <div class="root-container">
-    ***REMOVED*** include_once 'include/top-nav.php' ?>
+    <?php include_once 'include/top-nav.php' ?>
 
     <main>
         <div class="margin-top-20">
@@ -27,11 +27,11 @@ include_once 'include/sidebar.php' ?>
                 </div>
             </section>
             <section class="user-song-list">
-                ***REMOVED*** if (isset($postedSongs)) {
+                <?php if (isset($postedSongs)) {
                     render_song_list($postedSongs, $_SESSION['is_admin']);
-            ***REMOVED*** ?>
+                } ?>
             </section>
         </div>
     </main>
 </div>
-***REMOVED*** include_once 'include/footer.php' ?>
+<?php include_once 'include/footer.php' ?>

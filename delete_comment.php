@@ -1,5 +1,5 @@
-***REMOVED***
-***REMOVED***
+<?php
+session_start();
 if (!isset($_SESSION['id']) || !$_SESSION['is_admin'])
     header('Location: index.php');
 if (!isset($_GET['id']))

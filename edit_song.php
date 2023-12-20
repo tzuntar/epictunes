@@ -1,5 +1,5 @@
-***REMOVED***
-***REMOVED***
+<?php
+session_start();
 $document_title = 'Edit Song';
 if (!isset($_SESSION['identifier']))
     header('Location: login.php');
@@ -22,8 +22,8 @@ if (isset($_POST['title'])) {
             $artist = new Artist();
             $artist->name = $a;
             $newSong->artists[] = $artist;
-    ***REMOVED***
-***REMOVED***
+        }
+    }
     $newSong->album = new Album();
     $newSong->album->name = filter_input(INPUT_POST, 'album', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $albumArtists = filter_input(INPUT_POST, 'album_artist', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -33,8 +33,8 @@ if (isset($_POST['title'])) {
             $artist = new Artist();
             $artist->name = $a;
             $newSong->album->artists[] = $artist;
-    ***REMOVED***
-***REMOVED***
+        }
+    }
     $newSong->genre = new Genre();
     $newSong->genre->name = filter_input(INPUT_POST, 'genre', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $tags = filter_input(INPUT_POST, 'tags', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -44,15 +44,15 @@ if (isset($_POST['title'])) {
             $tag = new SongTag();
             $tag->name = $t;
             $newSong->tags[] = $tag;
-    ***REMOVED***
-***REMOVED***
+        }
+    }
     $result = $newSong->insert();
     $song->delete();
     if ($result) {
         if ($_SESSION['is_admin'])
             header('Location: admin_songs.php');
         header('Location: song.php?id=' . $result->id);
-***REMOVED***
+    }
 }
 
 $songArtists = '';
@@ -68,7 +68,7 @@ foreach ($song->tags as $tag)
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
 <div class="root-container">
-    ***REMOVED*** include_once 'include/top-nav.php' ?>
+    <?php include_once 'include/top-nav.php' ?>
     <main>
         <h2 class="accent padding-20">Edit Song Data</h2>
         <form class="margin-top-20" method="post" enctype="multipart/form-data">
@@ -131,13 +131,13 @@ include_once 'include/sidebar.php' ?>
             <p class="header-center">
                 <input type="submit" value="Save" class="margin-top-20"/>
             </p>
-            ***REMOVED*** if ($_SESSION['is_admin']) {
+            <?php if ($_SESSION['is_admin']) {
                 $comments = $song->get_comments(); ?>
                 <h2 class="accent margin-lr-20 light-underline">Comments</h2>
                 <section class="comment-division padding-lr-20">
-                    ***REMOVED*** if (!$comments || sizeof($comments) < 1) { ?>
+                    <?php if (!$comments || sizeof($comments) < 1) { ?>
                         <p class="fine-print">No comments yet</p>
-                    ***REMOVED*** } else {
+                    <?php } else {
                         foreach ($comments as $comment) { ?>
                             <div class="grid-container comment-grid">
                                 <div class="grid-col">
@@ -154,11 +154,11 @@ include_once 'include/sidebar.php' ?>
                                     <p><?= $comment['content'] ?></p>
                                 </div>
                             </div>
-                        ***REMOVED*** }
-                ***REMOVED*** ?>
+                        <?php }
+                    } ?>
                 </section>
-            ***REMOVED*** } ?>
+            <?php } ?>
         </form>
     </main>
 </div>
-***REMOVED*** include_once 'include/footer.php' ?>
+<?php include_once 'include/footer.php' ?>

@@ -1,12 +1,12 @@
-***REMOVED***
-***REMOVED***
+<?php
+session_start();
 if (!isset($_SESSION['identifier']))
     header('Location: login.php');
 
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
     <div class="root-container">
-        ***REMOVED*** include_once 'include/top-nav.php' ?>
+        <?php include_once 'include/top-nav.php' ?>
 
         <main class="padding-20">
             <h1 class="step-number">1</h1>
@@ -28,4 +28,4 @@ include_once 'include/sidebar.php' ?>
             </form>
         </main>
     </div>
-***REMOVED*** include_once 'include/footer.php' ?>
+<?php include_once 'include/footer.php' ?>

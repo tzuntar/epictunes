@@ -1,5 +1,5 @@
-***REMOVED***
-***REMOVED***
+<?php
+session_start();
 $document_title = 'Create Account';
 $noflex = true;
 
@@ -11,11 +11,11 @@ if (isset($_POST['username'])) {
             or empty($_POST['password'])
             or empty($_POST['confirm_password']))) {
         $registerMessage = 'Please fill in all required fields';
-***REMOVED*** else {
+    } else {
         $password_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
         if (!password_verify($_POST['confirm_password'], $password_hash)) {
             $registerMessage = "The passwords don't match";
-    ***REMOVED*** else {
+        } else {
             $name = filter_input(INPUT_POST, 'name',
                 FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $username = filter_input(INPUT_POST, 'username',
@@ -27,16 +27,16 @@ if (isset($_POST['username'])) {
             if (!$user) {
                 $registerMessage = 'Creating the user failed';
                 return;
-        ***REMOVED*** else {
-        ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
-***REMOVED***
+            } else {
+                $_SESSION['id'] = $user['id_user'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['identifier'] = $user['identifier'];
+                $_SESSION['name'] = $user['name'];
+                $_SESSION['is_admin'] = $user['is_admin'];
+                header('Location: index.php');
+            }
+        }
+    }
 }
 
 include_once './include/header.php' ?>
@@ -49,11 +49,11 @@ include_once './include/header.php' ?>
     <div class="div-center">
         <h1>Create Account</h1>
         <form method="post" class="login-form">
-            ***REMOVED*** if (isset($registrationMessage)) { ?>
+            <?php if (isset($registrationMessage)) { ?>
                 <strong class="login-error">
                     <?= $registrationMessage ?>
                 </strong>
-            ***REMOVED*** } ?>
+            <?php } ?>
             <p>Please enter your data to create an account</p>
             <p>
                 <label>
@@ -93,4 +93,4 @@ include_once './include/header.php' ?>
         <p class="padding-top-40">Already have an account? Sign in instead</p>
         <a class="action-link" href="login.php">Sign In →</a>
     </div>
-***REMOVED*** include_once './include/footer.php' ?>
+<?php include_once './include/footer.php' ?>

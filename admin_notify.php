@@ -1,5 +1,5 @@
-***REMOVED***
-***REMOVED***
+<?php
+session_start();
 $document_title = 'Administration • Notify User';
 if (!isset($_SESSION['identifier']))
     header('Location: login.php');
@@ -23,7 +23,7 @@ if (!$targetUser) header('Location: admin_users.php');
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
     <div class="root-container">
-        ***REMOVED*** include_once 'include/top-nav.php' ?>
+        <?php include_once 'include/top-nav.php' ?>
 
         <main>
             <h2 class="accent padding-20"><?= $document_title ?></h2>
@@ -67,4 +67,4 @@ include_once 'include/sidebar.php' ?>
         </main>
 
     </div>
-***REMOVED*** include_once 'include/footer.php' ?>
+<?php include_once 'include/footer.php' ?>

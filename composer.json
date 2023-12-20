@@ -2,5 +2,5 @@
     "require": {
         "james-heinrich/getid3": "^1.9",
         "google/apiclient": "^2.12"
-***REMOVED***
+    }
 }

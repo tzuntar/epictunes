@@ -1,5 +1,5 @@
-***REMOVED***
-***REMOVED***
+<?php
+session_start();
 $document_title = 'Edit User';
 if (!isset($_SESSION['id']) || !$_SESSION['is_admin'])
     header('Location: index.php');
@@ -14,7 +14,7 @@ if (isset($_POST['name'])) {
         $newHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
         if (!password_verify($_POST['confirm_password'], $newHash))
             header('edit_user.php?id=' . $_GET['id']);
-***REMOVED***
+    }
     $updatedUser = clone $user;
     $updatedUser->name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $updatedUser->username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -29,7 +29,7 @@ if (isset($_POST['name'])) {
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
 <div class="root-container">
-    ***REMOVED*** include_once 'include/top-nav.php' ?>
+    <?php include_once 'include/top-nav.php' ?>
     <main>
         <h2 class="accent padding-20">Edit User Data</h2>
         <form class="margin-top-20" method="post" enctype="multipart/form-data">
@@ -86,4 +86,4 @@ include_once 'include/sidebar.php' ?>
         </form>
     </main>
 </div>
-***REMOVED*** include_once 'include/footer.php' ?>
+<?php include_once 'include/footer.php' ?>

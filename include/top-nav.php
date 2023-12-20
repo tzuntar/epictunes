@@ -16,7 +16,7 @@
         </a>
     </div>
 </nav>
-***REMOVED*** if (isset($_SESSION['identifier'])) {
+<?php if (isset($_SESSION['identifier'])) {
     require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/queries.php';
     global $top_level;
     $notifications = User::check_notifications($_SESSION['id'], false);
@@ -30,6 +30,6 @@
                     </button>
                 </p>
             </div>
-        ***REMOVED*** }
-***REMOVED***
+        <?php }
+    }
 }

@@ -1,5 +1,5 @@
-***REMOVED***
-***REMOVED***
+<?php
+session_start();
 if (!isset($_SESSION['identifier']))
     header('Location: login.php');
 if (!isset($_GET['song']) || !isset($_POST['']))

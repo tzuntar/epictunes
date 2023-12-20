@@ -1,5 +1,5 @@
-***REMOVED***
-***REMOVED***
+<?php
+session_start();
 if (!isset($_SESSION['identifier']))
     header('Location: login.php');
 if (!isset($_POST['filename']) || !isset($_POST['title']))
@@ -15,7 +15,7 @@ if (!trim($artistsEntry) == '') {
         $artist = new Artist();
         $artist->name = $a;
         $song->artists[] = $artist;
-***REMOVED***
+    }
 }
 $song->album = new Album();
 $song->album->name = filter_input(INPUT_POST, 'album', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -26,7 +26,7 @@ if (!trim($albumArtists) == '') {
         $artist = new Artist();
         $artist->name = $a;
         $song->album->artists[] = $artist;
-***REMOVED***
+    }
 }
 $song->genre = new Genre();
 $song->genre->name = filter_input(INPUT_POST, 'genre', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -37,7 +37,7 @@ if (!trim($tags) == '') {
         $tag = new SongTag();
         $tag->name = $t;
         $song->tags[] = $tag;
-***REMOVED***
+    }
 }
 $result = $song->insert();
 if ($result) {

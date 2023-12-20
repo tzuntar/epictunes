@@ -1,4 +1,4 @@
-***REMOVED***
+<?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/database.php';
 
 /**
@@ -36,9 +36,9 @@ function db_get_user_google_oauth(string $uid, string $name, string $email) {
                    oauth_provider, oauth_uid) VALUES (?, ?, ?, ?, ?, ?)');
     try {
         $username = $name . random_int(10, 50);
-***REMOVED*** catch (Exception $e) {
+    } catch (Exception $e) {
         return false;
-***REMOVED***
+    }
     if (!$newUser->execute([uniqid(), $username, $name, $email, 'google', $uid]))
         return false;
     return db_get_user_google_oauth($uid, $name, $email);
@@ -68,7 +68,7 @@ class Album {
 
     public function __construct() {
         $this->artists = [];
-***REMOVED***
+    }
 
     public static function get_by_searching(string $query) {
         global $DB;
@@ -86,11 +86,11 @@ class Album {
                 $album->id = $a['id_album'];
                 $album->name = $a['name'];
                 $albums[$album->id] = $album;
-        ***REMOVED***
+            }
             if (isset($a['id_artist'])) $albums[$a['id_album']]->artists[] = Artist::get($a['id_artist']);
-    ***REMOVED***
+        }
         return $albums;
-***REMOVED***
+    }
 
     public static function get(int $id) {
         global $DB;
@@ -107,9 +107,9 @@ class Album {
             $album->id = $a['id_album'];    // Do NOT ever forget to do this again!
             $album->name = $a['album_name'];
             if ($a['id_artist'] != null) $album->artists[] = Artist::get($a['id_artist']);
-    ***REMOVED***
+        }
         return $album;
-***REMOVED***
+    }
 
     public static function get_by_name(string $name) {
         global $DB;
@@ -124,9 +124,9 @@ class Album {
         while ($a = $stmt->fetch()) {
             $album->name = $a['album_name'];
             $album->artists[] = Artist::get($a['id_artist']);
-    ***REMOVED***
+        }
         return $album;
-***REMOVED***
+    }
 
     public static function get_all() {
         global $DB;
@@ -142,12 +142,12 @@ class Album {
                     $album->id = $a['id_album'];
                     $album->name = $a['name'];
                     $albums[$album->id] = $album;
-            ***REMOVED***
+                }
                 if ($a['id_artist'] != null) $albums[$a['id_album']]->artists[] = Artist::get($a['id_artist']);
-        ***REMOVED***
-    ***REMOVED***
+            }
+        }
         return $albums ?? false;
-***REMOVED***
+    }
 
     public function get_or_create() {   // This one's hideous!
         global $DB;
@@ -163,10 +163,10 @@ class Album {
                 $this->artists[$i] = $artistResult;
                 $stmt = $DB->prepare('INSERT INTO albums_artists (id_album, id_artist) VALUES (?, ?)');
                 if (!$stmt->execute([$this->id, $this->artists[$i]->id])) return false;
-        ***REMOVED***
+            }
             return $this->get_or_create();
-    ***REMOVED*** else return Album::get($stmt->fetch()['id_album']);
-***REMOVED***
+        } else return Album::get($stmt->fetch()['id_album']);
+    }
 
     public function insert() {
         global $DB;
@@ -178,7 +178,7 @@ class Album {
         if (!isset($artistList))    // empty artist list safeguard return false;
             if (!$stmt->execute($artistList)) return false;
         return Album::get($DB->lastInsertId());
-***REMOVED***
+    }
 
     public function trigger_dead_check(): bool {
         global $DB;
@@ -188,10 +188,10 @@ class Album {
         if (!$stmt->execute([$this->id]) || $stmt->rowCount() > 0) return false;
         try {   // if we came so far the album is empty
             return self::delete();
-    ***REMOVED*** catch (Exception $e) {
+        } catch (Exception $e) {
             return false;
-    ***REMOVED***
-***REMOVED***
+        }
+    }
 
     public function delete(): bool {
         global $DB;
@@ -199,7 +199,7 @@ class Album {
         if (!$stmt->execute([$this->id])) return false;
         foreach ($this->artists as $artist) $artist->trigger_dead_check();
         return true;
-***REMOVED***
+    }
 }
 
 class Genre extends stdClass {
@@ -214,8 +214,8 @@ class Genre extends stdClass {
             $stmt = $DB->prepare('INSERT INTO genres (name) VALUES (?)');
             if (!$stmt->execute([$this->name])) return false;
             return $this->get_or_create();
-    ***REMOVED*** else return Genre::get($stmt->fetch()['id_genre']);
-***REMOVED***
+        } else return Genre::get($stmt->fetch()['id_genre']);
+    }
 
     public static function get(int $id) {
         global $DB;
@@ -226,7 +226,7 @@ class Genre extends stdClass {
         $genre->id = $result['id_genre'];
         $genre->name = $result['name'];
         return $genre;
-***REMOVED***
+    }
 }
 
 final class AlertType {
@@ -265,7 +265,7 @@ class User extends stdClass {
         if (isset($data['profile_pic_url'])) $user->profilePicUrl = $data['profile_pic_url'];
         $user->passwordHash = $data['password'] ?: '';
         return $user;
-***REMOVED***
+    }
 
     public static function get_all() {
         global $DB;
@@ -283,22 +283,22 @@ class User extends stdClass {
             if (isset($data['profile_pic_url'])) $user->profilePicUrl = $data['profile_pic_url'];
             $user->passwordHash = $data['password'] ?: '';
             $users[] = $user;
-    ***REMOVED***
+        }
         return $users ?? false;
-***REMOVED***
+    }
 
     public function update(User $updatedData): bool {
         global $DB;
         $stmt = $DB->prepare('UPDATE users SET name = ?, username = ?, email = ?,
                  password = ?, is_admin = ? WHERE id_user = ?');
         return $stmt->execute([$updatedData->name, $updatedData->username, $updatedData->email, $updatedData->passwordHash, $updatedData->isAdmin, $this->id]);
-***REMOVED***
+    }
 
     public function update_profile_pic(string $newFilePath): bool {
         global $DB;
         $stmt = $DB->prepare('UPDATE users SET profile_pic_url = ? WHERE id_user = ?');
         return $stmt->execute([$newFilePath, $this->id]);
-***REMOVED***
+    }
 
     public function delete(): bool {
         global $DB;
@@ -307,27 +307,27 @@ class User extends stdClass {
             $postedComments = $song->get_comments_by_user($this->id);
             foreach ($postedComments as $comment) $song->delete_comment($comment['id_comment']);
             $song->delete();
-    ***REMOVED***
+        }
         $songSaves = Song::get_by_user_saves($this->id);
         foreach ($songSaves as $save) $save->unsave($save->id);
         $stmt = $DB->prepare('DELETE FROM artists WHERE id_user = ?');
         $stmt->execute([$this->id]);
         $stmt = $DB->prepare('DELETE FROM users WHERE id_user = ?');
         return $stmt->execute([$this->id]);
-***REMOVED***
+    }
 
     public function notify(string $message, string $type, int $adminUserId): bool {
         global $DB;
         $stmt = $DB->prepare('INSERT INTO users_notifications (id_user, id_admin_user,
                                  content, type) VALUES (?, ?, ?, ?)');
         return $stmt->execute([$this->id, $adminUserId, $message, $type]);
-***REMOVED***
+    }
 
     public static function dismiss_notification(int $notificationId): bool {
         global $DB;
         $stmt = $DB->prepare('DELETE FROM users_notifications WHERE id_notification = ?');
         return $stmt->execute([$notificationId]);
-***REMOVED***
+    }
 
     public static function check_notifications(int $userId, bool $autoExpire = true) {
         global $DB;
@@ -338,9 +338,9 @@ class User extends stdClass {
         if ($autoExpire) {
             $stmt = $DB->prepare('DELETE FROM users_notifications WHERE id_user = ?');
             $stmt->execute([$userId]);
-    ***REMOVED***
+        }
         return $notifications;
-***REMOVED***
+    }
 }
 
 class Artist extends stdClass {
@@ -359,9 +359,9 @@ class Artist extends stdClass {
             $artist->id = $a['id_artist'];
             $artist->name = $a['name'];
             $artists[] = $artist;
-    ***REMOVED***
+        }
         return $artists ?? false;
-***REMOVED***
+    }
 
     public static function get_all() {
         global $DB;
@@ -371,10 +371,10 @@ class Artist extends stdClass {
                 $artist->id = $a['id_artist'];
                 $artist->name = $a['name'];
                 $artists[] = $artist;
-        ***REMOVED***
-    ***REMOVED***
+            }
+        }
         return $artists ?? false;
-***REMOVED***
+    }
 
     public function get_or_create() {
         global $DB;
@@ -382,21 +382,21 @@ class Artist extends stdClass {
             $stmt = $DB->prepare('SELECT id_artist FROM artists 
                  WHERE name = ? AND id_user = ?');
             if (!$stmt->execute([$this->name, $this->user->id])) return false;
-    ***REMOVED*** else {
+        } else {
             $stmt = $DB->prepare('SELECT id_artist FROM artists WHERE name = ?');
             if (!$stmt->execute([$this->name])) return false;
-    ***REMOVED***
+        }
         if ($stmt->rowCount() < 1) {
             if (isset($this->user)) {
                 $stmt = $DB->prepare('INSERT INTO artists (name, id_user) VALUES (?, ?)');
                 if ($stmt->execute([$this->name, $this->user->id])) return false;
-        ***REMOVED*** else {
+            } else {
                 $stmt = $DB->prepare('INSERT INTO artists (name) VALUES (?)');
                 if ($stmt->execute([$this->name])) return false;
-        ***REMOVED***
+            }
             return $this->get_or_create();
-    ***REMOVED*** else return Artist::get($stmt->fetch()['id_artist']);
-***REMOVED***
+        } else return Artist::get($stmt->fetch()['id_artist']);
+    }
 
     public static function get(int $id) {
         global $DB;
@@ -408,7 +408,7 @@ class Artist extends stdClass {
         $artist->name = $data['name'];
         if (isset($data['id_user'])) $artist->user = User::get($data['id_user']);
         return $artist;
-***REMOVED***
+    }
 
     public function trigger_dead_check(): bool {
         global $DB;
@@ -420,16 +420,16 @@ class Artist extends stdClass {
         // if the artist is still present in an album the delete will fail either way
         try {
             return self::delete();
-    ***REMOVED*** catch (Exception $e) {
+        } catch (Exception $e) {
             return false;
-    ***REMOVED***
-***REMOVED***
+        }
+    }
 
     public function delete(): bool {
         global $DB;
         $stmt = $DB->prepare('DELETE FROM artists WHERE id_artist = ?');
         return $stmt->execute([$this->id]);
-***REMOVED***
+    }
 }
 
 class SongTag extends stdClass {
@@ -444,8 +444,8 @@ class SongTag extends stdClass {
             $stmt = $DB->prepare('INSERT INTO tags (name) VALUES (?)');
             if (!$stmt->execute([$this->name])) return false;
             return $this->get_or_create();
-    ***REMOVED*** else return SongTag::get($stmt->fetch()['id_tag']);
-***REMOVED***
+        } else return SongTag::get($stmt->fetch()['id_tag']);
+    }
 
     public static function get(int $id) {
         global $DB;
@@ -456,7 +456,7 @@ class SongTag extends stdClass {
         $tag->id = $result['id_tag'];
         $tag->name = $result['name'];
         return $tag;
-***REMOVED***
+    }
 }
 
 class Song extends stdClass {
@@ -471,7 +471,7 @@ class Song extends stdClass {
     public function __construct() {
         $this->artists = [];
         $this->tags = [];
-***REMOVED***
+    }
 
     public static function get_by_album(Album $album) {
         global $DB;
@@ -492,7 +492,7 @@ class Song extends stdClass {
             WHERE (s.id_album = ?)');
         if (!$stmt->execute([$album->id])) return false;
         return self::fetch_query_results($stmt);
-***REMOVED***
+    }
 
     /**
      * Processes this statement and extracts all results into an array
@@ -510,12 +510,12 @@ class Song extends stdClass {
                 if ($s['id_genre'] != null) $song->genre = Genre::get($s['id_genre']);
                 if ($s['id_album'] != null) $song->album = Album::get($s['id_album']);
                 $songs[$song->id] = $song;
-        ***REMOVED***
+            }
 
             $songs[$s['id_song']]->artists[] = Artist::get($s['id_artist']);
-    ***REMOVED***
+        }
         return $songs;
-***REMOVED***
+    }
 
     public static function get(int $id) {
         global $DB;
@@ -540,9 +540,9 @@ class Song extends stdClass {
             if ($s['id_genre'] != null) $song->genre = Genre::get($s['id_genre']);
             if ($s['id_album'] != null) $song->album = Album::get($s['id_album']);
             if ($s['id_artist'] != null) $song->artists[] = Artist::get($s['id_artist']);
-    ***REMOVED***
+        }
         return $song;
-***REMOVED***
+    }
 
     public static function get_all() {
         global $DB;
@@ -561,7 +561,7 @@ class Song extends stdClass {
             LEFT JOIN albums_artists aa ON aa.id_album = alb.id_album
             LEFT JOIN artists a2 ON a2.id_artist = aa.id_artist');
         return self::fetch_query_results($stmt);
-***REMOVED***
+    }
 
     public static function get_by_artist(int $artistId, bool $queryUserId = false) {
         global $DB;
@@ -581,7 +581,7 @@ class Song extends stdClass {
             LEFT JOIN albums_artists aa ON aa.id_album = alb.id_album
             LEFT JOIN artists a2 ON a2.id_artist = aa.id_artist
             WHERE (a.id_user = ?) OR (a2.id_user = ?)');
-    ***REMOVED*** else {
+        } else {
             $stmt = $DB->prepare('SELECT s.id_song,
                    s.name AS song_name,
                    s.song_url,
@@ -595,10 +595,10 @@ class Song extends stdClass {
             LEFT JOIN albums alb ON alb.id_album = s.id_album
             LEFT JOIN albums_artists aa ON aa.id_album = alb.id_album
             WHERE (sa.id_artist = ?) OR (aa.id_artist = ?)');
-    ***REMOVED***
+        }
         if (!$stmt->execute([$artistId, $artistId])) return false;
         return self::fetch_query_results($stmt);
-***REMOVED***
+    }
 
     public static function get_by_user_saves(int $userId) {
         global $DB;
@@ -617,7 +617,7 @@ class Song extends stdClass {
         if (!$stmt->execute([$userId])) return false;
 
         return self::fetch_query_results($stmt);
-***REMOVED***
+    }
 
     public static function get_by_searching(string $query) {
         global $DB;
@@ -633,7 +633,7 @@ class Song extends stdClass {
             WHERE UPPER(s.name) LIKE ?');
         if (!$stmt->execute(['%' . strtoupper(trim($query)) . '%'])) return false;
         return self::fetch_query_results($stmt);
-***REMOVED***
+    }
 
     public function insert() {
         global $DB;
@@ -641,17 +641,17 @@ class Song extends stdClass {
             $genreResult = $this->genre->get_or_create();
             if (!$genreResult) return false;
             $this->genre = $genreResult;
-    ***REMOVED***
+        }
         for ($i = 0; $i < sizeof($this->artists); $i++) {
             $artistResult = $this->artists[$i]->get_or_create();
             if (!$artistResult) return false;
             $this->artists[$i] = $artistResult;
-    ***REMOVED***
+        }
         if (isset($this->album)) {
             $albumResult = $this->album->get_or_create();
             if (!$albumResult) return false;
             $this->album = $albumResult;
-    ***REMOVED***
+        }
 
         $stmt = $DB->prepare('INSERT INTO songs(name, id_album, id_genre, song_url) VALUES (?, ?, ?, ?)');
         if (!$stmt->execute([$this->title, $this->album->id, $this->genre->id, $this->file_url])) return false;
@@ -660,16 +660,16 @@ class Song extends stdClass {
         foreach ($this->artists as $artist) {
             $stmt = $DB->prepare('INSERT INTO songs_artists (id_song, id_artist) VALUES (?, ?)');
             if (!$stmt->execute([$this->id, $artist->id])) return false;
-    ***REMOVED***
+        }
         foreach ($this->tags as $tag) {
             $tagResult = $tag->get_or_create();
             if ($tagResult) {
                 $stmt = $DB->prepare('INSERT INTO songs_tags (id_song, id_tag) VALUES (?, ?)');
                 $stmt->execute([$this->id, $tagResult->id]);
-        ***REMOVED***
-    ***REMOVED***
+            }
+        }
         return Song::get($this->id);
-***REMOVED***
+    }
 
     public static function get_by_title(string $title) {
         global $DB;
@@ -693,28 +693,28 @@ class Song extends stdClass {
             if ($s['id_genre'] != null) $song->genre = Genre::get($s['id_genre']);
             if ($s['id_album'] != null) $song->album = Album::get($s['id_album']);
             if ($s['id_artist'] != null) $song->artists[] = Artist::get($s['id_artist']);
-    ***REMOVED***
+        }
         return $song;
-***REMOVED***
+    }
 
     public function save(int $userId): bool {
         global $DB;
         $stmt = $DB->prepare('INSERT INTO songs_saves (id_song, id_user) VALUES (?, ?)');
         return $stmt->execute([$this->id, $userId]);
-***REMOVED***
+    }
 
     public function unsave(int $userId): bool {
         global $DB;
         $stmt = $DB->prepare('DELETE FROM songs_saves WHERE id_song = ? AND id_user = ?');
         return $stmt->execute([$this->id, $userId]);
-***REMOVED***
+    }
 
     public function check_is_saved(int $userId): bool {
         global $DB;
         $stmt = $DB->prepare('SELECT id_ss FROM songs_saves WHERE id_song = ? AND id_user = ?');
         if (!$stmt->execute([$this->id, $userId])) return false;
         return $stmt->rowCount() > 0;
-***REMOVED***
+    }
 
     public function delete(): bool {
         global $DB;
@@ -728,12 +728,12 @@ class Song extends stdClass {
         $this->album->trigger_dead_check();
         foreach ($this->artists as $artist) $artist->trigger_dead_check();
         return true;
-***REMOVED***
+    }
 
     public function check_ownership(int $userId): bool {
         if (!isset($this->artists[0]) || !isset($this->artists[0]->user)) return false;
         return $this->artists[0]->user->id === $userId;
-***REMOVED***
+    }
 
     public function get_comments() {
         global $DB;
@@ -746,7 +746,7 @@ class Song extends stdClass {
         $success = $stmt->execute([$this->id]);
         if (!$success) return false;
         return $stmt->fetchAll();
-***REMOVED***
+    }
 
     public function get_comments_by_user(int $userId) {
         global $DB;
@@ -759,20 +759,20 @@ class Song extends stdClass {
         $success = $stmt->execute([$this->id, $userId]);
         if (!$success) return false;
         return $stmt->fetchAll();
-***REMOVED***
+    }
 
     public function insert_comment(int $userId, string $content): bool {
         global $DB;
         $stmt = $DB->prepare('INSERT INTO comments_songs (id_song, id_user, content)
             VALUES (?, ?, ?)');
         return $stmt->execute([$this->id, $userId, $content]);
-***REMOVED***
+    }
 
     public static function delete_comment(int $commentId): bool {
         global $DB;
         $stmt = $DB->prepare('DELETE FROM comments_songs WHERE id_comment = ?');
         return $stmt->execute([$commentId]);
-***REMOVED***
+    }
 }
 
 function get_upload_stats_per_month(int $numMonths) {

@@ -1,5 +1,5 @@
-***REMOVED***
-***REMOVED***
+<?php
+session_start();
 $document_title = 'My Music';
 if (!isset($_SESSION['identifier']))
     header('Location: login.php');
@@ -28,7 +28,7 @@ if (!empty($_FILES['profile_photo']['name'])) {
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
 <div class="root-container">
-    ***REMOVED*** include_once 'include/top-nav.php' ?>
+    <?php include_once 'include/top-nav.php' ?>
     <main>
         <h2 class="accent padding-20">User Preferences</h2>
         <form class="margin-top-20" method="post" enctype="multipart/form-data">
@@ -71,4 +71,4 @@ include_once 'include/sidebar.php' ?>
         </form>
     </main>
 </div>
-***REMOVED*** include_once 'include/footer.php' ?>
+<?php include_once 'include/footer.php' ?>

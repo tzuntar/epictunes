@@ -1,5 +1,5 @@
-***REMOVED***
-***REMOVED***
+<?php
+session_start();
 if (!isset($_SESSION['identifier']))
     header('Location: login.php');
 if (!isset($_GET['id']))
@@ -29,7 +29,7 @@ $comments = $songData->get_comments();
 include_once 'include/header.php';
 include_once 'include/sidebar.php' ?>
     <div class="root-container">
-        ***REMOVED*** include_once 'include/top-nav.php' ?>
+        <?php include_once 'include/top-nav.php' ?>
         <link rel="stylesheet" href="./assets/mp3player.css"/>
 
         <main>
@@ -90,9 +90,9 @@ include_once 'include/sidebar.php' ?>
                         </label>
                         <input class="neutral-button" type="submit" value="Post"/>
                     </form>
-                    ***REMOVED*** if (!$comments || sizeof($comments) < 1) { ?>
+                    <?php if (!$comments || sizeof($comments) < 1) { ?>
                         <p class="fine-print">No comments yet</p>
-                    ***REMOVED*** } else {
+                    <?php } else {
                         foreach ($comments as $comment) { ?>
                             <div class="grid-container comment-grid">
                                 <div class="grid-col">
@@ -102,19 +102,19 @@ include_once 'include/sidebar.php' ?>
                                 </div>
                                 <div class="grid-col">
                                     <p>
-                                        ***REMOVED*** if ($_SESSION['is_admin']) { ?>
+                                        <?php if ($_SESSION['is_admin']) { ?>
                                                 <strong><?= $comment['user_name'] ?></strong>
                                             at <strong><?= date('d. m. Y, H:i', strtotime($comment['date_time'])) ?></strong> • <a
                                                     href="delete_comment.php?id=<?= $comment['id_comment'] ?>"><em>Delete</em></a>
-                                        ***REMOVED*** } else { ?>
+                                        <?php } else { ?>
                                             <strong><?= $comment['user_name'] ?></strong>
                                         at <strong><?= date('d. m. Y, H:i', strtotime($comment['date_time'])) ?></strong></p>
-                                    ***REMOVED*** } ?>
+                                    <?php } ?>
                                     <p><?= highlight_comment_timestamps($comment['content']) ?></p>
                                 </div>
                             </div>
-                        ***REMOVED*** }
-                ***REMOVED*** ?>
+                        <?php }
+                    } ?>
                 </section>
             </div>
         </main>
@@ -129,6 +129,6 @@ include_once 'include/sidebar.php' ?>
             const vibrantColor = getImgVibrantColorRgb('albumArtBox');
             $('.song-name')[0].style.color = vibrantColor;
             initAudioPlayer('<?= $mp3path ?>', vibrantColor);
-    ***REMOVED***);
+        });
     </script>
-***REMOVED*** include_once 'include/footer.php' ?>
+<?php include_once 'include/footer.php' ?>

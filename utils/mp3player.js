@@ -27,7 +27,7 @@ function frameLooper(rgbBarColor) {
         bar_width = 2;
         bar_height = -(fbc_array[i] / 2);
         ctx.fillRect(bar_x, canvas.height, bar_width, bar_height);
-***REMOVED***
+    }
 }
 
 function initAudioPlayer(mp3path, rgbBarColor) {
@@ -44,7 +44,7 @@ function initAudioPlayer(mp3path, rgbBarColor) {
     seekSlider.addEventListener('mousedown', (event) => {
         seeking = true;
         seek(event);
-***REMOVED***);
+    });
     seekSlider.addEventListener('mousemove', (event) => seek(event));
     seekSlider.addEventListener('mouseup', () => seeking = false);
     volumeSlider.addEventListener("mousemove", setVolume);
@@ -55,7 +55,7 @@ function initAudioPlayer(mp3path, rgbBarColor) {
         const timeInSeconds = (parseInt(timeSplit[0]) * 60)
             + parseInt(timeSplit[1]);
         seekLinks[e].addEventListener('click', () => seekTo(timeInSeconds))
-***REMOVED***
+    }
 
     function playPause() {
         if (context == null)
@@ -63,28 +63,28 @@ function initAudioPlayer(mp3path, rgbBarColor) {
         if (audio.paused) {
             audio.play();
             playButton.children[0].src = './assets/img/icons/pause.svg';
-    ***REMOVED*** else {
+        } else {
             audio.pause();
             playButton.children[0].src = './assets/img/icons/play.svg';
-    ***REMOVED***
-***REMOVED***
+        }
+    }
 
     function seek(event) {
         if (!seeking) return;
         seekSlider.value = event.clientX - seekSlider.offsetLeft;
         audio.currentTime = audio.duration * (seekSlider.value / 500);
-***REMOVED***
+    }
 
     function seekTo(timeInSeconds) {
         if (context == null)
             initMp3Player(rgbBarColor);
         audio.currentTime = timeInSeconds;
         seekSlider.value = (seekSlider.value / 500) / audio.duration;
-***REMOVED***
+    }
 
     function setVolume() {
         audio.volume = volumeSlider.value / 100;
-***REMOVED***
+    }
 
     function seekTimeUpdate() {
         seekSlider.value = audio.currentTime * (500 / audio.duration);
@@ -98,5 +98,5 @@ function initAudioPlayer(mp3path, rgbBarColor) {
         if (durationMin < 10) durationMin = '0' + durationMin;
         current_time.innerHTML = currentMin + ':' + currentSec;
         duration_time.innerHTML = durationMin + ':' + durationSec;
-***REMOVED***
+    }
 }

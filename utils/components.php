@@ -1,4 +1,4 @@
-***REMOVED***
+<?php
 require_once 'mp3.php';
 
 function render_song_list(array $songs, bool $adminEditControls = false) {
@@ -14,21 +14,21 @@ function render_song_list(array $songs, bool $adminEditControls = false) {
                     <div>
                         <p><a href="song.php?id=<?= $song->id ?>"><?= $song->title ?></a></p>
                         <p class="sub-label">
-                            ***REMOVED*** $artists = '';
+                            <?php $artists = '';
                             foreach ($song->artists as $artist)
                                 $artists .= '<a href="artist.php?id=' . $artist->id . '">' . $artist->name . '</a>' . ' / ';
                             echo rtrim($artists, ' /') ?></p>
                     </div>
-                    ***REMOVED*** if ($adminEditControls) { ?>
+                    <?php if ($adminEditControls) { ?>
                         <div>
                             <p><a href="edit_song.php?id=<?= $song->id ?>" class="action-link">Edit →</a></p>
                             <p><a href="delete_song.php?id=<?= $song->id ?>" class="action-link">Delete</a></p>
                         </div>
-                    ***REMOVED*** } ?>
+                    <?php } ?>
                 </div>
             </div>
         </div>
-    ***REMOVED*** }
+    <?php }
 }
 
 function render_user_list(array $users) {
@@ -53,7 +53,7 @@ function render_user_list(array $users) {
                 </div>
             </div>
         </div>
-    ***REMOVED*** }
+    <?php }
 }
 
 function render_artist_list($artists) {
@@ -72,7 +72,7 @@ function render_artist_list($artists) {
                 </div>
             </div>
         </div>
-    ***REMOVED*** }
+    <?php }
 }
 
 function render_album_list($albums, bool $adminEditControls = false) {
@@ -83,28 +83,28 @@ function render_album_list($albums, bool $adminEditControls = false) {
                     <img class="album-art-list profile-photo-list" src="/assets/img/icons/avatar.svg"
                          alt="Album Art"/>
                 </div>
-                ***REMOVED*** if ($adminEditControls) { ?>
+                <?php if ($adminEditControls) { ?>
                     <div>
                         <p><a href="album.php?id=<?= $album->id ?>"><?= $album->name ?></a></p>
                         <p class="sub-label">
-                            ***REMOVED*** foreach ($album->artists as $artist) { ?>
+                            <?php foreach ($album->artists as $artist) { ?>
                         <p><a href="artist.php?id=<?= $artist->id ?>"><?= $artist->name ?></a></p>
-                        ***REMOVED*** } ?>
+                        <?php } ?>
                         </p>
                     </div>
-                ***REMOVED*** } else { ?>
+                <?php } else { ?>
                     <div>
                         <p><a href="album.php?id=<?= $album->id ?>"><?= $album->name ?></a></p>
                         <p class="sub-label">
-                            ***REMOVED*** foreach ($album->artists as $artist) { ?>
+                            <?php foreach ($album->artists as $artist) { ?>
                         <p><a href="artist.php?id=<?= $artist->id ?>"><?= $artist->name ?></a></p>
-                        ***REMOVED*** } ?>
+                        <?php } ?>
                         </p>
                     </div>
-                ***REMOVED*** } ?>
+                <?php } ?>
             </div>
         </div>
-    ***REMOVED*** }
+    <?php }
 }
 
 /**

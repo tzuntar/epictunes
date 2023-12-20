@@ -578,69 +578,69 @@ input[type='submit'] {
     .flex-container {
         display: block;
         text-align: center;
-***REMOVED***
+    }
 
     .flex-child-half:first-child {
         margin-right: 0;
-***REMOVED***
+    }
 
     .flex-child-half:nth-child(2) {
         padding-top: 20px;
-***REMOVED***
+    }
 
     .sidebar {
         display: none;
         position: absolute;
         top: 0;
         left: 0;
-***REMOVED***
+    }
 
     .logo {
         display: none;
-***REMOVED***
+    }
 
     #albumArtBox {
         display: none;
-***REMOVED***
+    }
 
     .meta-edit-grid {
         grid-template-columns: 120px 1fr 10px;
-***REMOVED***
+    }
 
     .song-player-division {
         grid-template-columns: 0.25fr 10fr auto;
-***REMOVED***
+    }
 
     .comment-entry {
         width: calc(60vw - 40px) !important;
-***REMOVED***
+    }
 
     .root-container {
         left: 0;
         width: 100%;
-***REMOVED***
+    }
 
     .root-container .search-box {
         justify-content: left;
         margin: 0;
-***REMOVED***
+    }
 
     .root-container .search-box input {
         width: 30vw;
-***REMOVED***
+    }
 
     .root-container nav .menu-toggle {
         display: block;
         padding-left: 10px;
         padding-top: 7px;
-***REMOVED***
+    }
 
     .root-container nav .profile-photo {
         margin: auto 0;
-***REMOVED***
+    }
 
     .root-container nav .profile-photo p {
         float: left;
         margin-right: 5px;
-***REMOVED***
+    }
 }
