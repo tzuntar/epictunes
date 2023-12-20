@@ -5,23 +5,18 @@
 
 <h3 align="center">EpicTunes</h3>
 
----
+## 🎵 About <a name = "about"></a>
 
-<p align="center">World's Most Epic Music Streaming Platform 
-    <br> 
-</p>
+This is the repository of EpicTunes, a music streaming platform that lets you upload your best freestyles and stream those of others.
+
+Made as a high school project back in 2022-23. The main premise of the app is that users can upload their own songs, the same way it works on Soundcloud. More details and a Ruby on Rails-based feature-packed version is [available in this repository](https://github.com/tzuntar/rubytunes).
 
 ## 📝 Table of Contents
 
-- [About](#about)
 - [Getting Started](#getting_started)
 - [Deployment](#deployment)
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgement)
-
-## 🎵 About <a name = "about"></a>
-
-This is the repository of EpicTunes, the best music streaming platform out there. Visit it on [epictunes.tobija-zuntar.eu](https://epictunes.tobija-zuntar.eu).
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
